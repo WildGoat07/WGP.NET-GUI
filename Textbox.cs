@@ -107,7 +107,7 @@ namespace WGP.Gui
         internal override Vector2f GetMinimumSize()
         {
             float minW;
-            minW = Math.Max(TextBuffer.GetGlobalBounds().Width, DefaultTextBuffer.GetGlobalBounds().Width);
+            minW = Math.Max(TextBuffer.FindCharacterPos((uint)TextBuffer.DisplayedString.Count()).X, DefaultTextBuffer.FindCharacterPos((uint)DefaultTextBuffer.DisplayedString.Count()).X);
             Vector2f result = new Vector2f(minW + 10, Init.TextSize + 10);
             result += Padding * 2;
             return result;

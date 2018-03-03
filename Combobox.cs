@@ -105,7 +105,7 @@ namespace WGP.Gui
 
         internal override Vector2f GetMinimumSize()
         {
-            Vector2f result = new Vector2f(Label.GetGlobalBounds().Width, Init.TextSize);
+            Vector2f result = new Vector2f(Label.FindCharacterPos((uint)Label.DisplayedString.Count()).X, Init.TextSize);
             result += Padding * 2;
             result += new Vector2f(20 + Arrow.Size.X, 10);
             return result;
@@ -145,7 +145,7 @@ namespace WGP.Gui
                     Text tmp = new Text(List[i], Init.Font, Init.TextSize);
                     tmp.Color = Init.DarkX;
                     tmp.Position = BackContext.Position + new Vector2f(10, i * (Init.TextSize + 5));
-                    LMax = Math.Max(LMax, 20 + tmp.GetGlobalBounds().Width);
+                    LMax = Math.Max(LMax, 20 + tmp.FindCharacterPos((uint)tmp.DisplayedString.Count()).X);
                     Buffer.Add(tmp);
                 }
                 SelectedContext.Size = new Vector2f(LMax, (Init.TextSize + 5));

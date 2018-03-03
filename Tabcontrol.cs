@@ -91,7 +91,7 @@ namespace WGP.Gui
             {
                 TitleBackBuffer.Position = new Vector2f((int)ReservedSpace.Left + offset, (int)ReservedSpace.Top) + Padding;
                 TitleBuffer.DisplayedString = it.Value.Title;
-                TitleBackBuffer.Size = new Vector2f(10 + (int)TitleBuffer.GetGlobalBounds().Width, 6 + Init.TextSize);
+                TitleBackBuffer.Size = new Vector2f(10 + (int)TitleBuffer.FindCharacterPos((uint)TitleBuffer.DisplayedString.Count()).X, 6 + Init.TextSize);
                 TitleBuffer.Position = new Vector2f(5, 3) + TitleBackBuffer.Position;
                 if (it.Value.Widget == ActiveWidget)
                     TitleBackBuffer.FillColor = Init.LightX;
@@ -193,7 +193,7 @@ namespace WGP.Gui
             for (var it = Widgets.First; it != null; it = it.Next)
             {
                 TitleBuffer.DisplayedString = it.Value.Title;
-                minW += TitleBuffer.GetGlobalBounds().Width + 10;
+                minW += TitleBuffer.FindCharacterPos((uint)TitleBuffer.DisplayedString.Count()).X + 10;
             }
             result.X = Math.Max(result.X, minW);
             result += Padding * 2;
@@ -214,9 +214,9 @@ namespace WGP.Gui
             for (var it = Widgets.First; it != null; it = it.Next)
             {
                 TitleBuffer.DisplayedString = it.Value.Title;
-                if (new FloatRect(ReservedSpace.Left + Padding.X + offset, ReservedSpace.Top, TitleBuffer.GetGlobalBounds().Width + 10, Init.TextSize + 6).Contains(pos))
+                if (new FloatRect(ReservedSpace.Left + Padding.X + offset, ReservedSpace.Top, TitleBuffer.FindCharacterPos((uint)TitleBuffer.DisplayedString.Count()).X + 10, Init.TextSize + 6).Contains(pos))
                     ActiveWidget = it.Value.Widget;
-                offset += TitleBuffer.GetGlobalBounds().Width + 10;
+                offset += TitleBuffer.FindCharacterPos((uint)TitleBuffer.DisplayedString.Count()).X + 10;
             }
             if (ActiveWidget != null)
                 ActiveWidget.MouseButtonDownCall(button, pos, intercept);

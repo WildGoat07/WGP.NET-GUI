@@ -100,7 +100,7 @@ namespace WGP.Gui
 
         internal override Vector2f GetMinimumSize()
         {
-            Vector2f result = new Vector2f(Label.GetGlobalBounds().Width, Init.TextSize);
+            Vector2f result = new Vector2f(Label.FindCharacterPos((uint)Label.DisplayedString.Count()).X, Init.TextSize);
             result += Padding * 2;
             result += new Vector2f(Init.TextSize + 5, 0);
             return result;

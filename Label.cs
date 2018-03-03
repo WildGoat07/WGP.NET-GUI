@@ -45,13 +45,13 @@ namespace WGP.Gui
 
         internal override Vector2f GetMinimumSize()
         {
-            Vector2f result = new Vector2f(label.GetGlobalBounds().Width, Init.TextSize);
+            Vector2f result = new Vector2f(label.FindCharacterPos((uint)label.DisplayedString.Count()).X, Init.TextSize);
             result += Padding * 2;
             return result;
         }
         protected override FloatRect GetHitbox()
         {
-            return new FloatRect(Padding.X + ReservedSpace.Left, Padding.Y + ReservedSpace.Top, label.GetGlobalBounds().Width, Init.TextSize);
+            return new FloatRect(Padding.X + ReservedSpace.Left, Padding.Y + ReservedSpace.Top, label.FindCharacterPos((uint)label.DisplayedString.Count()).X, Init.TextSize);
         }
 
         protected override void InternUpdate()

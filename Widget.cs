@@ -102,7 +102,7 @@ namespace WGP.Gui
                 if (TimedToolTip.ElapsedTime > Time.FromSeconds(1.5f) && ToolTip.Count() > 0)
                     ShowToolTip = true;
                 TextToolTip.Position = BackToolTip.Position + new Vector2f(5, 0);
-                BackToolTip.Size = new Vector2f(TextToolTip.GetGlobalBounds().Width + 10, Init.TextSize + 5);
+                BackToolTip.Size = new Vector2f(TextToolTip.FindCharacterPos((uint)TextToolTip.DisplayedString.Count()).X + 10, Init.TextSize + 5);
                 BorderToolTip[0].Position = BackToolTip.Position + new Vector2f(.5f, .5f);
                 BorderToolTip[1].Position = BorderToolTip[0].Position + new Vector2f(BackToolTip.Size.X, 0);
                 BorderToolTip[2].Position = BorderToolTip[1].Position + new Vector2f(0, BackToolTip.Size.Y);

@@ -49,7 +49,7 @@ namespace WGP.Gui
 
         internal override Vector2f GetMinimumSize()
         {
-            Vector2f result = new Vector2f(Label.GetGlobalBounds().Width, Label.GetGlobalBounds().Height);
+            Vector2f result = new Vector2f(Label.FindCharacterPos((uint)Label.DisplayedString.Count()).X, Init.TextSize);
             result += Padding * 2;
             result += new Vector2f(20, 10);
             return result;
@@ -67,7 +67,7 @@ namespace WGP.Gui
             Border[5].Position = Border[4].Position + new Vector2f(-(int)ReservedSpace.Width + Padding.X * 2, 0);
             Border[6].Position = Border[5].Position;
             Border[7].Position = Border[6].Position + new Vector2f(0, -(int)ReservedSpace.Height + Padding.Y * 2);
-            Label.Position = new Vector2f((int)(ReservedSpace.Width / 2 - Label.GetGlobalBounds().Width / 2 + ReservedSpace.Left),
+            Label.Position = new Vector2f((int)(ReservedSpace.Width / 2 - Label.FindCharacterPos((uint)Label.DisplayedString.Count()).X / 2 + ReservedSpace.Left),
                                           (int)(ReservedSpace.Height / 2 + ReservedSpace.Top - Init.TextSize / 2));
 
             if (Pressed)

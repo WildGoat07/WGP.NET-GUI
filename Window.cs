@@ -86,7 +86,7 @@ namespace WGP.Gui
                 if (TitleText != null)
                 {
                     if (TitleText.DisplayedString != "")
-                        minTitleWidth += 10 + TitleText.GetGlobalBounds().Width;
+                        minTitleWidth += 10 + TitleText.FindCharacterPos((uint)TitleText.DisplayedString.Count()).X;
                 }
                 if (CloseIcon != null)
                     minTitleWidth += IconSize;
@@ -271,13 +271,13 @@ namespace WGP.Gui
             {
                 if (Title.Count() > 0)
                 {
-                    TitleBack.Position = new Vector2f(TitleText.Position.X + TitleText.GetGlobalBounds().Width + 5, Position.Y);
+                    TitleBack.Position = new Vector2f(TitleText.Position.X + TitleText.FindCharacterPos((uint)TitleText.DisplayedString.Count()).X + 5, Position.Y);
                     float decal = 0;
                     if (CloseIcon != null)
                         decal += IconSize;
                     if (HideContentIcon != null)
                         decal += IconSize;
-                    TitleBack.Size = new Vector2f((Math.Max((int)Size.X - TitleText.GetGlobalBounds().Width - decal - 15, 0)), (int)IconSize);
+                    TitleBack.Size = new Vector2f((Math.Max((int)Size.X - TitleText.FindCharacterPos((uint)TitleText.DisplayedString.Count()).X - decal - 15, 0)), (int)IconSize);
                     TitleBack.TextureRect = new IntRect(0, 0, (int)TitleBack.Size.X, (int)IconSize);
                 }
                 else
@@ -299,6 +299,9 @@ namespace WGP.Gui
                 if (Titlebar != null)
                     ResizeIcon.Position += new Vector2f(0, IconSize);
             }
+            else
+                Size = new Vector2f();
+
             if (CloseIcon != null)
             {
                 CloseIcon.Position = Position + new Vector2f(Size.X - IconSize, 0);
@@ -331,7 +334,7 @@ namespace WGP.Gui
             if (TitleText != null)
             {
                 if (TitleText.DisplayedString != "")
-                    minTitleWidth += 10 + TitleText.GetGlobalBounds().Width;
+                    minTitleWidth += 10 + TitleText.FindCharacterPos((uint)TitleText.DisplayedString.Count()).X;
             }
             if (CloseIcon != null)
                 minTitleWidth += IconSize;
