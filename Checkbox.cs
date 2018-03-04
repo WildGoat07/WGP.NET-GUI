@@ -11,6 +11,9 @@ using SFML.Window;
 
 namespace WGP.Gui
 {
+    /// <summary>
+    /// Basic checkbox.
+    /// </summary>
     public class Checkbox : Widget
     {
         public enum State
@@ -32,6 +35,9 @@ namespace WGP.Gui
         private RectangleShape Front { get; set; }
         private Vertex[] Border { get; set; }
         private bool _checked;
+        /// <summary>
+        /// Returns true if checked.
+        /// </summary>
         public bool Checked
         {
             get => _checked;
@@ -44,6 +50,9 @@ namespace WGP.Gui
             }
         }
         private State checkState;
+        /// <summary>
+        /// Returns the current check state.
+        /// </summary>
         public State CheckState
         {
             get => checkState;
@@ -59,12 +68,17 @@ namespace WGP.Gui
                     StateChanged(this, new CheckboxStateEventArgs() { State = CheckState });
             }
         }
+        /// <summary>
+        /// Its title.
+        /// </summary>
         public string Title
         {
             get => Label.DisplayedString;
             set => Label.DisplayedString = value;
         }
-
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public Checkbox() : base()
         {
             if (!Init.IsInitialized)

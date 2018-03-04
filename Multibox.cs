@@ -11,6 +11,9 @@ using SFML.Window;
 
 namespace WGP.Gui
 {
+    /// <summary>
+    /// The Multibox can handle multiple widget within him.
+    /// </summary>
     public class Multibox : Widget
     {
         internal class Pair : IComparable
@@ -38,8 +41,15 @@ namespace WGP.Gui
                     it.Value.Widget.Parent = parent;
             }
         }
-        private ChainedList<Pair> Widgets { get; set; }
+        private LinkedList<Pair> Widgets { get; set; }
+        /// <summary>
+        /// Orientation of the list of widgets.
+        /// </summary>
+        /// <value>HORIZONTAL or VERTICAL.</value>
         public Mode Orientation { get; set; }
+        /// <summary>
+        /// The Automatic weight distribution set the weight of its widgets based on their minimum size. It will override the given weight using Add().
+        /// </summary>
         public bool AutomaticWeightDistribution { get; set; }
 
         public enum Mode
@@ -47,13 +57,15 @@ namespace WGP.Gui
             HORIZONTAL,
             VERTICAL
         }
-
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public Multibox() : base()
         {
             if (!Init.IsInitialized)
                 throw new Init.NotInitializedException();
 
-            Widgets = new ChainedList<Pair>();
+            Widgets = new LinkedList<Pair>();
             Padding = new Vector2f();
             Orientation = Mode.VERTICAL;
             AutomaticWeightDistribution = false;
@@ -141,48 +153,60 @@ namespace WGP.Gui
                 it.Value.Widget.Update(it.Value.availableSpace);
             }
         }
-
+        /// <summary>
+        /// Adds a widget to its list.
+        /// </summary>
+        /// <param name="widget">Widget to add.</param>
+        /// <param name="weight">Weight of the widget. Must be superior than 0. The weight is an index to how will be calculated the reserved space of the widget if the size of the box is bigger than the minimum size of its widgets.</param>
         public void Add(Widget widget, float weight = 1)
         {
             if (weight <= 0)
-                throw new Exception("Le poid doit être supérieur à 0.");
+                throw new Exception("The weight must be superior than 0.");
             for (var it = Widgets.First; it != null;it = it.Next)
             {
                 if (it.Value.Widget == widget)
-                    throw new Exception("Le widget existe déjà dans le conteneur.");
+                    throw new Exception("The widget already exists in the container.");
             }
             Widgets.Add(new Pair() { Widget = widget, Weight = weight });
             widget.Parent = Parent;
         }
-
+        /// <summary>
+        /// Adds a widget to its list.
+        /// </summary>
+        /// <param name="widget">Widget to add.</param>
+        /// <param name="At">Where to insert the widget.</param>
+        /// <param name="weight">Weight of the widget. Must be superior than 0. The weight is an index to how will be calculated the reserved space of the widget if the size of the box is bigger than the minimum size of its widgets.</param>
         public void Insert(Widget widget, Widget At, float weight = 1)
         {
             if (weight <= 0)
-                throw new Exception("Le poid doit être supérieur à 0.");
-            ChainedList<Pair>.Element<Pair> iterator = null;
+                throw new Exception("The weight must be superior than 0.");
+            LinkedList<Pair>.Element<Pair> iterator = null;
             for (var it = Widgets.First; it != null; it = it.Next)
             {
                 if (it.Value.Widget == widget)
-                    throw new Exception("Le widget existe déjà dans le conteneur.");
+                    throw new Exception("The widget already exists in the container.");
                 if (it.Value.Widget == At)
                     iterator = it;
             }
             if (iterator == null)
-                throw new Exception("Le widget de réference n'existe pas dans le conteneur.");
+                throw new Exception("The reference widget doesn't exists in the container.");
             Widgets.Insert(iterator, new Pair() { Widget = widget, Weight = weight });
             widget.Parent = Parent;
         }
-
+        /// <summary>
+        /// Removes a widget from its list.
+        /// </summary>
+        /// <param name="At">The widget to remove.</param>
         public void Remove(Widget At)
         {
-            ChainedList<Pair>.Element<Pair> iterator = null;
+            LinkedList<Pair>.Element<Pair> iterator = null;
             for (var it = Widgets.First; it != null; it = it.Next)
             {
                 if (it.Value.Widget == At)
                     iterator = it;
             }
             if (iterator == null)
-                throw new Exception("Le widget de réference n'existe pas dans le conteneur.");
+                throw new Exception("The reference widget doesn't exists in the container.");
             Widgets.Remove(iterator);
         }
 

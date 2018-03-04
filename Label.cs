@@ -11,16 +11,25 @@ using SFML.Window;
 
 namespace WGP.Gui
 {
+    /// <summary>
+    /// Base text widget.
+    /// </summary>
     public class Label : Widget
     {
 
         private Text label { get; set; }
+        /// <summary>
+        /// Title of the widget.
+        /// </summary>
+        /// <value>String of the title.</value>
         public string Title
         {
             get => label.DisplayedString;
             set => label.DisplayedString = value;
         }
-
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public Label() : base()
         {
             if (!Init.IsInitialized)

@@ -11,15 +11,24 @@ using SFML.Window;
 
 namespace WGP.Gui
 {
+    /// <summary>
+    /// Widget that displays an SFML texture.
+    /// </summary>
     public class Picture : Widget
     {
         private RectangleShape Img { get; set; }
+        /// <summary>
+        /// Texture of the image.
+        /// </summary>
+        /// <value>Texture of the image.</value>
         public Texture Source
         {
             get => Img.Texture;
             set => Img.Texture = value;
         }
-
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public Picture() : base()
         {
             if (!Init.IsInitialized)

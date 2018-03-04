@@ -11,6 +11,9 @@ using SFML.Window;
 
 namespace WGP.Gui
 {
+    /// <summary>
+    /// Tab control container. Allows to use multiple tabs in a GUI.
+    /// </summary>
     public class Tabcontrol : Widget
     {
         internal class Pair
@@ -30,10 +33,13 @@ namespace WGP.Gui
                     it.Value.Widget.Parent = parent;
             }
         }
-        private ChainedList<Pair> Widgets { get; set; }
+        private LinkedList<Pair> Widgets { get; set; }
         private RectangleShape TitleBackBuffer { get; set; }
         private Text TitleBuffer { get; set; }
         private Vertex[] TitleBorderBuffer { get; set; }
+        /// <summary>
+        /// The active widget is the one displayed.
+        /// </summary>
         public Widget ActiveWidget { get; private set; }
 
         public enum Mode
@@ -41,13 +47,15 @@ namespace WGP.Gui
             HORIZONTAL,
             VERTICAL
         }
-
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public Tabcontrol() : base()
         {
             if (!Init.IsInitialized)
                 throw new Init.NotInitializedException();
 
-            Widgets = new ChainedList<Pair>();
+            Widgets = new LinkedList<Pair>();
             ActiveWidget = null;
             TitleBackBuffer = new RectangleShape();
             TitleBuffer = new Text("", Init.Font, Init.TextSize);
@@ -112,7 +120,11 @@ namespace WGP.Gui
             }
             target.Draw(TitleBorderBuffer, 0, 8, PrimitiveType.Lines, new RenderStates(tr.Transform));
         }
-
+        /// <summary>
+        /// Adds a new tab.
+        /// </summary>
+        /// <param name="widget">Content.</param>
+        /// <param name="title">Tab's title.</param>
         public void Add(Widget widget, string title)
         {
             if (Widgets.Count == 0)
@@ -120,30 +132,39 @@ namespace WGP.Gui
             for (var it = Widgets.First; it != null; it = it.Next)
             {
                 if (it.Value.Widget == widget)
-                    throw new Exception("Le widget existe déjà dans le conteneur.");
+                    throw new Exception("The widget already exists in the container.");
             }
             Widgets.Add(new Pair() { Widget = widget, Title = title });
             widget.Parent = Parent;
         }
-
+        /// <summary>
+        /// Adds a new tab.
+        /// </summary>
+        /// <param name="widget">Content.</param>
+        /// <param name="At">Position of the new tab.</param>
+        /// <param name="title">Tab's title.</param>
         public void Insert(Widget widget, Widget At, string title)
         {
             if (Widgets.Count == 0)
                 ActiveWidget = widget;
-            ChainedList<Pair>.Element<Pair> iterator = null;
+            LinkedList<Pair>.Element<Pair> iterator = null;
             for (var it = Widgets.First; it != null; it = it.Next)
             {
                 if (it.Value.Widget == widget)
-                    throw new Exception("Le widget existe déjà dans le conteneur.");
+                    throw new Exception("The widget already exists in the container.");
                 if (it.Value.Widget == At)
                     iterator = it;
             }
             if (iterator == null)
-                throw new Exception("Le widget de réference n'existe pas dans le conteneur.");
+                throw new Exception("The reference widget doesn't exists in the container.");
             Widgets.Insert(iterator, new Pair() { Widget = widget, Title = title });
             widget.Parent = Parent;
         }
-
+        /// <summary>
+        /// Changes the title of a tab.
+        /// </summary>
+        /// <param name="At">Tab to rename.</param>
+        /// <param name="title">New title.</param>
         public void SetTitle(Widget At, string title)
         {
             for (var it = Widgets.First; it != null; it = it.Next)
@@ -154,9 +175,13 @@ namespace WGP.Gui
                     return;
                 }
             }
-            throw new Exception("Le widget de réference n'existe pas dans le conteneur.");
+            throw new Exception("The reference widget doesn't exists in the container.");
         }
-
+        /// <summary>
+        /// Returns the title of a tab.
+        /// </summary>
+        /// <param name="At">Tab.</param>
+        /// <returns>Title.</returns>
         public string GetTitle(Widget At)
         {
             for (var it = Widgets.First; it != null; it = it.Next)
@@ -166,19 +191,22 @@ namespace WGP.Gui
                     return it.Value.Title;
                 }
             }
-            throw new Exception("Le widget de réference n'existe pas dans le conteneur.");
+            throw new Exception("The reference widget doesn't exists in the container.");
         }
-
+        /// <summary>
+        /// Removes a tab.
+        /// </summary>
+        /// <param name="At">Tab to remove.</param>
         public void Remove(Widget At)
         {
-            ChainedList<Pair>.Element<Pair> iterator = null;
+            LinkedList<Pair>.Element<Pair> iterator = null;
             for (var it = Widgets.First; it != null; it = it.Next)
             {
                 if (it.Value.Widget == At)
                     iterator = it;
             }
             if (iterator == null)
-                throw new Exception("Le widget de réference n'existe pas dans le conteneur.");
+                throw new Exception("The reference widget doesn't exists in the container.");
             Widgets.Remove(iterator);
         }
 

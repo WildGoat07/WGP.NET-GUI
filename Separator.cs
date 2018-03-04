@@ -11,6 +11,9 @@ using SFML.Window;
 
 namespace WGP.Gui
 {
+    /// <summary>
+    /// Basic separator widget. The separator is a straight line to separate widgets.
+    /// </summary>
     public class Separator : Widget
     {
         public enum Mode
@@ -19,9 +22,13 @@ namespace WGP.Gui
             VERTICAL
         }
         private Vertex[] Line { get; set; }
+        /// <summary>
+        /// Its orientation.
+        /// </summary>
         public Mode Orientation { get; set; }
-
-
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public Separator() : base()
         {
             if (!Init.IsInitialized)

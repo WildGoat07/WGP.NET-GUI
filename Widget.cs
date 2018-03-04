@@ -11,6 +11,9 @@ using SFML.Window;
 
 namespace WGP.Gui
 {
+    /// <summary>
+    /// Base widget class.
+    /// </summary>
     public abstract partial class Widget
     {
 
@@ -33,12 +36,22 @@ namespace WGP.Gui
         private Clock TimedToolTip { get; set; }
         private bool ShowToolTip { get; set; }
         private bool MouseOnReserved { get; set; }
+        /// <summary>
+        /// The tooltip is the message that appears when the mouse is on the same widget for a few seconds.
+        /// </summary>
+        /// <value>String to display.</value>
         public string ToolTip
         {
             get => TextToolTip.DisplayedString;
             set => TextToolTip.DisplayedString = value;
         }
 
+        /// <summary>
+        /// The pattern is how the widget will be placed and sized within its reserved space. All values must be between [0,1].
+        /// Left and Top are the position of the widget (0 for left/top, 1 for right/bottom).
+        /// Width and Height are the size of the widget (0 for smallest, 1 for largest).
+        /// </summary>
+        /// <value>Pattern.</value>
         public FloatRect Pattern
         {
             get => pattern;
@@ -50,6 +63,10 @@ namespace WGP.Gui
                     PatternChanged(this, new PatternChangedEventArgs(old, value));
             }
         }
+        /// <summary>
+        /// The padding is the blank space around the widget to not be sticked to other widgets.
+        /// </summary>
+        /// <value>Padding.</value>
         public Vector2f Padding
         {
             get => padding;
@@ -66,6 +83,9 @@ namespace WGP.Gui
 
         protected FloatRect ReservedSpace { get; private set; }
 
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public Widget()
         {
             if (!Init.IsInitialized)

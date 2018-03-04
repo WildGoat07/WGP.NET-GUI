@@ -11,6 +11,9 @@ using SFML.Window;
 
 namespace WGP.Gui
 {
+    /// <summary>
+    /// Scrollable box container. The scrollable box allow you to reduce the minimum size of a widget by putting it in a scrollable view.
+    /// </summary>
     public class Scrollablebox : Widget
     {
         public enum Mode
@@ -35,7 +38,9 @@ namespace WGP.Gui
             }
         }
         private static float Step { get => 20; }
-
+        /// <summary>
+        /// Its content.
+        /// </summary>
         public Widget Content
         {
             get => content;
@@ -49,6 +54,12 @@ namespace WGP.Gui
         private Vertex[] Border { get; set; }
         private RenderTexture Buffer { get; set; }
         private RectangleShape Displayer { get; set; }
+        /// <summary>
+        /// Its minimum size.
+        /// </summary>
+        /// <remarks>
+        /// The content's size can be reduced as much as possible, so the minimum size must be defined to put a limit on the minimal view possible.
+        /// </remarks>
         public Vector2f MinimumSize { get; set; }
         private Vector2f Offset { get; set; }
         private RectangleShape UpArrow { get; set; }
@@ -66,10 +77,18 @@ namespace WGP.Gui
         private bool VGrabbed { get; set; }
         private bool HGrabbed { get; set; }
         private Vector2f Relative { get; set; }
-
+        /// <summary>
+        /// The scrolling style.
+        /// </summary>
+        /// <value>Flags.</value>
         public Mode ScrollingStyle { get; set; }
+        /// <summary>
+        /// Set to true if the scrollable view shouldn't react to the mouse wheel events.
+        /// </summary>
         public bool NoWheelScrolling { get; set; }
-
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public Scrollablebox() : base()
         {
             if (!Init.IsInitialized)

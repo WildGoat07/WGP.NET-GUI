@@ -11,12 +11,18 @@ using SFML.Window;
 
 namespace WGP.Gui
 {
+    /// <summary>
+    /// Progressbar widget.
+    /// </summary>
     public class Progressbar : Widget
     {
         private RectangleShape Back { get; set; }
         private Vertex[] Border { get; set; }
         private Vertex[] Fill { get; set; }
         private float percent;
+        /// <summary>
+        /// The percentage of filling of the progressbar.
+        /// </summary>
         public float Percent
         {
             get => percent;
@@ -25,8 +31,16 @@ namespace WGP.Gui
                 percent = Math.Min(1, Math.Max(0, value));
             }
         }
+        /// <summary>
+        /// The minimal size of the progressbar.
+        /// </summary>
+        /// <remarks>
+        /// It must be defined because the progressbar has no size reference, like a text.
+        /// </remarks>
         public Vector2f MinimumizeSize { get; set; }
-
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public Progressbar() : base()
         {
             if (!Init.IsInitialized)

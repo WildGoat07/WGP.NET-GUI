@@ -11,17 +11,25 @@ using SFML.Window;
 
 namespace WGP.Gui
 {
+    /// <summary>
+    /// Basic button widget.
+    /// </summary>
     public class Button : Widget
     {
         private Text Label { get; set; }
         private RectangleShape Back { get; set; }
         private Vertex[] Border { get; set; }
+        /// <summary>
+        /// Its title.
+        /// </summary>
         public string Title
         {
             get => Label.DisplayedString;
             set => Label.DisplayedString = value;
         }
-
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public Button() : base()
         {
             if (!Init.IsInitialized)

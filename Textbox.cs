@@ -11,15 +11,24 @@ using SFML.Window;
 
 namespace WGP.Gui
 {
+    /// <summary>
+    /// Basic text input widget.
+    /// </summary>
     public class Textbox : Widget
     {
         private Text DisplayText { get; set; }
         private Text DefaultTextBuffer { get; set; }
         private Text TextBuffer { get; set; }
+        /// <summary>
+        /// Its default string. The default string will be displayed if no text is entered.
+        /// </summary>
         public string DefaultString { get; set; }
         private bool DrawCursor { get; set; }
         private Clock CursorTimer { get; set; }
         private string str;
+        /// <summary>
+        /// Entered text.
+        /// </summary>
         public string String
         {
             get => str;
@@ -35,6 +44,9 @@ namespace WGP.Gui
         private Vertex[] Cursor { get; set; }
         private int CursPos { get; set; }
         private bool focused;
+        /// <summary>
+        /// The text box is focused if the user can write inside it. Be careful when setting it to true if another text box is focused, both will react to the keyboard.
+        /// </summary>
         public bool Focused
         {
             get => focused;
@@ -52,7 +64,9 @@ namespace WGP.Gui
         public event EventHandler Returned;
         public event EventHandler FocusGained;
         public event EventHandler FocusLost;
-
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public Textbox() : base()
         {
             if (!Init.IsInitialized)

@@ -11,6 +11,9 @@ using SFML.Window;
 
 namespace WGP.Gui
 {
+    /// <summary>
+    /// Basic combo box. An alternative to the radio buttons.
+    /// </summary>
     public class Combobox : Widget
     {
         public event EventHandler SelectionChanged;
@@ -23,11 +26,17 @@ namespace WGP.Gui
         private RectangleShape BackContext { get; set; }
         private RectangleShape SelectedContext { get; set; }
         private List<Text> Buffer { get; set; }
+        /// <summary>
+        /// List of the options.
+        /// </summary>
         public List<string> List { get; set; }
         private bool MouseOnContext { get; set; }
         private int PointedAt { get; set; }
         private Vector2f UpperDecal { get; set; }
         private bool developped;
+        /// <summary>
+        /// When developped, the widget will intercept any other widget event until an option is selected or if canceled.
+        /// </summary>
         public bool Developped
         {
             get => developped;
@@ -42,6 +51,9 @@ namespace WGP.Gui
         }
         private Vertex[] BorderContext { get; set; }
         private uint selection;
+        /// <summary>
+        /// Current selection.
+        /// </summary>
         public uint Selection
         {
             get => selection;
@@ -55,7 +67,9 @@ namespace WGP.Gui
                 }
             }
         }
-
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public Combobox() : base()
         {
             if (!Init.IsInitialized)

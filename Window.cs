@@ -10,6 +10,9 @@ using SFML.Window;
 
 namespace WGP.Gui
 {
+    /// <summary>
+    /// The base class to render a widget. The window creates a GUI context to draw a widget.
+    /// </summary>
     public class Window
     {
         public class Exception : System.Exception
@@ -27,7 +30,9 @@ namespace WGP.Gui
         public event EventHandler RequestClose;
         public event EventHandler Released;
         public event EventHandler Resized;
-
+        /// <summary>
+        /// Its content.
+        /// </summary>
         public Widget Content
         {
             get => content;
@@ -40,6 +45,9 @@ namespace WGP.Gui
         }
 
         internal RenderWindow App { get; set; }
+        /// <summary>
+        /// The SFML window view used to draw must be specified if another one is used in the event loop and update loop. Most of the time, the default view is the one used to draw the GUI winwow.
+        /// </summary>
         public View WindowView { get; set; }
         private RectangleShape Titlebar { get; set; }
         private RectangleShape Background { get; set; }
@@ -48,12 +56,18 @@ namespace WGP.Gui
         private RectangleShape HideContentIcon { get; set; }
         private RectangleShape CloseIcon { get; set; }
         private RectangleShape ResizeIcon { get; set; }
+        /// <summary>
+        /// Returns true if the window is moveable.
+        /// </summary>
         public bool Moveable { get; }
         private RectangleShape TitleBack { get; set; }
         private Vector2f RelativeGrab { get; set; }
         private Vector2f RelativeSizer { get; set; }
         internal Widget InterceptEvents { get; set; }
         private bool hidden;
+        /// <summary>
+        /// Hidding the window will hide its widget, but not the titlebar. Require the WGP.Gui.Window.Mode.HIDE_CONTENT flag.
+        /// </summary>
         public bool Hidden
         {
             get => hidden;
@@ -62,17 +76,31 @@ namespace WGP.Gui
                 if (HideContentIcon != null)
                     hidden = value;
                 else
-                    throw new Exception("Impossible de cacher une fenêtre ne possedant pas le flag WGP.Gui.Window.Mode.HIDE_CONTENT.");
+                    throw new Exception("Unable to hide a window that doesn't have the WGP.Gui.Window.Mode.HIDE_CONTENT flag.");
             }
         }
+        /// <summary>
+        /// Returns true if the window is open.
+        /// </summary>
         public bool IsOpen { get; private set; }
+        /// <summary>
+        /// Returns true if the window is grabbed.
+        /// </summary>
         public bool IsGrabbed { get; private set; }
+        /// <summary>
+        /// Returns true if the window is being resized.
+        /// </summary>
         public bool IsResized { get; private set; }
+        /// <summary>
+        /// Returns true if the mouse is on the window.
+        /// </summary>
         public bool MouseOnWindow { get; private set; }
 
         private Vector2f size;
         private Widget content;
-
+        /// <summary>
+        /// Its size.
+        /// </summary>
         public Vector2f Size
         {
             get => size;
@@ -101,6 +129,9 @@ namespace WGP.Gui
             }
         }
         private Vector2f position;
+        /// <summary>
+        /// Its position.
+        /// </summary>
         public Vector2f Position
         {
             get => position;
@@ -110,13 +141,16 @@ namespace WGP.Gui
                 position.Y = (int)value.Y;
             }
         }
+        /// <summary>
+        /// Its title. Require the WGP.Gui.Window.Mode.TITLEBAR flag.
+        /// </summary>
         public string Title
         {
             get => TitleText.DisplayedString;
             set
             {
                 if (TitleText == null)
-                    throw new Exception("Impossible de changer le titre sans avoir initié une barre de titre avec le flag TITLEBAR.");
+                    throw new Exception("Unable to change the title of a window that doesn't have the WGP.Gui.Window.Mode.TITLEBAR flag.");
                 TitleText.DisplayedString = value;
                 Size = Size;
             }
@@ -133,7 +167,11 @@ namespace WGP.Gui
             MOVEABLE = 0x20 | TITLEBAR,
             DEFAULT = TITLEBAR | RESIZE | CLOSE | BACKGROUND | MOVEABLE | HIDE_CONTENT
         }
-
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="target">The target SFML window.</param>
+        /// <param name="mode">Options flags. (Optional)</param>
         public Window(RenderWindow target, Mode mode = Mode.DEFAULT)
         {
             if (!Init.IsInitialized)
@@ -202,7 +240,9 @@ namespace WGP.Gui
             IsResized = false;
             MouseOnWindow = false;
         }
-
+        /// <summary>
+        /// Draws the window and its widget.
+        /// </summary>
         public void Draw()
         {
             if (IsOpen)
@@ -236,7 +276,9 @@ namespace WGP.Gui
                 }
             }
         }
-
+        /// <summary>
+        /// Update the window and its widget.
+        /// </summary>
         public void Update()
         {
             if (Background != null)
@@ -345,7 +387,9 @@ namespace WGP.Gui
             size.Y = Math.Max(minimumSize.Y, Size.Y);
             size.X = Math.Max(Math.Max(minimumSize.X, minTitleWidth), Size.X);
         }
-
+        /// <summary>
+        /// Closes the window.
+        /// </summary>
         public void Close()
         {
             if (IsOpen)
@@ -355,7 +399,9 @@ namespace WGP.Gui
                     Closed(this, new EventArgs());
             }
         }
-
+        /// <summary>
+        /// Open the window.
+        /// </summary>
         public void Open()
         {
             if (!IsOpen)
@@ -423,7 +469,10 @@ namespace WGP.Gui
             else if (!Hidden && InterceptEvents != null)
                 InterceptEvents.MouseButtonDownCall(e.Button, MousePos);
         }
-
+        /// <summary>
+        /// Returns the bounds of the window.
+        /// </summary>
+        /// <returns></returns>
         public FloatRect GetBounds()
         {
             if (!IsOpen)

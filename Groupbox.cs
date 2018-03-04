@@ -11,6 +11,9 @@ using SFML.Window;
 
 namespace WGP.Gui
 {
+    /// <summary>
+    /// Group box container.
+    /// </summary>
     public class Groupbox : Widget
     {
         private Window parent;
@@ -25,6 +28,9 @@ namespace WGP.Gui
             }
         }
         private Widget content;
+        /// <summary>
+        /// Its widget.
+        /// </summary>
         public Widget Content
         {
             get => content;
@@ -37,12 +43,17 @@ namespace WGP.Gui
         }
         private Vertex[] Border { get; set; }
         private Text Label { get; set; }
+        /// <summary>
+        /// Its title.
+        /// </summary>
         public string Title
         {
             get => Label.DisplayedString;
             set => Label.DisplayedString = value;
         }
-
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public Groupbox() : base()
         {
             if (!Init.IsInitialized)

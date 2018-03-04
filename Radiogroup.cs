@@ -11,6 +11,9 @@ using SFML.Window;
 
 namespace WGP.Gui
 {
+    /// <summary>
+    /// Basic radio buttons widget.
+    /// </summary>
     public class Radiogroup : Widget
     {
         public event EventHandler SelectionChanged;
@@ -21,6 +24,9 @@ namespace WGP.Gui
         private int MouseOnSelection { get; set; }
 
         private int check;
+        /// <summary>
+        /// Checked index.
+        /// </summary>
         public int Checked
         {
             get => check;
@@ -31,7 +37,9 @@ namespace WGP.Gui
                     SelectionChanged(this, new EventArgs());
             }
         }
-
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public Radiogroup() : base()
         {
             if (!Init.IsInitialized)
@@ -103,7 +111,10 @@ namespace WGP.Gui
             result.Height = Labels.Count * (Init.TextSize + 5) - 5;
             return result;
         }
-
+        /// <summary>
+        /// Adds a new options at the end of the group.
+        /// </summary>
+        /// <param name="name">Option's name.</param>
         public void AddOption(string name)
         {
             Text tmp = new Text(name, Init.Font, Init.TextSize);

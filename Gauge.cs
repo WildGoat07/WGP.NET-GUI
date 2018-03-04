@@ -11,6 +11,9 @@ using SFML.Window;
 
 namespace WGP.Gui
 {
+    /// <summary>
+    /// Gauge widget. Used as a percentage input.
+    /// </summary>
     public class Gauge : Widget
     {
         static private Color Blue = new Color(66, 163, 221);
@@ -28,6 +31,9 @@ namespace WGP.Gui
         private Vertex[] Line { get; set; }
         private bool Grabbed { get; set; }
         private float percent;
+        /// <summary>
+        /// Current percentage.
+        /// </summary>
         public float Percent
         {
             get => percent;
@@ -38,9 +44,13 @@ namespace WGP.Gui
                     ValueChanged(this, new EventArgs());
             }
         }
-
+        /// <summary>
+        /// Orientation of the gauge.
+        /// </summary>
         public Mode Orientation { get; set; }
-
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public Gauge() : base()
         {
             if (!Init.IsInitialized)

@@ -11,7 +11,7 @@ namespace WGP.Gui
     {
         public class NotInitializedException : Exception
         {
-            public NotInitializedException() : base("L'interface n'a pas été initialisée, appelez WGP.Gui.Init.InitializeResources().") { }
+            public NotInitializedException() : base("The resources hasn't been initialized, call WGP.Gui.Init.InitializeResources().") { }
         }
 
         internal static Font Font { get; private set; }
@@ -50,7 +50,9 @@ namespace WGP.Gui
                 return Font != null;
             }
         }
-
+        /// <summary>
+        /// Initializes the requiered resources for the widgets.
+        /// </summary>
         public static void InitializeResources()
         {
             Font = new Font(Properties.Resources.calibri);
