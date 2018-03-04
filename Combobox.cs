@@ -214,7 +214,12 @@ namespace WGP.Gui
         internal override void MouseMovedCall(Vector2f pos, bool intercept)
         {
             base.MouseMovedCall(pos, intercept);
-            Vector2f MousePos = Parent.App.MapPixelToCoords(Mouse.GetPosition(Parent.App));
+            View tmp = null;
+            if (Parent.WindowView != null)
+                tmp = Parent.WindowView;
+            else
+                tmp = Parent.App.GetView();
+            Vector2f MousePos = Parent.App.MapPixelToCoords(Mouse.GetPosition(Parent.App), tmp);
             MouseOnContext = BackContext.GetGlobalBounds().Contains(MousePos - UpperDecal);
             Vector2f relativPos = MousePos - BackContext.Position - UpperDecal;
             if (MouseOnContext)

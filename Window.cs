@@ -40,6 +40,7 @@ namespace WGP.Gui
         }
 
         internal RenderWindow App { get; set; }
+        public View WindowView { get; set; }
         private RectangleShape Titlebar { get; set; }
         private RectangleShape Background { get; set; }
         private Text TitleText { get; set; }
@@ -253,13 +254,13 @@ namespace WGP.Gui
                     globalSize.Y += IconSize;
 
                 Border[0].Position =  new Vector2f(.5f + (int)Position.X, .5f + (int)Position.Y);
-                Border[1].Position = Position + new Vector2f(globalSize.X, 0);
+                Border[1].Position = Border[0].Position + new Vector2f((int)globalSize.X, 0);
                 Border[2].Position = Border[1].Position;
-                Border[3].Position = Border[2].Position + new Vector2f(0, globalSize.Y);
+                Border[3].Position = Border[2].Position + new Vector2f(0, (int)globalSize.Y);
                 Border[4].Position = Border[3].Position;
-                Border[5].Position = Border[4].Position + new Vector2f(-globalSize.X, 0);
+                Border[5].Position = Border[4].Position + new Vector2f(-(int)globalSize.X, 0);
                 Border[6].Position = Border[5].Position;
-                Border[7].Position = Border[6].Position + new Vector2f(0, -globalSize.Y);
+                Border[7].Position = Border[6].Position + new Vector2f(0, -(int)globalSize.Y);
             }
             if (Titlebar != null)
             {
@@ -367,7 +368,12 @@ namespace WGP.Gui
 
         private void OnMouseDown(object sender, SFML.Window.MouseButtonEventArgs e)
         {
-            Vector2f pos = App.MapPixelToCoords(new Vector2i(e.X, e.Y));
+            View tmp = null;
+            if (WindowView != null)
+                tmp = WindowView;
+            else
+                tmp = App.GetView();
+            Vector2f pos = App.MapPixelToCoords(new Vector2i(e.X, e.Y), tmp);
             bool occuped = false;
             if (CloseIcon != null)
             {
@@ -404,7 +410,12 @@ namespace WGP.Gui
                     RelativeGrab = Position - pos;
                 }
             }
-            Vector2f MousePos = App.MapPixelToCoords(new Vector2i(e.X, e.Y)) - Position;
+            View tmp1 = null;
+            if (WindowView != null)
+                tmp1 = WindowView;
+            else
+                tmp1 = App.GetView();
+            Vector2f MousePos = App.MapPixelToCoords(new Vector2i(e.X, e.Y), tmp1) - Position;
             if (Titlebar != null)
                 MousePos.Y -= IconSize;
             if (Content != null && !Hidden && InterceptEvents == null)
@@ -442,7 +453,12 @@ namespace WGP.Gui
                 if (Released != null)
                     Released(this, new EventArgs());
             }
-            Vector2f MousePos = App.MapPixelToCoords(new Vector2i(e.X, e.Y)) - Position;
+            View tmp = null;
+            if (WindowView != null)
+                tmp = WindowView;
+            else
+                tmp = App.GetView();
+            Vector2f MousePos = App.MapPixelToCoords(new Vector2i(e.X, e.Y), tmp) - Position;
             if (Titlebar != null)
                 MousePos.Y -= IconSize;
             if (Content != null && !Hidden && InterceptEvents == null)
@@ -461,7 +477,12 @@ namespace WGP.Gui
 
         private void OnMouseMoved(object sender, SFML.Window.MouseMoveEventArgs e)
         {
-            Vector2f pos = App.MapPixelToCoords(new Vector2i(e.X, e.Y));
+            View tmp = null;
+            if (WindowView != null)
+                tmp = WindowView;
+            else
+                tmp = App.GetView();
+            Vector2f pos = App.MapPixelToCoords(new Vector2i(e.X, e.Y), tmp);
             if (IsResized)
             {
                 Vector2f newSize = pos - Position + RelativeSizer;

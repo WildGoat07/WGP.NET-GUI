@@ -172,9 +172,9 @@ namespace WGP.Gui
                     DownArrow.Position = Displayer.Position + new Vector2f(Displayer.Size.X, Displayer.Size.Y - 20);
                     VerticalBack.Position = Displayer.Position + new Vector2f(Displayer.Size.X, 20);
                     VerticalBack.Size = new Vector2f(20, Displayer.Size.Y - 40);
-                    VerticalControl.Size = new Vector2f(20, (Displayer.Size.Y - 40) * Displayer.Size.Y / Content.GetMinimumSize().Y);
-                    VerticalControl.Position = Displayer.Position + new Vector2f(Displayer.Size.X, Utilities.Interpolation(Utilities.Percent(Offset.Y, 0, Content.GetMinimumSize().Y - Displayer.Size.Y),
-                                                                                                    UpArrow.Size.Y, DownArrow.Position.Y - VerticalControl.Size.Y));
+                    VerticalControl.Size = new Vector2f(20, VerticalBack.Size.Y * Displayer.Size.Y / Content.GetMinimumSize().Y);
+                    VerticalControl.Position = new Vector2f(Displayer.Size.X + ReservedSpace.Left, Utilities.Interpolation(Utilities.Percent(Offset.Y, 0, Content.GetMinimumSize().Y - Displayer.Size.Y),
+                                                                                                    UpArrow.Size.Y, VerticalBack.Size.Y + UpArrow.Size.Y - VerticalControl.Size.Y) + ReservedSpace.Top) + Padding;
                 }
                 if ((ScrollingStyle & Mode.ALLOW_HORIZONTAL_SCROLLING) == Mode.ALLOW_HORIZONTAL_SCROLLING)
                 {
@@ -186,7 +186,7 @@ namespace WGP.Gui
                     HorizontalBack.Size = new Vector2f(Displayer.Size.X - 40, 20);
                     HorizontalControl.Size = new Vector2f((Displayer.Size.X - 40) * Displayer.Size.X / Content.GetMinimumSize().X, 20);
                     HorizontalControl.Position = Displayer.Position + new Vector2f(Utilities.Interpolation(Utilities.Percent(Offset.X, 0, Content.GetMinimumSize().X - Displayer.Size.X),
-                                                                                                    LeftArrow.Size.X, RightArrow.Position.X - HorizontalControl.Size.X), Displayer.Size.Y);
+                                                                                                    LeftArrow.Size.X, RightArrow.Position.X - HorizontalControl.Size.X - Padding.X), Displayer.Size.Y);
                 }
                 if (HGrabbed)
                     HorizontalControl.FillColor = Init.ControlDark;

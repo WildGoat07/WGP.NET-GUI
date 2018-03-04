@@ -211,12 +211,15 @@ namespace WGP.Gui
         {
             base.MouseButtonDownCall(button, pos, intercept);
             float offset = 0;
-            for (var it = Widgets.First; it != null; it = it.Next)
+            if (!intercept)
             {
-                TitleBuffer.DisplayedString = it.Value.Title;
-                if (new FloatRect(ReservedSpace.Left + Padding.X + offset, ReservedSpace.Top, TitleBuffer.FindCharacterPos((uint)TitleBuffer.DisplayedString.Count()).X + 10, Init.TextSize + 6).Contains(pos))
-                    ActiveWidget = it.Value.Widget;
-                offset += TitleBuffer.FindCharacterPos((uint)TitleBuffer.DisplayedString.Count()).X + 10;
+                for (var it = Widgets.First; it != null; it = it.Next)
+                {
+                    TitleBuffer.DisplayedString = it.Value.Title;
+                    if (new FloatRect(ReservedSpace.Left + Padding.X + offset, ReservedSpace.Top, TitleBuffer.FindCharacterPos((uint)TitleBuffer.DisplayedString.Count()).X + 10, Init.TextSize + 6).Contains(pos))
+                        ActiveWidget = it.Value.Widget;
+                    offset += TitleBuffer.FindCharacterPos((uint)TitleBuffer.DisplayedString.Count()).X + 10;
+                }
             }
             if (ActiveWidget != null)
                 ActiveWidget.MouseButtonDownCall(button, pos, intercept);
