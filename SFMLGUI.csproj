@@ -48,6 +48,7 @@
     <PlatformTarget>x64</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <DocumentationFile>bin\x64\Release\WGP.GUI.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="sfmlnet-graphics-2">
@@ -95,6 +96,7 @@
     <Compile Include="Separator.cs" />
     <Compile Include="Tabcontrol.cs" />
     <Compile Include="Textbox.cs" />
+    <Compile Include="Voidbox.cs" />
     <Compile Include="Widget.cs" />
     <Compile Include="WidgetEventsArgs.cs" />
     <Compile Include="Window.cs" />
