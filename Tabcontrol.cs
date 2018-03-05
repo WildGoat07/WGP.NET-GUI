@@ -223,7 +223,7 @@ namespace WGP.Gui
                 TitleBuffer.DisplayedString = it.Value.Title;
                 minW += TitleBuffer.FindCharacterPos((uint)TitleBuffer.DisplayedString.Count()).X + 10;
             }
-            result.X = Math.Max(result.X, minW);
+            result.X = Utilities.Max(result.X, minW);
             result += Padding * 2;
             return result;
         }

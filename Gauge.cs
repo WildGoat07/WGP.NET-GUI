@@ -39,7 +39,7 @@ namespace WGP.Gui
             get => percent;
             set
             {
-                percent = Math.Min(1, Math.Max(0, value));
+                percent = Utilities.Min(1, Utilities.Max(0, value));
                 if (ValueChanged != null)
                     ValueChanged(this, new EventArgs());
             }

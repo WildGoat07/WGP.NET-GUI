@@ -159,7 +159,7 @@ namespace WGP.Gui
                     Text tmp = new Text(List[i], Init.Font, Init.TextSize);
                     tmp.Color = Init.DarkX;
                     tmp.Position = BackContext.Position + new Vector2f(10, i * (Init.TextSize + 5));
-                    LMax = Math.Max(LMax, 20 + tmp.FindCharacterPos((uint)tmp.DisplayedString.Count()).X);
+                    LMax = Utilities.Max(LMax, 20 + tmp.FindCharacterPos((uint)tmp.DisplayedString.Count()).X);
                     Buffer.Add(tmp);
                 }
                 SelectedContext.Size = new Vector2f(LMax, (Init.TextSize + 5));

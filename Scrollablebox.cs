@@ -175,8 +175,8 @@ namespace WGP.Gui
             {
                 FloatRect availableSpace = new FloatRect();
                 Vector2f minContentSize = Content.GetMinimumSize();
-                availableSpace.Width = Math.Max(minContentSize.X, size.Width);
-                availableSpace.Height = Math.Max(minContentSize.Y, size.Height);
+                availableSpace.Width = Utilities.Max(minContentSize.X, size.Width);
+                availableSpace.Height = Utilities.Max(minContentSize.Y, size.Height);
                 Content.Update(availableSpace);
                 if (Offset.X > 0 && minContentSize.X - Offset.X < size.Width)
                     Offset = new Vector2f(minContentSize.X - size.Width, Offset.Y);
@@ -306,22 +306,22 @@ namespace WGP.Gui
                     if (UpArrow.GetGlobalBounds().Contains(pos))
                     {
                         if (Offset.Y > 0)
-                            Offset = new Vector2f(Offset.X, Math.Max(0, Offset.Y - Step));
+                            Offset = new Vector2f(Offset.X, Utilities.Max(0, Offset.Y - Step));
                     }
                     if (DownArrow.GetGlobalBounds().Contains(pos))
                     {
                         if (Offset.Y < Content.GetMinimumSize().Y - Displayer.Size.Y)
-                            Offset = new Vector2f(Offset.X, Math.Min(Content.GetMinimumSize().Y - Displayer.Size.Y, Offset.Y + Step));
+                            Offset = new Vector2f(Offset.X, Utilities.Min(Content.GetMinimumSize().Y - Displayer.Size.Y, Offset.Y + Step));
                     }
                     if (LeftArrow.GetGlobalBounds().Contains(pos))
                     {
                         if (Offset.X > 0)
-                            Offset = new Vector2f(Math.Max(0, Offset.X - Step), Offset.Y);
+                            Offset = new Vector2f(Utilities.Max(0, Offset.X - Step), Offset.Y);
                     }
                     if (RightArrow.GetGlobalBounds().Contains(pos))
                     {
                         if (Offset.X < Content.GetMinimumSize().X - Displayer.Size.X)
-                            Offset = new Vector2f(Math.Min(Content.GetMinimumSize().X - Displayer.Size.X, Offset.X + Step), Offset.Y);
+                            Offset = new Vector2f(Utilities.Min(Content.GetMinimumSize().X - Displayer.Size.X, Offset.X + Step), Offset.Y);
                     }
                     if (VerticalControl.GetGlobalBounds().Contains(pos) && Displayer.Size.Y < Content.GetMinimumSize().Y)
                     {
@@ -361,17 +361,17 @@ namespace WGP.Gui
                 {
                     float depl = -delta * Step;
                     if (depl < 0 && Offset.Y > 0)
-                        Offset = new Vector2f(Offset.X, Math.Max(0, Offset.Y + depl));
+                        Offset = new Vector2f(Offset.X, Utilities.Max(0, Offset.Y + depl));
                     if (depl > 0 && Offset.Y < Content.GetMinimumSize().Y - Displayer.Size.Y)
-                        Offset = new Vector2f(Offset.X, Math.Min(Content.GetMinimumSize().Y - Displayer.Size.Y, Offset.Y + depl));
+                        Offset = new Vector2f(Offset.X, Utilities.Min(Content.GetMinimumSize().Y - Displayer.Size.Y, Offset.Y + depl));
                 }
                 else if ((ScrollingStyle & Mode.ALLOW_HORIZONTAL_SCROLLING) == Mode.ALLOW_HORIZONTAL_SCROLLING)
                 {
                     float depl = -delta * Step;
                     if (depl < 0 && Offset.X > 0)
-                        Offset = new Vector2f(Math.Max(0, Offset.X + depl), Offset.Y);
+                        Offset = new Vector2f(Utilities.Max(0, Offset.X + depl), Offset.Y);
                     if (depl > 0 && Offset.X < Content.GetMinimumSize().X - Displayer.Size.X)
-                        Offset = new Vector2f(Math.Min(Content.GetMinimumSize().X - Displayer.Size.X, Offset.X + depl), Offset.Y);
+                        Offset = new Vector2f(Utilities.Min(Content.GetMinimumSize().X - Displayer.Size.X, Offset.X + depl), Offset.Y);
                 }
             }
         }

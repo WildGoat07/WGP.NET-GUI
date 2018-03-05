@@ -122,8 +122,8 @@ namespace WGP.Gui
                 if (HideContentIcon != null)
                     minTitleWidth += IconSize;
 
-                size.Y = Math.Max(minimumSize.Y, value.Y);
-                size.X = Math.Max(Math.Max(minimumSize.X, minTitleWidth), value.X);
+                size.Y = Utilities.Max(minimumSize.Y, value.Y);
+                size.X = Utilities.Max(Utilities.Max(minimumSize.X, minTitleWidth), value.X);
                 if (Resized != null)
                     Resized(this, new EventArgs());
             }
@@ -320,7 +320,7 @@ namespace WGP.Gui
                         decal += IconSize;
                     if (HideContentIcon != null)
                         decal += IconSize;
-                    TitleBack.Size = new Vector2f((Math.Max((int)Size.X - TitleText.FindCharacterPos((uint)TitleText.DisplayedString.Count()).X - decal - 15, 0)), (int)IconSize);
+                    TitleBack.Size = new Vector2f((Utilities.Max((int)Size.X - TitleText.FindCharacterPos((uint)TitleText.DisplayedString.Count()).X - decal - 15, 0)), (int)IconSize);
                     TitleBack.TextureRect = new IntRect(0, 0, (int)TitleBack.Size.X, (int)IconSize);
                 }
                 else
@@ -331,7 +331,7 @@ namespace WGP.Gui
                         decal += IconSize;
                     if (HideContentIcon != null)
                         decal += IconSize;
-                    TitleBack.Size = new Vector2f(Math.Max(Size.X - decal - 10, 0), IconSize);
+                    TitleBack.Size = new Vector2f(Utilities.Max(Size.X - decal - 10, 0), IconSize);
                     TitleBack.TextureRect = new IntRect(0, 0, (int)TitleBack.Size.X, (int)IconSize);
                 }
             }
@@ -384,8 +384,8 @@ namespace WGP.Gui
             if (HideContentIcon != null)
                 minTitleWidth += IconSize;
 
-            size.Y = Math.Max(minimumSize.Y, Size.Y);
-            size.X = Math.Max(Math.Max(minimumSize.X, minTitleWidth), Size.X);
+            size.Y = Utilities.Max(minimumSize.Y, Size.Y);
+            size.X = Utilities.Max(Utilities.Max(minimumSize.X, minTitleWidth), Size.X);
         }
         /// <summary>
         /// Closes the window.

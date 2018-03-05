@@ -108,9 +108,9 @@ namespace WGP.Gui
             Vector2f result = new Vector2f();
             float minW = Label.FindCharacterPos((uint)Label.DisplayedString.Count()).X + 20;
             if (Content != null)
-                result.X = Math.Max(minW, Padding.X * 2 + Content.GetMinimumSize().X);
+                result.X = Utilities.Max(minW, Padding.X * 2 + Content.GetMinimumSize().X);
             else
-                result.X = Math.Max(minW, Padding.X * 2);
+                result.X = Utilities.Max(minW, Padding.X * 2);
             result.Y = Init.TextSize + Padding.Y * 2;
             if (Content != null)
                 result.Y += Content.GetMinimumSize().Y;

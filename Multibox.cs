@@ -124,15 +124,15 @@ namespace WGP.Gui
                 if (Orientation == Mode.VERTICAL)
                 {
                     item.availableSpace.Width = ReservedSpace.Width - Padding.X * 2;
-                    item.availableSpace.Height = Math.Max(spaceLeft * Utilities.Percent(item.Weight, 0, total - WeightUsed), 0) + item.Widget.GetMinimumSize().Y;
-                    spaceLeft -= Math.Max(spaceLeft * Utilities.Percent(item.Weight, 0, total - WeightUsed), 0);
+                    item.availableSpace.Height = Utilities.Max(spaceLeft * Utilities.Percent(item.Weight, 0, total - WeightUsed), 0) + item.Widget.GetMinimumSize().Y;
+                    spaceLeft -= Utilities.Max(spaceLeft * Utilities.Percent(item.Weight, 0, total - WeightUsed), 0);
                     WeightUsed += item.Weight;
                 }
                 if (Orientation == Mode.HORIZONTAL)
                 {
                     item.availableSpace.Height = ReservedSpace.Height - Padding.Y * 2;
-                    item.availableSpace.Width = Math.Max(spaceLeft * Utilities.Percent(item.Weight, 0, total - WeightUsed), 0) + item.Widget.GetMinimumSize().X;
-                    spaceLeft -= Math.Max(spaceLeft * Utilities.Percent(item.Weight, 0, total - WeightUsed), 0);
+                    item.availableSpace.Width = Utilities.Max(spaceLeft * Utilities.Percent(item.Weight, 0, total - WeightUsed), 0) + item.Widget.GetMinimumSize().X;
+                    spaceLeft -= Utilities.Max(spaceLeft * Utilities.Percent(item.Weight, 0, total - WeightUsed), 0);
                     WeightUsed += item.Weight;
                 }
             }
@@ -225,12 +225,12 @@ namespace WGP.Gui
             {
                 if (Orientation == Mode.VERTICAL)
                 {
-                    result.X = Math.Max(result.X, it.Value.Widget.GetMinimumSize().X);
+                    result.X = Utilities.Max(result.X, it.Value.Widget.GetMinimumSize().X);
                     result.Y += it.Value.Widget.GetMinimumSize().Y;
                 }
                 if (Orientation == Mode.HORIZONTAL)
                 {
-                    result.Y = Math.Max(result.Y, it.Value.Widget.GetMinimumSize().Y);
+                    result.Y = Utilities.Max(result.Y, it.Value.Widget.GetMinimumSize().Y);
                     result.X += it.Value.Widget.GetMinimumSize().X;
                 }
             }

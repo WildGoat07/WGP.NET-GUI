@@ -110,8 +110,8 @@ namespace WGP.Gui
         {
             FloatRect newReserved = new FloatRect();
             Vector2f minimum = GetMinimumSize();
-            newReserved.Width = Math.Max(Utilities.Interpolation(Pattern.Width, 0, availableSpace.Width), minimum.X);
-            newReserved.Height = Math.Max(Utilities.Interpolation(Pattern.Height, 0, availableSpace.Height), minimum.Y);
+            newReserved.Width = Utilities.Max(Utilities.Interpolation(Pattern.Width, 0, availableSpace.Width), minimum.X);
+            newReserved.Height = Utilities.Max(Utilities.Interpolation(Pattern.Height, 0, availableSpace.Height), minimum.Y);
             newReserved.Left = availableSpace.Left + Utilities.Interpolation(Pattern.Left, 0, availableSpace.Width - newReserved.Width);
             newReserved.Top = availableSpace.Top + Utilities.Interpolation(Pattern.Top, 0, availableSpace.Height - newReserved.Height);
 

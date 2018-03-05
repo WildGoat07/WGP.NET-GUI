@@ -121,7 +121,7 @@ namespace WGP.Gui
         internal override Vector2f GetMinimumSize()
         {
             float minW;
-            minW = Math.Max(TextBuffer.FindCharacterPos((uint)TextBuffer.DisplayedString.Count()).X, DefaultTextBuffer.FindCharacterPos((uint)DefaultTextBuffer.DisplayedString.Count()).X);
+            minW = Utilities.Max(TextBuffer.FindCharacterPos((uint)TextBuffer.DisplayedString.Count()).X, DefaultTextBuffer.FindCharacterPos((uint)DefaultTextBuffer.DisplayedString.Count()).X);
             Vector2f result = new Vector2f(minW + 10, Init.TextSize + 10);
             result += Padding * 2;
             return result;
@@ -165,9 +165,9 @@ namespace WGP.Gui
             Focused = true;
             for (int i = 0; i <= String.Count(); i++)
             {
-                if (TextBuffer.InverseTransform.TransformPoint(e.Position).X < (TextBuffer.FindCharacterPos((uint)Math.Max(i - 1, 0)).X + TextBuffer.FindCharacterPos((uint)i).X) / 2)
+                if (TextBuffer.InverseTransform.TransformPoint(e.Position).X < (TextBuffer.FindCharacterPos((uint)Utilities.Max(i - 1, 0)).X + TextBuffer.FindCharacterPos((uint)i).X) / 2)
                 {
-                    CursPos = Math.Max(i - 1, 0);
+                    CursPos = Utilities.Max(i - 1, 0);
                     return;
                 }
             }
