@@ -134,7 +134,7 @@ namespace WGP.Gui
                 if (it.Value.Widget == widget)
                     throw new Exception("The widget already exists in the container.");
             }
-            Widgets.Add(new Pair() { Widget = widget, Title = title });
+            Widgets.AddLast(new Pair() { Widget = widget, Title = title });
             widget.Parent = Parent;
         }
         /// <summary>
@@ -147,7 +147,7 @@ namespace WGP.Gui
         {
             if (Widgets.Count == 0)
                 ActiveWidget = widget;
-            LinkedList<Pair>.Element<Pair> iterator = null;
+            LinkedListNode<Pair> iterator = null;
             for (var it = Widgets.First; it != null; it = it.Next)
             {
                 if (it.Value.Widget == widget)
@@ -157,7 +157,7 @@ namespace WGP.Gui
             }
             if (iterator == null)
                 throw new Exception("The reference widget doesn't exists in the container.");
-            Widgets.Insert(iterator, new Pair() { Widget = widget, Title = title });
+            Widgets.AddBefore(iterator, new Pair() { Widget = widget, Title = title });
             widget.Parent = Parent;
         }
         /// <summary>
@@ -199,7 +199,7 @@ namespace WGP.Gui
         /// <param name="At">Tab to remove.</param>
         public void Remove(Widget At)
         {
-            LinkedList<Pair>.Element<Pair> iterator = null;
+            LinkedListNode<Pair> iterator = null;
             for (var it = Widgets.First; it != null; it = it.Next)
             {
                 if (it.Value.Widget == At)

@@ -92,6 +92,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Radiogroup.cs" />
+    <Compile Include="Richlabel.cs" />
     <Compile Include="Scrollablebox.cs" />
     <Compile Include="Separator.cs" />
     <Compile Include="Tabcontrol.cs" />
