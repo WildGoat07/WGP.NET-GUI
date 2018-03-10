@@ -12,7 +12,7 @@ using SFML.Window;
 namespace WGP.Gui
 {
     /// <summary>
-    /// Base text widget.
+    /// Advanced text widget.
     /// </summary>
     public class Richlabel : Widget
     {
@@ -76,6 +76,13 @@ namespace WGP.Gui
                     ClickedOnText(this, new TextCLickedEventArgs() { Index = Label.PointOn(e.Position) });
             }
         }
+        /// <summary>
+        /// Generates the text.
+        /// </summary>
         public void Generate() => Label.Generate();
+        /// <summary>
+        /// Clears the text.
+        /// </summary>
+        public void Clear() => Label.Clear();
     }
 }
