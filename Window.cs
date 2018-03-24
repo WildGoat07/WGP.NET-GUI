@@ -114,8 +114,8 @@ namespace WGP.Gui
                     minimumSize += new Vector2f(IconSize, IconSize);
                 if (TitleText != null)
                 {
-                    if (TitleText.DisplayedString != "")
-                        minTitleWidth += 10 + TitleText.FindCharacterPos((uint)TitleText.DisplayedString.Count()).X;
+                    if (TitleText.String != "")
+                        minTitleWidth += 10 + TitleText.FindCharacterPos((uint)TitleText.String.Count()).X;
                 }
                 if (CloseIcon != null)
                     minTitleWidth += IconSize;
@@ -146,12 +146,12 @@ namespace WGP.Gui
         /// </summary>
         public string Title
         {
-            get => TitleText.DisplayedString;
+            get => TitleText.String;
             set
             {
                 if (TitleText == null)
                     throw new Exception("Unable to change the title of a window that doesn't have the WGP.Gui.Window.Mode.TITLEBAR flag.");
-                TitleText.DisplayedString = value;
+                TitleText.String = value;
                 Size = Size;
             }
         }
@@ -191,7 +191,7 @@ namespace WGP.Gui
                 Titlebar = new RectangleShape();
                 Titlebar.FillColor = Init.Titlebar;
                 TitleText = new Text();
-                TitleText.CharacterSize = Init.TextSize;
+                TitleText.CharSize = Init.TextSize;
                 TitleText.Color = Init.TextDark;
                 TitleText.Font = Init.Font;
             }
@@ -308,19 +308,19 @@ namespace WGP.Gui
             {
                 Titlebar.Size = new Vector2f(Size.X, IconSize);
                 Titlebar.Position = Position;
-                TitleText.Position = Position + new Vector2f(5, (int)((IconSize - Init.TextSize) / 2));
+                TitleText.Position = Position + new Vector2f(5, (int)((IconSize - Init.TextSize) / 2) + Init.TextSize);
             }
             if (TitleBack != null)
             {
                 if (Title.Count() > 0)
                 {
-                    TitleBack.Position = new Vector2f(TitleText.Position.X + TitleText.FindCharacterPos((uint)TitleText.DisplayedString.Count()).X + 5, Position.Y);
+                    TitleBack.Position = new Vector2f(TitleText.Position.X + TitleText.FindCharacterPos((uint)TitleText.String.Count()).X + 5, Position.Y);
                     float decal = 0;
                     if (CloseIcon != null)
                         decal += IconSize;
                     if (HideContentIcon != null)
                         decal += IconSize;
-                    TitleBack.Size = new Vector2f((Utilities.Max((int)Size.X - TitleText.FindCharacterPos((uint)TitleText.DisplayedString.Count()).X - decal - 15, 0)), (int)IconSize);
+                    TitleBack.Size = new Vector2f((Utilities.Max((int)Size.X - TitleText.FindCharacterPos((uint)TitleText.String.Count()).X - decal - 15, 0)), (int)IconSize);
                     TitleBack.TextureRect = new IntRect(0, 0, (int)TitleBack.Size.X, (int)IconSize);
                 }
                 else
@@ -376,8 +376,8 @@ namespace WGP.Gui
                 minimumSize += new Vector2f(IconSize, IconSize);
             if (TitleText != null)
             {
-                if (TitleText.DisplayedString != "")
-                    minTitleWidth += 10 + TitleText.FindCharacterPos((uint)TitleText.DisplayedString.Count()).X;
+                if (TitleText.String != "")
+                    minTitleWidth += 10 + TitleText.FindCharacterPos((uint)TitleText.String.Count()).X;
             }
             if (CloseIcon != null)
                 minTitleWidth += IconSize;

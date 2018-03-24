@@ -24,8 +24,8 @@ namespace WGP.Gui
         /// </summary>
         public string Title
         {
-            get => Label.DisplayedString;
-            set => Label.DisplayedString = value;
+            get => Label.String;
+            set => Label.String = value;
         }
         /// <summary>
         /// Constructor.
@@ -39,13 +39,10 @@ namespace WGP.Gui
             Border = new Vertex[8];
 
             Label.Font = Init.Font;
-            Label.CharacterSize = Init.TextSize;
+            Label.CharSize = Init.TextSize;
 
             InternUpdate();
         }
-
-
-
         internal override void Draw(RenderTarget target, Vector2f decal)
         {
             Transformable tr  = new Transformable();
@@ -57,7 +54,7 @@ namespace WGP.Gui
 
         internal override Vector2f GetMinimumSize()
         {
-            Vector2f result = new Vector2f(Label.FindCharacterPos((uint)Label.DisplayedString.Count()).X, Init.TextSize);
+            Vector2f result = new Vector2f(Label.FindCharacterPos((uint)Label.String.Count()).X, Init.TextSize);
             result += Padding * 2;
             result += new Vector2f(20, 10);
             return result;
@@ -75,8 +72,8 @@ namespace WGP.Gui
             Border[5].Position = Border[4].Position + new Vector2f(-(int)ReservedSpace.Width + Padding.X * 2, 0);
             Border[6].Position = Border[5].Position;
             Border[7].Position = Border[6].Position + new Vector2f(0, -(int)ReservedSpace.Height + Padding.Y * 2);
-            Label.Position = new Vector2f((int)(ReservedSpace.Width / 2 - Label.FindCharacterPos((uint)Label.DisplayedString.Count()).X / 2 + ReservedSpace.Left),
-                                          (int)(ReservedSpace.Height / 2 + ReservedSpace.Top - Init.TextSize / 2));
+            Label.Position = new Vector2f((int)(ReservedSpace.Width / 2 - Label.FindCharacterPos((uint)Label.String.Count()).X / 2 + ReservedSpace.Left),
+                                          (int)(ReservedSpace.Height / 2 + ReservedSpace.Top - Init.TextSize / 2) + Init.TextSize);
 
             if (Pressed)
             {

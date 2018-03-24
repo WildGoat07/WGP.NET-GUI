@@ -53,7 +53,7 @@ namespace WGP.Gui
 
         internal override Vector2f GetMinimumSize()
         {
-            Vector2f result = new Vector2f(Label.GetGlobalBounds().Width, Label.GetGlobalBounds().Height);
+            Vector2f result = new Vector2f(Label.GetGlobalBounds().Width, Label.GetGlobalBounds().Height + Init.TextSize);
             result += Padding * 2;
             return result;
         }
@@ -66,7 +66,7 @@ namespace WGP.Gui
         {
             pattern = new FloatRect(Pattern.Left, Pattern.Top, 0, 0);
             Label.Position = new Vector2f((int)(ReservedSpace.Left),
-                                          (int)(ReservedSpace.Top)) + Padding;
+                                          (int)(ReservedSpace.Top) + Init.TextSize) + Padding;
         }
         private void OnClick(object sender, MouseButtonEventArgs e)
         {

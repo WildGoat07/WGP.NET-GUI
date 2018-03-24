@@ -80,7 +80,7 @@ namespace WGP.Gui
             float minWidth = 0;
             for (int i = 0; i < Labels.Count; i++)
             {
-                float width = Init.TextSize + 5 + Labels[i].FindCharacterPos((uint)Labels[i].DisplayedString.Count()).X;
+                float width = Init.TextSize + 5 + Labels[i].FindCharacterPos((uint)Labels[i].String.Count()).X;
                 if (width > minWidth)
                     minWidth = width;
             }
@@ -94,7 +94,7 @@ namespace WGP.Gui
             pattern = new FloatRect(Pattern.Left, Pattern.Top, 0, 0);
             for (int i = 0;i<Labels.Count;i++)
                 Labels[i].Position = new Vector2f((int)(Init.TextSize + 5 + ReservedSpace.Left),
-                                             (int)ReservedSpace.Top) + Padding;
+                                             (int)ReservedSpace.Top + Init.TextSize) + Padding;
             FillBuff.Position = new Vector2f(ReservedSpace.Left + Init.TextSize / 2f, ReservedSpace.Top + Init.TextSize / 2f) + Padding;
 
             for (float i = 0; i < BorderBuff.Count(); i++)

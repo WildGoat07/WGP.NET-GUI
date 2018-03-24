@@ -73,8 +73,8 @@ namespace WGP.Gui
         /// </summary>
         public string Title
         {
-            get => Label.DisplayedString;
-            set => Label.DisplayedString = value;
+            get => Label.String;
+            set => Label.String = value;
         }
         /// <summary>
         /// Constructor.
@@ -90,7 +90,7 @@ namespace WGP.Gui
             Border = new Vertex[8];
 
             Label.Font = Init.Font;
-            Label.CharacterSize = Init.TextSize;
+            Label.CharSize = Init.TextSize;
             Label.Color = Init.TextDark;
             Checked = false;
 
@@ -114,7 +114,7 @@ namespace WGP.Gui
 
         internal override Vector2f GetMinimumSize()
         {
-            Vector2f result = new Vector2f(Label.FindCharacterPos((uint)Label.DisplayedString.Count()).X, Init.TextSize);
+            Vector2f result = new Vector2f(Label.FindCharacterPos((uint)Label.String.Count()).X, Init.TextSize);
             result += Padding * 2;
             result += new Vector2f(Init.TextSize + 5, 0);
             return result;
@@ -138,7 +138,7 @@ namespace WGP.Gui
             Border[6].Position = Border[5].Position;
             Border[7].Position = Border[6].Position + new Vector2f(0, -Init.TextSize);
             Label.Position = new Vector2f((int)(Init.TextSize + 5 + ReservedSpace.Left),
-                                          (int)(ReservedSpace.Top)) + Padding;
+                                          (int)(ReservedSpace.Top) + Init.TextSize) + Padding;
 
             if (Pressed)
             {

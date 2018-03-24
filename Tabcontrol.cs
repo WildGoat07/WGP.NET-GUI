@@ -98,9 +98,9 @@ namespace WGP.Gui
             for (var it = Widgets.First; it != null; it = it.Next)
             {
                 TitleBackBuffer.Position = new Vector2f((int)ReservedSpace.Left + offset, (int)ReservedSpace.Top) + Padding;
-                TitleBuffer.DisplayedString = it.Value.Title;
-                TitleBackBuffer.Size = new Vector2f(10 + (int)TitleBuffer.FindCharacterPos((uint)TitleBuffer.DisplayedString.Count()).X, 6 + Init.TextSize);
-                TitleBuffer.Position = new Vector2f(5, 3) + TitleBackBuffer.Position;
+                TitleBuffer.String = it.Value.Title;
+                TitleBackBuffer.Size = new Vector2f(10 + (int)TitleBuffer.FindCharacterPos((uint)TitleBuffer.String.Count()).X, 6 + Init.TextSize);
+                TitleBuffer.Position = new Vector2f(5, 3 + Init.TextSize) + TitleBackBuffer.Position;
                 if (it.Value.Widget == ActiveWidget)
                     TitleBackBuffer.FillColor = Init.LightX;
                 else
@@ -220,8 +220,8 @@ namespace WGP.Gui
             float minW = 0;
             for (var it = Widgets.First; it != null; it = it.Next)
             {
-                TitleBuffer.DisplayedString = it.Value.Title;
-                minW += TitleBuffer.FindCharacterPos((uint)TitleBuffer.DisplayedString.Count()).X + 10;
+                TitleBuffer.String = it.Value.Title;
+                minW += TitleBuffer.FindCharacterPos((uint)TitleBuffer.String.Count()).X + 10;
             }
             result.X = Utilities.Max(result.X, minW);
             result += Padding * 2;
@@ -243,10 +243,10 @@ namespace WGP.Gui
             {
                 for (var it = Widgets.First; it != null; it = it.Next)
                 {
-                    TitleBuffer.DisplayedString = it.Value.Title;
-                    if (new FloatRect(ReservedSpace.Left + Padding.X + offset, ReservedSpace.Top, TitleBuffer.FindCharacterPos((uint)TitleBuffer.DisplayedString.Count()).X + 10, Init.TextSize + 6).Contains(pos))
+                    TitleBuffer.String = it.Value.Title;
+                    if (new FloatRect(ReservedSpace.Left + Padding.X + offset, ReservedSpace.Top, TitleBuffer.FindCharacterPos((uint)TitleBuffer.String.Count()).X + 10, Init.TextSize + 6).Contains(pos))
                         ActiveWidget = it.Value.Widget;
-                    offset += TitleBuffer.FindCharacterPos((uint)TitleBuffer.DisplayedString.Count()).X + 10;
+                    offset += TitleBuffer.FindCharacterPos((uint)TitleBuffer.String.Count()).X + 10;
                 }
             }
             if (ActiveWidget != null)

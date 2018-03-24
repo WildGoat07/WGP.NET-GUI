@@ -82,7 +82,7 @@ namespace WGP.Gui
             BorderContext = new Vertex[5];
 
             Label.Font = Init.Font;
-            Label.CharacterSize = Init.TextSize;
+            Label.CharSize = Init.TextSize;
             Back.FillColor = Init.LightX;
             Label.Color = Init.DarkX;
             Arrow.FillColor = Init.ControlMedium;
@@ -119,7 +119,7 @@ namespace WGP.Gui
 
         internal override Vector2f GetMinimumSize()
         {
-            Vector2f result = new Vector2f(Label.FindCharacterPos((uint)Label.DisplayedString.Count()).X, Init.TextSize);
+            Vector2f result = new Vector2f(Label.FindCharacterPos((uint)Label.String.Count()).X, Init.TextSize);
             result += Padding * 2;
             result += new Vector2f(20 + Arrow.Size.X, 10);
             return result;
@@ -142,11 +142,11 @@ namespace WGP.Gui
             Border[9].Position = Border[8].Position + new Vector2f(0, ReservedSpace.Height - Padding.Y * 2);
             Arrow.Position = new Vector2f((int)(Back.Position.X + Back.Size.X - Arrow.Size.X), (int)Back.Position.Y);
             BackArrow.Position = new Vector2f((int)(Back.Position.X + Back.Size.X - Arrow.Size.X + 1), (int)Back.Position.Y);
-            Label.Position = new Vector2f(10, 5) + Back.Position;
+            Label.Position = new Vector2f(10, 5 + Init.TextSize) + Back.Position;
             if (List.Count > 0)
-                Label.DisplayedString = List[(int)Selection];
+                Label.String = List[(int)Selection];
             else
-                Label.DisplayedString = "";
+                Label.String = "";
 
             BackContext.Position = Back.Position + new Vector2f(0, Back.Size.Y);
 
@@ -158,8 +158,8 @@ namespace WGP.Gui
                 {
                     Text tmp = new Text(List[i], Init.Font, Init.TextSize);
                     tmp.Color = Init.DarkX;
-                    tmp.Position = BackContext.Position + new Vector2f(10, i * (Init.TextSize + 5));
-                    LMax = Utilities.Max(LMax, 20 + tmp.FindCharacterPos((uint)tmp.DisplayedString.Count()).X);
+                    tmp.Position = BackContext.Position + new Vector2f(10, i * (Init.TextSize + 5) + Init.TextSize);
+                    LMax = Utilities.Max(LMax, 20 + tmp.FindCharacterPos((uint)tmp.String.Count()).X);
                     Buffer.Add(tmp);
                 }
                 SelectedContext.Size = new Vector2f(LMax, (Init.TextSize + 5));

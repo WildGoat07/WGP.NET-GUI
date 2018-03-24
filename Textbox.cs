@@ -90,14 +90,14 @@ namespace WGP.Gui
 
 
             DefaultTextBuffer.Font = Init.Font;
-            DefaultTextBuffer.CharacterSize = Init.TextSize;
+            DefaultTextBuffer.CharSize = Init.TextSize;
             DefaultTextBuffer.Color = Init.TextMedium;
-            DefaultTextBuffer.Style = Text.Styles.Italic;
+            DefaultTextBuffer.Style = SFML.Graphics.Text.Styles.Italic;
 
             TextBuffer.Font = Init.Font;
-            TextBuffer.CharacterSize = Init.TextSize;
+            TextBuffer.CharSize = Init.TextSize;
             TextBuffer.Color = Init.DarkX;
-            TextBuffer.Style = Text.Styles.Regular;
+            TextBuffer.Style = SFML.Graphics.Text.Styles.Regular;
             DisplayText = TextBuffer;
 
             MouseClick += OnClick;
@@ -121,7 +121,7 @@ namespace WGP.Gui
         internal override Vector2f GetMinimumSize()
         {
             float minW;
-            minW = Utilities.Max(TextBuffer.FindCharacterPos((uint)TextBuffer.DisplayedString.Count()).X, DefaultTextBuffer.FindCharacterPos((uint)DefaultTextBuffer.DisplayedString.Count()).X);
+            minW = Utilities.Max(TextBuffer.FindCharacterPos((uint)TextBuffer.String.Count()).X, DefaultTextBuffer.FindCharacterPos((uint)DefaultTextBuffer.String.Count()).X);
             Vector2f result = new Vector2f(minW + 10, Init.TextSize + 10);
             result += Padding * 2;
             return result;
@@ -129,6 +129,7 @@ namespace WGP.Gui
 
         protected override void InternUpdate()
         {
+            TextBuffer.String = String;
             pattern = new FloatRect(Pattern.Left, Pattern.Top, Pattern.Width, 0);
             Back.Size = new Vector2f((int)ReservedSpace.Width, (int)ReservedSpace.Height) - Padding * 2;
             Back.Position = new Vector2f((int)ReservedSpace.Left, (int)ReservedSpace.Top) + Padding;
@@ -138,14 +139,13 @@ namespace WGP.Gui
             Border[3].Position = Border[2].Position + new Vector2f(-Back.Size.X, 0);
             Border[4].Position = Border[0].Position;
             DisplayText.Position = new Vector2f((int)(5 + ReservedSpace.Left),
-                                          (int)(Back.Size.Y - 5 - Init.TextSize + ReservedSpace.Top)) + Padding;
-            Cursor[0].Position = TextBuffer.FindCharacterPos((uint)CursPos) + DisplayText.Position;
+                                          (int)(Back.Size.Y - 5 + ReservedSpace.Top)) + Padding;
+            Cursor[0].Position = TextBuffer.FindCharacterPos((uint)CursPos) + DisplayText.Position - new Vector2f(0, Init.TextSize);
             Cursor[0].Position.X = (int)Cursor[0].Position.X + .5f;
             Cursor[0].Position.Y -= 1;
             Cursor[1].Position = Cursor[0].Position + new Vector2f(0, Init.TextSize + 4);
 
-            DefaultTextBuffer.DisplayedString = DefaultString;
-            TextBuffer.DisplayedString = String;
+            DefaultTextBuffer.String = DefaultString;
 
             if (CursorTimer.ElapsedTime > Time.FromMilliseconds(500))
             {
@@ -188,8 +188,8 @@ namespace WGP.Gui
             if (Focused)
             {
                 //caractères interdits
-                if (!code.Contains("\n") && //Return
-                    !code.Contains(new string(new char[] { (char)8 }))  //Backspace
+                if (!code.Contains('\n') && //Return
+                    !code.Contains((char)8)  //Backspace
                     )
                 {
                     String = String.Insert(CursPos, code);

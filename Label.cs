@@ -24,8 +24,8 @@ namespace WGP.Gui
         /// <value>String of the title.</value>
         public string Title
         {
-            get => label.DisplayedString;
-            set => label.DisplayedString = value;
+            get => label.String;
+            set => label.String = value;
         }
         /// <summary>
         /// Constructor.
@@ -37,7 +37,7 @@ namespace WGP.Gui
             label = new Text();
 
             label.Font = Init.Font;
-            label.CharacterSize = Init.TextSize;
+            label.CharSize = Init.TextSize;
             label.Color = Init.TextDark;
 
             InternUpdate();
@@ -54,20 +54,20 @@ namespace WGP.Gui
 
         internal override Vector2f GetMinimumSize()
         {
-            Vector2f result = new Vector2f(label.FindCharacterPos((uint)label.DisplayedString.Count()).X, Init.TextSize);
+            Vector2f result = new Vector2f(label.FindCharacterPos((uint)label.String.Count()).X, Init.TextSize);
             result += Padding * 2;
             return result;
         }
         protected override FloatRect GetHitbox()
         {
-            return new FloatRect(Padding.X + ReservedSpace.Left, Padding.Y + ReservedSpace.Top, label.FindCharacterPos((uint)label.DisplayedString.Count()).X, Init.TextSize);
+            return new FloatRect(Padding.X + ReservedSpace.Left, Padding.Y + ReservedSpace.Top, label.FindCharacterPos((uint)label.String.Count()).X, Init.TextSize);
         }
 
         protected override void InternUpdate()
         {
             pattern = new FloatRect(Pattern.Left, Pattern.Top, 0, 0);
             label.Position = new Vector2f((int)(ReservedSpace.Left),
-                                          (int)(ReservedSpace.Top)) + Padding;
+                                          (int)(ReservedSpace.Top) + Init.TextSize) + Padding;
 
         }
     }
