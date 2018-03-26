@@ -42,7 +42,7 @@ namespace WGP.Gui
             }
         }
         private Vertex[] Border { get; set; }
-        private Text Label { get; set; }
+        private TEXT.Text Label { get; set; }
         /// <summary>
         /// Its title.
         /// </summary>
@@ -60,7 +60,7 @@ namespace WGP.Gui
                 throw new Init.NotInitializedException();
 
             Content = null;
-            Label = new Text("", Init.Font, Init.TextSize);
+            Label = new TEXT.Text("", Init.Font);
 
             Label.Color = Init.TextDark;
 

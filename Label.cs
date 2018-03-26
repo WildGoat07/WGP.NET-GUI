@@ -17,7 +17,7 @@ namespace WGP.Gui
     public class Label : Widget
     {
 
-        private Text label { get; set; }
+        private TEXT.Text label { get; set; }
         /// <summary>
         /// Title of the widget.
         /// </summary>
@@ -34,10 +34,9 @@ namespace WGP.Gui
         {
             if (!Init.IsInitialized)
                 throw new Init.NotInitializedException();
-            label = new Text();
+            label = new TEXT.Text();
 
             label.Font = Init.Font;
-            label.CharSize = Init.TextSize;
             label.Color = Init.TextDark;
 
             InternUpdate();

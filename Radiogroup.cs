@@ -18,7 +18,7 @@ namespace WGP.Gui
     {
         public event EventHandler SelectionChanged;
 
-        private List<Text> Labels { get; set; }
+        private List<TEXT.Text> Labels { get; set; }
         private CircleShape FillBuff { get; set; }
         private Vertex[] BorderBuff { get; set; }
         private int MouseOnSelection { get; set; }
@@ -48,7 +48,7 @@ namespace WGP.Gui
             FillBuff = new CircleShape(Init.TextSize/2f*(8f/14), 20);
             FillBuff.Origin = new Vector2f(FillBuff.Radius, FillBuff.Radius);
             FillBuff.FillColor = Init.ControlDark;
-            Labels = new List<Text>();
+            Labels = new List<TEXT.Text>();
 
             for (int i = 0; i < BorderBuff.Count(); i++)
                 BorderBuff[i].Color = Init.ControlDark;
@@ -117,7 +117,7 @@ namespace WGP.Gui
         /// <param name="name">Option's name.</param>
         public void AddOption(string name)
         {
-            Text tmp = new Text(name, Init.Font, Init.TextSize);
+            TEXT.Text tmp = new TEXT.Text(name, Init.Font);
             tmp.Color = Init.TextDark;
             Labels.Add(tmp);
             

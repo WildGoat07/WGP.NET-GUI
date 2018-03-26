@@ -16,9 +16,9 @@ namespace WGP.Gui
     /// </summary>
     public class Textbox : Widget
     {
-        private Text DisplayText { get; set; }
-        private Text DefaultTextBuffer { get; set; }
-        private Text TextBuffer { get; set; }
+        private TEXT.Text DisplayText { get; set; }
+        private TEXT.Text DefaultTextBuffer { get; set; }
+        private TEXT.Text TextBuffer { get; set; }
         /// <summary>
         /// Its default string. The default string will be displayed if no text is entered.
         /// </summary>
@@ -71,8 +71,8 @@ namespace WGP.Gui
         {
             if (!Init.IsInitialized)
                 throw new Init.NotInitializedException();
-            TextBuffer = new Text();
-            DefaultTextBuffer = new Text();
+            TextBuffer = new TEXT.Text();
+            DefaultTextBuffer = new TEXT.Text();
             Back = new RectangleShape();
             CursorTimer = new Clock();
             Back.FillColor = Init.LightX;
@@ -90,12 +90,10 @@ namespace WGP.Gui
 
 
             DefaultTextBuffer.Font = Init.Font;
-            DefaultTextBuffer.CharSize = Init.TextSize;
             DefaultTextBuffer.Color = Init.TextMedium;
             DefaultTextBuffer.Style = SFML.Graphics.Text.Styles.Italic;
 
             TextBuffer.Font = Init.Font;
-            TextBuffer.CharSize = Init.TextSize;
             TextBuffer.Color = Init.DarkX;
             TextBuffer.Style = SFML.Graphics.Text.Styles.Regular;
             DisplayText = TextBuffer;

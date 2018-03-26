@@ -35,7 +35,7 @@ namespace WGP.Gui
         }
         private LinkedList<Pair> Widgets { get; set; }
         private RectangleShape TitleBackBuffer { get; set; }
-        private Text TitleBuffer { get; set; }
+        private TEXT.Text TitleBuffer { get; set; }
         private Vertex[] TitleBorderBuffer { get; set; }
         /// <summary>
         /// The active widget is the one displayed.
@@ -58,7 +58,7 @@ namespace WGP.Gui
             Widgets = new LinkedList<Pair>();
             ActiveWidget = null;
             TitleBackBuffer = new RectangleShape();
-            TitleBuffer = new Text("", Init.Font, Init.TextSize);
+            TitleBuffer = new TEXT.Text("", Init.Font);
             TitleBuffer.Color = Init.TextDark;
             TitleBorderBuffer = new Vertex[16];
             for (int i = 0; i < 8; i++)

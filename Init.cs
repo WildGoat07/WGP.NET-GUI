@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SFML.Graphics;
+using WGP.TEXT;
 
 namespace WGP.Gui
 {
@@ -14,7 +15,7 @@ namespace WGP.Gui
             public NotInitializedException() : base("The resources hasn't been initialized, call WGP.Gui.Init.InitializeResources().") { }
         }
 
-        internal static Font Font { get; private set; }
+        internal static WGP.TEXT.Font Font { get; private set; }
         internal static Color Background { get; private set; }
         internal static Color LightX { get; private set; }
         internal static Color DarkX { get; private set; }
@@ -55,7 +56,8 @@ namespace WGP.Gui
         /// </summary>
         public static void InitializeResources()
         {
-            Font = new Font(Properties.Resources.calibri);
+            TextSize = 14;
+            Font = new WGP.TEXT.Font(Properties.Resources.calibri, TextSize);
             Background = new Color(220, 220, 220);
             LightX = Color.White;
             DarkX = Color.Black;
@@ -70,7 +72,6 @@ namespace WGP.Gui
             BorderDark = new Color(90, 90, 90);
             BackgroundBorder = new Color(110, 110, 110);
             Titlebar = new Color(210, 210, 210);
-            TextSize = 14;
             ResizeTexture = new Texture(Utilities.SystemBitmapAsSFML(Properties.Resources.resizeIcon));
             ShowTexture = new Texture(Utilities.SystemBitmapAsSFML(Properties.Resources.showIcon));
             CloseTexture = new Texture(Utilities.SystemBitmapAsSFML(Properties.Resources.closeIcon));

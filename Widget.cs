@@ -32,7 +32,7 @@ namespace WGP.Gui
 
         private RectangleShape BackToolTip { get; set; }
         private Vertex[] BorderToolTip { get; set; }
-        private Text TextToolTip { get; set; }
+        private TEXT.Text TextToolTip { get; set; }
         private Clock TimedToolTip { get; set; }
         private bool ShowToolTip { get; set; }
         private bool MouseOnReserved { get; set; }
@@ -100,7 +100,7 @@ namespace WGP.Gui
             BorderToolTip = new Vertex[5];
             for (int i = 0; i < 5; i++)
                 BorderToolTip[i].Color = Init.BorderMedium;
-            TextToolTip = new Text("", Init.Font, Init.TextSize);
+            TextToolTip = new TEXT.Text("", Init.Font);
             TextToolTip.Color = Init.TextDark;
             TimedToolTip = new Clock();
             ShowToolTip = false;

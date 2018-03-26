@@ -51,7 +51,7 @@ namespace WGP.Gui
         public View WindowView { get; set; }
         private RectangleShape Titlebar { get; set; }
         private RectangleShape Background { get; set; }
-        private Text TitleText { get; set; }
+        private TEXT.Text TitleText { get; set; }
         private Vertex[] Border { get; set; }
         private RectangleShape HideContentIcon { get; set; }
         private RectangleShape CloseIcon { get; set; }
@@ -190,8 +190,7 @@ namespace WGP.Gui
             {
                 Titlebar = new RectangleShape();
                 Titlebar.FillColor = Init.Titlebar;
-                TitleText = new Text();
-                TitleText.CharSize = Init.TextSize;
+                TitleText = new TEXT.Text();
                 TitleText.Color = Init.TextDark;
                 TitleText.Font = Init.Font;
             }

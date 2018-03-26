@@ -8,6 +8,7 @@ using SFML;
 using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
+using WGP.TEXT;
 
 namespace WGP.Gui
 {
@@ -18,6 +19,9 @@ namespace WGP.Gui
     {
 
         private RichText Label { get; set; }
+        /// <summary>
+        /// Maximum width of the text.
+        /// </summary>
         public float MaxWidth { get; set; }
 
 
@@ -38,7 +42,6 @@ namespace WGP.Gui
             Label = new RichText();
 
             Label.Font = Init.Font;
-            Label.CharacterSize = Init.TextSize;
             MouseClick += OnClick;
 
             InternUpdate();

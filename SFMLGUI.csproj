@@ -70,6 +70,9 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="WGP.NET-TEXT">
+      <HintPath>..\..\WGP.NET-TEXT\WGP.NET-TEXT\bin\Release\WGP.NET-TEXT.dll</HintPath>
+    </Reference>
     <Reference Include="WildGoatPackage.NET, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\WGP\WGP\bin\x64\Release\WildGoatPackage.NET.dll</HintPath>

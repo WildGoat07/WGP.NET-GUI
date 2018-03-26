@@ -30,7 +30,7 @@ namespace WGP.Gui
 
         public event EventHandler<CheckboxStateEventArgs> StateChanged;
 
-        private Text Label { get; set; }
+        private TEXT.Text Label { get; set; }
         private RectangleShape Back { get; set; }
         private RectangleShape Front { get; set; }
         private Vertex[] Border { get; set; }
@@ -83,14 +83,13 @@ namespace WGP.Gui
         {
             if (!Init.IsInitialized)
                 throw new Init.NotInitializedException();
-            Label = new Text();
+            Label = new TEXT.Text();
             Back = new RectangleShape(new Vector2f(Init.TextSize, Init.TextSize));
             Front = new RectangleShape(new Vector2f(Init.TextSize, Init.TextSize));
             Front.FillColor = Init.ControlDark;
             Border = new Vertex[8];
 
             Label.Font = Init.Font;
-            Label.CharSize = Init.TextSize;
             Label.Color = Init.TextDark;
             Checked = false;
 

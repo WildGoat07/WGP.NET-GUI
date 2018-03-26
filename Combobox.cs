@@ -18,14 +18,14 @@ namespace WGP.Gui
     {
         public event EventHandler SelectionChanged;
 
-        private Text Label { get; set; }
+        private TEXT.Text Label { get; set; }
         private RectangleShape Back { get; set; }
         private Vertex[] Border { get; set; }
         private RectangleShape Arrow { get; set; }
         private RectangleShape BackArrow { get; set; }
         private RectangleShape BackContext { get; set; }
         private RectangleShape SelectedContext { get; set; }
-        private List<Text> Buffer { get; set; }
+        private List<TEXT.Text> Buffer { get; set; }
         /// <summary>
         /// List of the options.
         /// </summary>
@@ -74,7 +74,7 @@ namespace WGP.Gui
         {
             if (!Init.IsInitialized)
                 throw new Init.NotInitializedException();
-            Label = new Text();
+            Label = new TEXT.Text();
             Back = new RectangleShape();
             Arrow = new RectangleShape(new Vector2f(10 + Init.TextSize, 10 + Init.TextSize));
             BackArrow = new RectangleShape(new Vector2f(10 + Init.TextSize, 10 + Init.TextSize));
@@ -82,12 +82,11 @@ namespace WGP.Gui
             BorderContext = new Vertex[5];
 
             Label.Font = Init.Font;
-            Label.CharSize = Init.TextSize;
             Back.FillColor = Init.LightX;
             Label.Color = Init.DarkX;
             Arrow.FillColor = Init.ControlMedium;
             Arrow.Texture = Init.DownArrowTexture;
-            Buffer = new List<Text>();
+            Buffer = new List<TEXT.Text>();
             BackContext = new RectangleShape();
             BackContext.FillColor = Init.LightX;
             SelectedContext = new RectangleShape();
@@ -156,7 +155,7 @@ namespace WGP.Gui
                 Buffer.Clear();
                 for (int i = 0;i<List.Count;i++)
                 {
-                    Text tmp = new Text(List[i], Init.Font, Init.TextSize);
+                    TEXT.Text tmp = new TEXT.Text(List[i], Init.Font);
                     tmp.Color = Init.DarkX;
                     tmp.Position = BackContext.Position + new Vector2f(10, i * (Init.TextSize + 5) + Init.TextSize);
                     LMax = Utilities.Max(LMax, 20 + tmp.FindCharacterPos((uint)tmp.String.Count()).X);

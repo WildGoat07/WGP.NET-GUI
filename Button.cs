@@ -16,7 +16,7 @@ namespace WGP.Gui
     /// </summary>
     public class Button : Widget
     {
-        private Text Label { get; set; }
+        private TEXT.Text Label { get; set; }
         private RectangleShape Back { get; set; }
         private Vertex[] Border { get; set; }
         /// <summary>
@@ -34,12 +34,11 @@ namespace WGP.Gui
         {
             if (!Init.IsInitialized)
                 throw new Init.NotInitializedException();
-            Label = new Text();
+            Label = new TEXT.Text();
             Back = new RectangleShape();
             Border = new Vertex[8];
 
             Label.Font = Init.Font;
-            Label.CharSize = Init.TextSize;
 
             InternUpdate();
         }
