@@ -40,9 +40,12 @@ namespace WGP.Gui
             }
         }
         private RectangleShape Back { get; set; }
+        private RectangleShape Highlight { get; set; }
         private Vertex[] Border { get; set; }
         private Vertex[] Cursor { get; set; }
         private int CursPos { get; set; }
+        private int SecCursPos { get; set; }
+        private bool selecting;
         private bool focused;
         /// <summary>
         /// The text box is focused if the user can write inside it. Be careful when setting it to true if another text box is focused, both will react to the keyboard.
@@ -98,7 +101,8 @@ namespace WGP.Gui
             TextBuffer.Style = SFML.Graphics.Text.Styles.Regular;
             DisplayText = TextBuffer;
 
-            MouseClick += OnClick;
+            Highlight = new RectangleShape() { FillColor = Color.White };
+            selecting = false;
 
             InternUpdate();
         }
@@ -112,6 +116,11 @@ namespace WGP.Gui
             target.Draw(Back, new RenderStates(tr.Transform));
             target.Draw(Border, PrimitiveType.LinesStrip, new RenderStates(tr.Transform));
             target.Draw(DisplayText, new RenderStates(tr.Transform));
+            if (CursPos != SecCursPos)
+            {
+                RenderStates states = new RenderStates(tr.Transform) { BlendMode = new BlendMode(BlendMode.Factor.OneMinusDstColor, BlendMode.Factor.OneMinusSrcColor) };
+                target.Draw(Highlight, states);
+            }
             if (Focused && DrawCursor)
                 target.Draw(Cursor, PrimitiveType.LinesStrip, new RenderStates(tr.Transform));
         }
@@ -143,6 +152,12 @@ namespace WGP.Gui
             Cursor[0].Position.Y -= 1;
             Cursor[1].Position = Cursor[0].Position + new Vector2f(0, Init.TextSize + 4);
 
+            if (CursPos != SecCursPos)
+            {
+                Highlight.Position = new Vector2f(DisplayText.Position.X, Cursor[0].Position.Y) + DisplayText.FindCharacterPos((uint)Utilities.Min(CursPos, SecCursPos));
+                Highlight.Size = new Vector2f(DisplayText.FindCharacterPos((uint)Utilities.Max(CursPos, SecCursPos)).X - DisplayText.FindCharacterPos((uint)Utilities.Min(CursPos, SecCursPos)).X, Cursor[1].Position.Y - Cursor[0].Position.Y);
+            }
+
             DefaultTextBuffer.String = DefaultString;
 
             if (CursorTimer.ElapsedTime > Time.FromMilliseconds(500))
@@ -158,18 +173,27 @@ namespace WGP.Gui
 
         }
 
-        private void OnClick(object sender, MouseButtonEventArgs e)
+        internal override void MouseButtonUpCall(Mouse.Button button, Vector2f pos, bool intercept = false)
         {
-            Focused = true;
-            for (int i = 0; i <= String.Count(); i++)
+            base.MouseButtonUpCall(button, pos, intercept);
+            selecting = false;
+        }
+
+        internal override void MouseMovedCall(Vector2f pos, bool intercept)
+        {
+            base.MouseMovedCall(pos, intercept);
+            if (!intercept && selecting)
             {
-                if (TextBuffer.InverseTransform.TransformPoint(e.Position).X < (TextBuffer.FindCharacterPos((uint)Utilities.Max(i - 1, 0)).X + TextBuffer.FindCharacterPos((uint)i).X) / 2)
+                for (int i = 0; i <= String.Count(); i++)
                 {
-                    CursPos = Utilities.Max(i - 1, 0);
-                    return;
+                    if (TextBuffer.InverseTransform.TransformPoint(pos).X < (TextBuffer.FindCharacterPos((uint)Utilities.Max(i - 1, 0)).X + TextBuffer.FindCharacterPos((uint)i).X) / 2)
+                    {
+                        CursPos = Utilities.Max(i - 1, 0);
+                        return;
+                    }
                 }
+                CursPos = String.Count();
             }
-            CursPos = String.Count();
         }
 
         internal override void MouseButtonDownCall(Mouse.Button button, Vector2f pos, bool intercept)
@@ -177,6 +201,22 @@ namespace WGP.Gui
             base.MouseButtonDownCall(button, pos, intercept);
             if (!GetHitbox().Contains(pos) || intercept)
                 Focused = false;
+            if (GetHitbox().Contains(pos) && !intercept)
+            {
+                Focused = true;
+                selecting = true;
+                for (int i = 0; i <= String.Count(); i++)
+                {
+                    if (TextBuffer.InverseTransform.TransformPoint(pos).X < (TextBuffer.FindCharacterPos((uint)Utilities.Max(i - 1, 0)).X + TextBuffer.FindCharacterPos((uint)i).X) / 2)
+                    {
+                        SecCursPos = Utilities.Max(i - 1, 0);
+                        CursPos = SecCursPos;
+                        return;
+                    }
+                }
+                SecCursPos = String.Count();
+                CursPos = SecCursPos;
+            }
         }
 
         internal override void TextEnteredCall(string code)
@@ -186,12 +226,20 @@ namespace WGP.Gui
             if (Focused)
             {
                 //caractères interdits
-                if (!code.Contains('\n') && //Return
-                    !code.Contains((char)8)  //Backspace
+                if (!code.Contains('\n') //Return
+                    && !code.Contains((char)8)  //Backspace
+                    && !code.Contains((char)1)  //Ctrl + A
+                    && !code.Contains((char)127)  //Ctrl + Backspace
+                    && !code.Contains((char)24)  //Ctrl + X
+                    && !code.Contains((char)3)  //Ctrl + C
+                    && !code.Contains((char)22)  //Ctrl + V
                     )
                 {
+                    String = String.Remove(Utilities.Min(CursPos, SecCursPos), Math.Abs(CursPos - SecCursPos));
+                    CursPos = Utilities.Min(CursPos, SecCursPos);
                     String = String.Insert(CursPos, code);
                     CursPos += code.Count();
+                    SecCursPos = CursPos;
                     //Console.WriteLine((int)code.First());
                 }
             }
@@ -210,26 +258,210 @@ namespace WGP.Gui
                     if (Returned != null)
                         Returned(this, new EventArgs());
                 }
+                else if (args.Code == Keyboard.Key.BackSpace && args.Alt == false && args.Control == true && args.Shift == false && args.System == false && Focused
+                    && String.Count() > 0 && CursPos > 0)
+                {
+                    SecCursPos = CursPos;
+                    bool end = false;
+                    bool textEncountered = false;
+                    while (!end)
+                    {
+                        if (String[CursPos - 1] != ' ')
+                            textEncountered = true;
+                        if (String[CursPos - 1] == ' ' && textEncountered)
+                            end = true;
+                        if (!end)
+                            CursPos--;
+                        if (CursPos == 0)
+                            end = true;
+                    }
+                    String = String.Remove(CursPos, SecCursPos - CursPos);
+                    SecCursPos = CursPos;
+                }
+                else if (args.Code == Keyboard.Key.Delete && args.Alt == false && args.Control == true && args.Shift == false && args.System == false && Focused
+                    && String.Count() > 0 && CursPos < String.Count())
+                {
+                    SecCursPos = CursPos;
+                    bool end = false;
+                    bool spaceEncountered = false;
+                    while (!end)
+                    {
+                        if (String[CursPos] == ' ')
+                            spaceEncountered = true;
+                        if (String[CursPos] != ' ' && spaceEncountered)
+                            end = true;
+                        if (!end)
+                            CursPos++;
+                        if (CursPos == String.Count())
+                            end = true;
+                    }
+                    String = String.Remove(SecCursPos, CursPos - SecCursPos);
+                    CursPos = SecCursPos;
+                }
                 else if (args.Code == Keyboard.Key.BackSpace && args.Alt == false && args.Control == false && args.Shift == false && args.System == false && Focused
                     && String.Count() > 0 && CursPos > 0)
                 {
-                    String = String.Remove(CursPos - 1, 1);
-                    CursPos--;
+                    if (CursPos != SecCursPos)
+                    {
+                        String = String.Remove(Utilities.Min(CursPos, SecCursPos), Math.Abs(CursPos - SecCursPos));
+                        CursPos = Utilities.Min(CursPos, SecCursPos);
+                    }
+                    else
+                    {
+                        String = String.Remove(CursPos - 1, 1);
+                        CursPos--;
+                    }
+                    SecCursPos = CursPos;
                 }
                 else if (args.Code == Keyboard.Key.Delete && args.Alt == false && args.Control == false && args.Shift == false && args.System == false && Focused
                     && String.Count() > 0 && CursPos < String.Count())
                 {
-                    String = String.Remove(CursPos, 1);
+                    if (CursPos != SecCursPos)
+                    {
+                        String = String.Remove(Utilities.Min(CursPos, SecCursPos), Math.Abs(CursPos - SecCursPos));
+                        CursPos = Utilities.Min(CursPos, SecCursPos);
+                    }
+                    else
+                        String = String.Remove(CursPos, 1);
+                    SecCursPos = CursPos;
                 }
                 else if (args.Code == Keyboard.Key.Left && args.Alt == false && args.Control == false && args.Shift == false && args.System == false && Focused
                     && String.Count() > 0 && CursPos > 0)
                 {
-                    CursPos--;
+                    if (CursPos != SecCursPos)
+                        CursPos = Utilities.Min(CursPos, SecCursPos);
+                    else
+                        CursPos--;
+                    SecCursPos = CursPos;
                 }
                 else if (args.Code == Keyboard.Key.Right && args.Alt == false && args.Control == false && args.Shift == false && args.System == false && Focused
                     && String.Count() > 0 && CursPos < String.Count())
                 {
+                    if (CursPos != SecCursPos)
+                        CursPos = Utilities.Max(CursPos, SecCursPos);
+                    else
+                        CursPos++;
+                    SecCursPos = CursPos;
+                }
+                else if (args.Code == Keyboard.Key.Left && args.Alt == false && args.Control == true && args.Shift == false && args.System == false && Focused
+                    && String.Count() > 0 && CursPos > 0)
+                {
+                    CursPos--;
+                    bool end = CursPos == 0;
+                    bool textEncountered = false;
+                    while (!end)
+                    {
+                        if (String[CursPos - 1] != ' ')
+                            textEncountered = true;
+                        if (String[CursPos - 1] == ' ' && textEncountered)
+                            end = true;
+                        if (!end)
+                            CursPos--;
+                        if (CursPos == 0)
+                            end = true;
+                    }
+                    SecCursPos = CursPos;
+                }
+                else if (args.Code == Keyboard.Key.Right && args.Alt == false && args.Control == true && args.Shift == false && args.System == false && Focused
+                    && String.Count() > 0 && CursPos < String.Count())
+                {
                     CursPos++;
+                    bool end = CursPos == String.Count();
+                    bool spaceEncountered = false;
+                    while (!end)
+                    {
+                        if (String[CursPos] == ' ')
+                            spaceEncountered = true;
+                        if (String[CursPos] != ' ' && spaceEncountered)
+                            end = true;
+                        if (!end)
+                            CursPos++;
+                        if (CursPos == String.Count())
+                            end = true;
+                    }
+                    SecCursPos = CursPos;
+                }
+                else if (args.Code == Keyboard.Key.Left && args.Alt == false && args.Control == true && args.Shift == true && args.System == false && Focused
+                    && String.Count() > 0 && CursPos > 0)
+                {
+                    CursPos--;
+                    bool end = CursPos == 0;
+                    bool textEncountered = false;
+                    while (!end)
+                    {
+                        if (String[CursPos - 1] != ' ')
+                            textEncountered = true;
+                        if (String[CursPos - 1] == ' ' && textEncountered)
+                            end = true;
+                        if (!end)
+                            CursPos--;
+                        if (CursPos == 0)
+                            end = true;
+                    }
+                }
+                else if (args.Code == Keyboard.Key.Right && args.Alt == false && args.Control == true && args.Shift == true && args.System == false && Focused
+                    && String.Count() > 0 && CursPos < String.Count())
+                {
+                    CursPos++;
+                    bool end = CursPos == String.Count();
+                    bool spaceEncountered = false;
+                    while (!end)
+                    {
+                        if (String[CursPos] == ' ')
+                            spaceEncountered = true;
+                        if (String[CursPos] != ' ' && spaceEncountered)
+                            end = true;
+                        if (!end)
+                            CursPos++;
+                        if (CursPos == String.Count())
+                            end = true;
+                    }
+                }
+                else if (args.Code == Keyboard.Key.Left && args.Alt == false && args.Control == false && args.Shift == true && args.System == false && Focused
+                    && String.Count() > 0 && CursPos > 0)
+                {
+                    CursPos--;
+                }
+                else if (args.Code == Keyboard.Key.Right && args.Alt == false && args.Control == false && args.Shift == true && args.System == false && Focused
+                    && String.Count() > 0 && CursPos < String.Count())
+                {
+                    CursPos++;
+                }
+                else if (args.Code == Keyboard.Key.A && args.Alt == false && args.Control == true && args.Shift == false && args.System == false && Focused)
+                {
+                    CursPos = String.Count();
+                    SecCursPos = 0;
+                }
+                else if (args.Code == Keyboard.Key.X && args.Alt == false && args.Control == true && args.Shift == false && args.System == false && Focused)
+                {
+                    if (CursPos != SecCursPos)
+                    {
+                        string tmp = String.Substring(Utilities.Min(SecCursPos, CursPos), Math.Abs(SecCursPos - CursPos));
+                        String = String.Remove(Utilities.Min(CursPos, SecCursPos), Math.Abs(CursPos - SecCursPos));
+                        CursPos = Utilities.Min(CursPos, SecCursPos);
+                        SecCursPos = CursPos;
+                        System.Windows.Clipboard.SetText(tmp);
+                    }
+                }
+                else if (args.Code == Keyboard.Key.C && args.Alt == false && args.Control == true && args.Shift == false && args.System == false && Focused)
+                {
+                    if (CursPos != SecCursPos)
+                    {
+                        string tmp = String.Substring(Utilities.Min(SecCursPos, CursPos), Math.Abs(SecCursPos - CursPos));
+                        System.Windows.Clipboard.SetText(tmp);
+                    }
+                }
+                else if (args.Code == Keyboard.Key.V && args.Alt == false && args.Control == true && args.Shift == false && args.System == false && Focused)
+                {
+                    if (System.Windows.Clipboard.ContainsText(System.Windows.TextDataFormat.Text))
+                    {
+                        string code = System.Windows.Clipboard.GetText(System.Windows.TextDataFormat.Text);
+                        String = String.Remove(Utilities.Min(CursPos, SecCursPos), Math.Abs(CursPos - SecCursPos));
+                        CursPos = Utilities.Min(CursPos, SecCursPos);
+                        String = String.Insert(CursPos, code);
+                        CursPos += code.Count();
+                        SecCursPos = CursPos;
+                    }
                 }
             }
         }

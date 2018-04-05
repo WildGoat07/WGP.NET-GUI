@@ -51,6 +51,7 @@
     <DocumentationFile>bin\x64\Release\WGP.GUI.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="PresentationCore" />
     <Reference Include="sfmlnet-graphics-2">
       <HintPath>..\..\..\..\Program Files\SFML.Net-2.2\lib\sfmlnet-graphics-2.dll</HintPath>
     </Reference>
