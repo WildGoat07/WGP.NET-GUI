@@ -23,6 +23,22 @@ namespace WGP.Gui
         /// Its default string. The default string will be displayed if no text is entered.
         /// </summary>
         public string DefaultString { get; set; }
+        /// <summary>
+        /// List of the available chars. null for any char available.
+        /// </summary>
+        public char[] AvailableChars { get; set; }
+        /// <summary>
+        /// List of int number available chars.
+        /// </summary>
+        public static char[] NumericIntChars => new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-' };
+        /// <summary>
+        /// List of float number available chars. (same as int number, but with the dot)
+        /// </summary>
+        public static char[] NumericFloatChars => new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '.', '-' };
+        /// <summary>
+        /// Changes the chars of the string to a visual star (*).
+        /// </summary>
+        public bool HideString { get; set; }
         private bool DrawCursor { get; set; }
         private Clock CursorTimer { get; set; }
         private string str;
@@ -103,11 +119,18 @@ namespace WGP.Gui
 
             Highlight = new RectangleShape() { FillColor = Color.White };
             selecting = false;
+            HideString = false;
 
             InternUpdate();
         }
-
-
+        /// <summary>
+        /// Highlight the whole text.
+        /// </summary>
+        public void SelectAll()
+        {
+            SecCursPos = 0;
+            CursPos = String.Length;
+        }
 
         internal override void Draw(RenderTarget target, Vector2f decal)
         {
@@ -116,13 +139,13 @@ namespace WGP.Gui
             target.Draw(Back, new RenderStates(tr.Transform));
             target.Draw(Border, PrimitiveType.LinesStrip, new RenderStates(tr.Transform));
             target.Draw(DisplayText, new RenderStates(tr.Transform));
+            if (Focused && DrawCursor)
+                target.Draw(Cursor, PrimitiveType.LinesStrip, new RenderStates(tr.Transform));
             if (CursPos != SecCursPos)
             {
                 RenderStates states = new RenderStates(tr.Transform) { BlendMode = new BlendMode(BlendMode.Factor.OneMinusDstColor, BlendMode.Factor.OneMinusSrcColor) };
                 target.Draw(Highlight, states);
             }
-            if (Focused && DrawCursor)
-                target.Draw(Cursor, PrimitiveType.LinesStrip, new RenderStates(tr.Transform));
         }
 
         internal override Vector2f GetMinimumSize()
@@ -136,7 +159,16 @@ namespace WGP.Gui
 
         protected override void InternUpdate()
         {
-            TextBuffer.String = String;
+            if (!HideString)
+                TextBuffer.String = String;
+            else
+            {
+                TextBuffer.String = "";
+                foreach (var item in String)
+                {
+                    TextBuffer.String += '*';
+                }
+            }
             pattern = new FloatRect(Pattern.Left, Pattern.Top, Pattern.Width, 0);
             Back.Size = new Vector2f((int)ReservedSpace.Width, (int)ReservedSpace.Height) - Padding * 2;
             Back.Position = new Vector2f((int)ReservedSpace.Left, (int)ReservedSpace.Top) + Padding;
@@ -154,8 +186,8 @@ namespace WGP.Gui
 
             if (CursPos != SecCursPos)
             {
-                Highlight.Position = new Vector2f(DisplayText.Position.X, Cursor[0].Position.Y) + DisplayText.FindCharacterPos((uint)Utilities.Min(CursPos, SecCursPos));
-                Highlight.Size = new Vector2f(DisplayText.FindCharacterPos((uint)Utilities.Max(CursPos, SecCursPos)).X - DisplayText.FindCharacterPos((uint)Utilities.Min(CursPos, SecCursPos)).X, Cursor[1].Position.Y - Cursor[0].Position.Y);
+                Highlight.Position = new Vector2f(DisplayText.Position.X, Cursor[0].Position.Y - 1) + DisplayText.FindCharacterPos((uint)Utilities.Min(CursPos, SecCursPos));
+                Highlight.Size = new Vector2f(DisplayText.FindCharacterPos((uint)Utilities.Max(CursPos, SecCursPos)).X - DisplayText.FindCharacterPos((uint)Utilities.Min(CursPos, SecCursPos)).X + 1, Cursor[1].Position.Y - Cursor[0].Position.Y);
             }
 
             DefaultTextBuffer.String = DefaultString;
@@ -200,9 +232,13 @@ namespace WGP.Gui
         {
             base.MouseButtonDownCall(button, pos, intercept);
             if (!GetHitbox().Contains(pos) || intercept)
+            {
                 Focused = false;
+                SecCursPos = CursPos;
+            }
             if (GetHitbox().Contains(pos) && !intercept)
             {
+                CursorTimer.Restart();
                 Focused = true;
                 selecting = true;
                 for (int i = 0; i <= String.Count(); i++)
@@ -225,16 +261,33 @@ namespace WGP.Gui
 
             if (Focused)
             {
-                //caractères interdits
-                if (!code.Contains('\n') //Return
-                    && !code.Contains((char)8)  //Backspace
-                    && !code.Contains((char)1)  //Ctrl + A
-                    && !code.Contains((char)127)  //Ctrl + Backspace
-                    && !code.Contains((char)24)  //Ctrl + X
-                    && !code.Contains((char)3)  //Ctrl + C
-                    && !code.Contains((char)22)  //Ctrl + V
-                    )
+                bool add = false;
+                if (AvailableChars == null)
                 {
+                    add = true;
+                }
+                else
+                {
+                    foreach (var item in code)
+                    {
+                        if (AvailableChars.Contains(item))
+                            add = true;
+                    }
+                }
+
+                //caractères interdits
+                if (code.Contains('\n') //Return
+                    || code.Contains((char)8)  //Backspace
+                    || code.Contains((char)1)  //Ctrl + A
+                    || code.Contains((char)127)  //Ctrl + Backspace
+                    || code.Contains((char)24)  //Ctrl + X
+                    || code.Contains((char)3)  //Ctrl + C
+                    || code.Contains((char)22)  //Ctrl + V
+                    )
+                    add = false;
+                if (add)
+                {
+                    CursorTimer.Restart();
                     String = String.Remove(Utilities.Min(CursPos, SecCursPos), Math.Abs(CursPos - SecCursPos));
                     CursPos = Utilities.Min(CursPos, SecCursPos);
                     String = String.Insert(CursPos, code);
@@ -299,7 +352,7 @@ namespace WGP.Gui
                     CursPos = SecCursPos;
                 }
                 else if (args.Code == Keyboard.Key.BackSpace && args.Alt == false && args.Control == false && args.Shift == false && args.System == false && Focused
-                    && String.Count() > 0 && CursPos > 0)
+                    && String.Count() > 0 && (CursPos > 0 || CursPos != SecCursPos))
                 {
                     if (CursPos != SecCursPos)
                     {
@@ -314,7 +367,7 @@ namespace WGP.Gui
                     SecCursPos = CursPos;
                 }
                 else if (args.Code == Keyboard.Key.Delete && args.Alt == false && args.Control == false && args.Shift == false && args.System == false && Focused
-                    && String.Count() > 0 && CursPos < String.Count())
+                    && String.Count() > 0 && (CursPos < String.Count() || CursPos != SecCursPos))
                 {
                     if (CursPos != SecCursPos)
                     {
@@ -341,6 +394,16 @@ namespace WGP.Gui
                         CursPos = Utilities.Max(CursPos, SecCursPos);
                     else
                         CursPos++;
+                    SecCursPos = CursPos;
+                }
+                else if (args.Code == Keyboard.Key.Up && args.Alt == false && args.Control == false && args.Shift == false && args.System == false && Focused)
+                {
+                    CursPos = 0;
+                    SecCursPos = CursPos;
+                }
+                else if (args.Code == Keyboard.Key.Down && args.Alt == false && args.Control == false && args.Shift == false && args.System == false && Focused)
+                {
+                    CursPos = String.Length;
                     SecCursPos = CursPos;
                 }
                 else if (args.Code == Keyboard.Key.Left && args.Alt == false && args.Control == true && args.Shift == false && args.System == false && Focused
@@ -432,7 +495,8 @@ namespace WGP.Gui
                     CursPos = String.Count();
                     SecCursPos = 0;
                 }
-                else if (args.Code == Keyboard.Key.X && args.Alt == false && args.Control == true && args.Shift == false && args.System == false && Focused)
+                else if (args.Code == Keyboard.Key.X && args.Alt == false && args.Control == true && args.Shift == false && args.System == false && Focused
+                    && !HideString)
                 {
                     if (CursPos != SecCursPos)
                     {
@@ -443,7 +507,8 @@ namespace WGP.Gui
                         System.Windows.Clipboard.SetText(tmp);
                     }
                 }
-                else if (args.Code == Keyboard.Key.C && args.Alt == false && args.Control == true && args.Shift == false && args.System == false && Focused)
+                else if (args.Code == Keyboard.Key.C && args.Alt == false && args.Control == true && args.Shift == false && args.System == false && Focused
+                    && !HideString)
                 {
                     if (CursPos != SecCursPos)
                     {
@@ -456,11 +521,10 @@ namespace WGP.Gui
                     if (System.Windows.Clipboard.ContainsText(System.Windows.TextDataFormat.Text))
                     {
                         string code = System.Windows.Clipboard.GetText(System.Windows.TextDataFormat.Text);
-                        String = String.Remove(Utilities.Min(CursPos, SecCursPos), Math.Abs(CursPos - SecCursPos));
-                        CursPos = Utilities.Min(CursPos, SecCursPos);
-                        String = String.Insert(CursPos, code);
-                        CursPos += code.Count();
-                        SecCursPos = CursPos;
+                        foreach (var item in code)
+                        {
+                            TextEnteredCall(new string(item, 1));
+                        }
                     }
                 }
             }
