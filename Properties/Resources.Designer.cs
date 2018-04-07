@@ -103,6 +103,16 @@ namespace WGP.Gui.Properties {
         /// <summary>
         ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap groupboxArrow {
+            get {
+                object obj = ResourceManager.GetObject("groupboxArrow", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap hideIcon {
             get {
                 object obj = ResourceManager.GetObject("hideIcon", resourceCulture);

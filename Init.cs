@@ -15,7 +15,7 @@ namespace WGP.Gui
             public NotInitializedException() : base("The resources hasn't been initialized, call WGP.Gui.Init.InitializeResources().") { }
         }
 
-        internal static WGP.TEXT.Font Font { get; private set; }
+        internal static TEXT.Font Font { get; private set; }
         internal static Color Background { get; private set; }
         internal static Color LightX { get; private set; }
         internal static Color DarkX { get; private set; }
@@ -43,6 +43,7 @@ namespace WGP.Gui
         internal static Texture ScrollUpTexture { get; private set; }
         internal static Texture ScrollLeftTexture { get; private set; }
         internal static Texture ScrollRightTexture { get; private set; }
+        internal static Texture GroupboxArrow { get; private set; }
 
         internal static bool IsInitialized
         {
@@ -85,6 +86,7 @@ namespace WGP.Gui
             ScrollUpTexture = new Texture(Utilities.SystemBitmapAsSFML(Properties.Resources.scrollUp));
             ScrollLeftTexture = new Texture(Utilities.SystemBitmapAsSFML(Properties.Resources.scrollLeft));
             ScrollRightTexture = new Texture(Utilities.SystemBitmapAsSFML(Properties.Resources.scrollRight));
+            GroupboxArrow = new Texture(Utilities.SystemBitmapAsSFML(Properties.Resources.groupboxArrow));
         }
     }
 }

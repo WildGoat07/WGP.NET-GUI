@@ -150,5 +150,8 @@
   <ItemGroup>
     <None Include="Resources\scrollUp.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\groupboxArrow.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
