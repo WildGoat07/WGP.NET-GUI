@@ -8,6 +8,7 @@ using SFML;
 using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
+using System.Text.RegularExpressions;
 
 namespace WGP.Gui
 {
@@ -39,6 +40,11 @@ namespace WGP.Gui
         /// Changes the chars of the string to a visual star (*).
         /// </summary>
         public bool HideString { get; set; }
+        /// <summary>
+        /// Sets a list of recommendations used when typing in the textbox.
+        /// </summary>
+        public IEnumerable<string> Recommendations { get; set; }
+        private bool AcceptsRec { get; set; }
         private bool DrawCursor { get; set; }
         private Clock CursorTimer { get; set; }
         private string str;
@@ -120,6 +126,8 @@ namespace WGP.Gui
             Highlight = new RectangleShape() { FillColor = Color.White };
             selecting = false;
             HideString = false;
+            Recommendations = null;
+            AcceptsRec = false;
 
             InternUpdate();
         }
@@ -159,6 +167,43 @@ namespace WGP.Gui
 
         protected override void InternUpdate()
         {
+            if (AcceptsRec && Recommendations != null && String.Length > 0 && !HideString)
+            {
+                string regexStr = "^" + String;
+                for (int i = 1; i < regexStr.Length; i++)
+                {
+                    char curr = regexStr[i];
+                    if (curr == '\\' ||
+                        curr == '?' ||
+                        curr == '+' ||
+                        curr == '*' ||
+                        curr == '|' ||
+                        curr == '[' ||
+                        curr == ']' ||
+                        curr == '^' ||
+                        curr == '(' ||
+                        curr == ')' ||
+                        curr == '{' ||
+                        curr == '}' ||
+                        curr == '$' ||
+                        curr == '.')
+                    {
+                        regexStr = regexStr.Insert(i, "\\");
+                        i++;
+                    }
+                }
+                Regex eng = new Regex(regexStr);
+                foreach (var item in Recommendations)
+                {
+                    if (eng.IsMatch(item))
+                    {
+                        String = new string(item.ToArray());
+                        SecCursPos = String.Length;
+                        break;
+                    }
+                }
+            }
+
             if (!HideString)
                 TextBuffer.String = String;
             else
@@ -169,6 +214,12 @@ namespace WGP.Gui
                     TextBuffer.String += '*';
                 }
             }
+
+            if (String.Count() == 0)
+                DisplayText = DefaultTextBuffer;
+            else
+                DisplayText = TextBuffer;
+
             pattern = new FloatRect(Pattern.Left, Pattern.Top, Pattern.Width, 0);
             Back.Size = new Vector2f((int)ReservedSpace.Width, (int)ReservedSpace.Height) - Padding * 2;
             Back.Position = new Vector2f((int)ReservedSpace.Left, (int)ReservedSpace.Top) + Padding;
@@ -197,12 +248,6 @@ namespace WGP.Gui
                 CursorTimer.Restart();
                 DrawCursor = !DrawCursor;
             }
-
-            if (String.Count() == 0)
-                DisplayText = DefaultTextBuffer;
-            else
-                DisplayText = TextBuffer;
-
         }
 
         internal override void MouseButtonUpCall(Mouse.Button button, Vector2f pos, bool intercept = false)
@@ -231,6 +276,7 @@ namespace WGP.Gui
         internal override void MouseButtonDownCall(Mouse.Button button, Vector2f pos, bool intercept)
         {
             base.MouseButtonDownCall(button, pos, intercept);
+            AcceptsRec = false;
             if (!GetHitbox().Contains(pos) || intercept)
             {
                 Focused = false;
@@ -293,6 +339,8 @@ namespace WGP.Gui
                     String = String.Insert(CursPos, code);
                     CursPos += code.Count();
                     SecCursPos = CursPos;
+                    if (CursPos == String.Length)
+                        AcceptsRec = true;
                     //Console.WriteLine((int)code.First());
                 }
             }
@@ -307,6 +355,7 @@ namespace WGP.Gui
                 CursorTimer.Restart();
                 if (args.Code == Keyboard.Key.Return && args.Alt == false && args.Control == false && args.Shift == false && args.System == false)
                 {
+                    AcceptsRec = false;
                     Focused = false;
                     if (Returned != null)
                         Returned(this, new EventArgs());
@@ -314,22 +363,32 @@ namespace WGP.Gui
                 else if (args.Code == Keyboard.Key.BackSpace && args.Alt == false && args.Control == true && args.Shift == false && args.System == false && Focused
                     && String.Count() > 0 && CursPos > 0)
                 {
-                    SecCursPos = CursPos;
-                    bool end = false;
-                    bool textEncountered = false;
-                    while (!end)
+                    if (AcceptsRec)
                     {
-                        if (String[CursPos - 1] != ' ')
-                            textEncountered = true;
-                        if (String[CursPos - 1] == ' ' && textEncountered)
-                            end = true;
-                        if (!end)
-                            CursPos--;
-                        if (CursPos == 0)
-                            end = true;
+                        String = "";
+                        CursPos = 0;
+                        SecCursPos = 0;
                     }
-                    String = String.Remove(CursPos, SecCursPos - CursPos);
-                    SecCursPos = CursPos;
+                    else
+                    {
+                        SecCursPos = CursPos;
+                        bool end = false;
+                        bool textEncountered = false;
+                        while (!end)
+                        {
+                            if (String[CursPos - 1] != ' ')
+                                textEncountered = true;
+                            if (String[CursPos - 1] == ' ' && textEncountered)
+                                end = true;
+                            if (!end)
+                                CursPos--;
+                            if (CursPos == 0)
+                                end = true;
+                        }
+                        String = String.Remove(CursPos, SecCursPos - CursPos);
+                        SecCursPos = CursPos;
+                        AcceptsRec = false;
+                    }
                 }
                 else if (args.Code == Keyboard.Key.Delete && args.Alt == false && args.Control == true && args.Shift == false && args.System == false && Focused
                     && String.Count() > 0 && CursPos < String.Count())
@@ -350,6 +409,7 @@ namespace WGP.Gui
                     }
                     String = String.Remove(SecCursPos, CursPos - SecCursPos);
                     CursPos = SecCursPos;
+                    AcceptsRec = false;
                 }
                 else if (args.Code == Keyboard.Key.BackSpace && args.Alt == false && args.Control == false && args.Shift == false && args.System == false && Focused
                     && String.Count() > 0 && (CursPos > 0 || CursPos != SecCursPos))
@@ -358,6 +418,11 @@ namespace WGP.Gui
                     {
                         String = String.Remove(Utilities.Min(CursPos, SecCursPos), Math.Abs(CursPos - SecCursPos));
                         CursPos = Utilities.Min(CursPos, SecCursPos);
+                        if (AcceptsRec)
+                        {
+                            String = String.Remove(CursPos - 1, 1);
+                            CursPos--;
+                        }
                     }
                     else
                     {
@@ -371,12 +436,14 @@ namespace WGP.Gui
                 {
                     if (CursPos != SecCursPos)
                     {
+                        AcceptsRec = false;
                         String = String.Remove(Utilities.Min(CursPos, SecCursPos), Math.Abs(CursPos - SecCursPos));
                         CursPos = Utilities.Min(CursPos, SecCursPos);
                     }
                     else
                         String = String.Remove(CursPos, 1);
                     SecCursPos = CursPos;
+                    AcceptsRec = false;
                 }
                 else if (args.Code == Keyboard.Key.Left && args.Alt == false && args.Control == false && args.Shift == false && args.System == false && Focused
                     && String.Count() > 0 && CursPos > 0)
@@ -386,6 +453,7 @@ namespace WGP.Gui
                     else
                         CursPos--;
                     SecCursPos = CursPos;
+                    AcceptsRec = false;
                 }
                 else if (args.Code == Keyboard.Key.Right && args.Alt == false && args.Control == false && args.Shift == false && args.System == false && Focused
                     && String.Count() > 0 && CursPos < String.Count())
@@ -400,6 +468,7 @@ namespace WGP.Gui
                 {
                     CursPos = 0;
                     SecCursPos = CursPos;
+                    AcceptsRec = false;
                 }
                 else if (args.Code == Keyboard.Key.Down && args.Alt == false && args.Control == false && args.Shift == false && args.System == false && Focused)
                 {
@@ -424,6 +493,7 @@ namespace WGP.Gui
                             end = true;
                     }
                     SecCursPos = CursPos;
+                    AcceptsRec = false;
                 }
                 else if (args.Code == Keyboard.Key.Right && args.Alt == false && args.Control == true && args.Shift == false && args.System == false && Focused
                     && String.Count() > 0 && CursPos < String.Count())
@@ -461,6 +531,7 @@ namespace WGP.Gui
                         if (CursPos == 0)
                             end = true;
                     }
+                    AcceptsRec = false;
                 }
                 else if (args.Code == Keyboard.Key.Right && args.Alt == false && args.Control == true && args.Shift == true && args.System == false && Focused
                     && String.Count() > 0 && CursPos < String.Count())
@@ -484,6 +555,7 @@ namespace WGP.Gui
                     && String.Count() > 0 && CursPos > 0)
                 {
                     CursPos--;
+                    AcceptsRec = false;
                 }
                 else if (args.Code == Keyboard.Key.Right && args.Alt == false && args.Control == false && args.Shift == true && args.System == false && Focused
                     && String.Count() > 0 && CursPos < String.Count())
@@ -494,6 +566,7 @@ namespace WGP.Gui
                 {
                     CursPos = String.Count();
                     SecCursPos = 0;
+                    AcceptsRec = false;
                 }
                 else if (args.Code == Keyboard.Key.X && args.Alt == false && args.Control == true && args.Shift == false && args.System == false && Focused
                     && !HideString)
