@@ -99,6 +99,7 @@ namespace WGP.Gui
         public bool MouseOnWindow { get; private set; }
 
         private Vector2f size;
+        private Vector2f minimumDefinedSize;
         private Widget content;
         /// <summary>
         /// Its size.
@@ -126,6 +127,8 @@ namespace WGP.Gui
 
                 size.Y = Utilities.Max(minimumSize.Y, value.Y);
                 size.X = Utilities.Max(Utilities.Max(minimumSize.X, minTitleWidth), value.X);
+                if (ResizeIcon == null)
+                    minimumDefinedSize = value;
                 if (Resized != null)
                     Resized(this, new EventArgs());
             }
@@ -345,7 +348,7 @@ namespace WGP.Gui
                     ResizeIcon.Position += new Vector2f(0, IconSize);
             }
             else
-                Size = new Vector2f();
+                Size = minimumDefinedSize;
 
             if (CloseIcon != null)
             {
