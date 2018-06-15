@@ -57,6 +57,11 @@ namespace WGP.Gui
             set
             {
                 str = value;
+                if (CursPos > str.Length)
+                {
+                    CursPos = str.Length;
+                    SecCursPos = str.Length;
+                }
                 if (TextChanged != null)
                     TextChanged(this, new EventArgs());
             }
