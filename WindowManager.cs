@@ -23,12 +23,14 @@ namespace WGP.Gui
         public void Update()
         {
             bool noTrigger = false;
+            if (windows.Count > 0 && windows.First().InterceptEvents != null)
+                noTrigger = true;
             foreach (var window in windows)
             {
                 window.Update();
                 if (window.GetBounds().Contains(App.MapPixelToCoords(Mouse.GetPosition(App), window.WindowView ?? App.GetView())))
                 {
-                    if (noTrigger)
+                    if (noTrigger && window != windows.First())
                         window.triggerEvents = false;
                     else
                         window.triggerEvents = true;
