@@ -40,7 +40,8 @@ namespace WGP.Gui
             set
             {
                 content = value;
-                content.Parent = this;
+                if (content != null)
+                    content.Parent = this;
                 Size = Size;
             }
         }
