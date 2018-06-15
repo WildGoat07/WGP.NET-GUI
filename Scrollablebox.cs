@@ -61,6 +61,27 @@ namespace WGP.Gui
         /// The content's size can be reduced as much as possible, so the minimum size must be defined to put a limit on the minimal view possible.
         /// </remarks>
         public Vector2f MinimumSize { get; set; }
+        public Vector2f ControlsPosition
+        {
+            get
+            {
+                if (Content != null)
+                {
+                    return new Vector2f(Utilities.Percent(Offset.X, 0, Content.GetMinimumSize().X - Displayer.Size.X),
+                        Utilities.Percent(Offset.Y, 0, Content.GetMinimumSize().Y - Displayer.Size.Y));
+                }
+                else
+                    return new Vector2f();
+            }
+            set
+            {
+                if (Content != null)
+                {
+                    Offset = new Vector2f((Content.GetMinimumSize().X - Displayer.Size.X) * value.X.Capped(0, 1),
+                        (Content.GetMinimumSize().Y - Displayer.Size.Y) * value.Y.Capped(0, 1));
+                }
+            }
+        }
         private Vector2f Offset { get; set; }
         private RectangleShape UpArrow { get; set; }
         private RectangleShape UpBack { get; set; }
