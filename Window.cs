@@ -21,6 +21,7 @@ namespace WGP.Gui
         }
         
         private const float IconSize = 20;
+        internal bool triggerEvents;
 
         public event EventHandler Grabbed;
         public event EventHandler MouseEntered;
@@ -238,6 +239,7 @@ namespace WGP.Gui
             IsGrabbed = false;
             IsResized = false;
             MouseOnWindow = false;
+            triggerEvents = true;
         }
         /// <summary>
         /// Draws the window and its widget.
@@ -413,60 +415,63 @@ namespace WGP.Gui
 
         private void OnMouseDown(object sender, SFML.Window.MouseButtonEventArgs e)
         {
-            View tmp = null;
-            if (WindowView != null)
-                tmp = WindowView;
-            else
-                tmp = App.GetView();
-            Vector2f pos = App.MapPixelToCoords(new Vector2i(e.X, e.Y), tmp);
-            bool occuped = false;
-            if (CloseIcon != null)
+            if (triggerEvents)
             {
-                if (CloseIcon.GetGlobalBounds().Contains(pos))
+                View tmp = null;
+                if (WindowView != null)
+                    tmp = WindowView;
+                else
+                    tmp = App.GetView();
+                Vector2f pos = App.MapPixelToCoords(new Vector2i(e.X, e.Y), tmp);
+                bool occuped = false;
+                if (CloseIcon != null)
                 {
-                    occuped = true;
-                    if (RequestClose != null)
-                        RequestClose(this, new EventArgs());
+                    if (CloseIcon.GetGlobalBounds().Contains(pos))
+                    {
+                        occuped = true;
+                        if (RequestClose != null)
+                            RequestClose(this, new EventArgs());
+                    }
                 }
-            }
-            if (HideContentIcon != null)
-            {
-                if (HideContentIcon.GetGlobalBounds().Contains(pos))
+                if (HideContentIcon != null)
                 {
-                    occuped = true;
-                    Hidden = !Hidden;
+                    if (HideContentIcon.GetGlobalBounds().Contains(pos))
+                    {
+                        occuped = true;
+                        Hidden = !Hidden;
+                    }
                 }
-            }
-            if (ResizeIcon != null && !Hidden)
-            {
-                if (ResizeIcon.GetGlobalBounds().Contains(pos))
+                if (ResizeIcon != null && !Hidden)
                 {
-                    RelativeSizer = ResizeIcon.Position + new Vector2f(IconSize, IconSize) - pos;
-                    IsResized = true;
+                    if (ResizeIcon.GetGlobalBounds().Contains(pos))
+                    {
+                        RelativeSizer = ResizeIcon.Position + new Vector2f(IconSize, IconSize) - pos;
+                        IsResized = true;
+                    }
                 }
-            }
-            if (Titlebar != null && Moveable)
-            {
-                if (!occuped && Titlebar.GetGlobalBounds().Contains(pos))
+                if (Titlebar != null && Moveable)
                 {
-                    IsGrabbed = true;
-                    if (Grabbed != null)
-                        Grabbed(this, new EventArgs());
-                    RelativeGrab = Position - pos;
+                    if (!occuped && Titlebar.GetGlobalBounds().Contains(pos))
+                    {
+                        IsGrabbed = true;
+                        if (Grabbed != null)
+                            Grabbed(this, new EventArgs());
+                        RelativeGrab = Position - pos;
+                    }
                 }
+                View tmp1 = null;
+                if (WindowView != null)
+                    tmp1 = WindowView;
+                else
+                    tmp1 = App.GetView();
+                Vector2f MousePos = App.MapPixelToCoords(new Vector2i(e.X, e.Y), tmp1) - Position;
+                if (Titlebar != null)
+                    MousePos.Y -= IconSize;
+                if (Content != null && !Hidden && InterceptEvents == null)
+                    Content.MouseButtonDownCall(e.Button, MousePos);
+                else if (!Hidden && InterceptEvents != null)
+                    InterceptEvents.MouseButtonDownCall(e.Button, MousePos);
             }
-            View tmp1 = null;
-            if (WindowView != null)
-                tmp1 = WindowView;
-            else
-                tmp1 = App.GetView();
-            Vector2f MousePos = App.MapPixelToCoords(new Vector2i(e.X, e.Y), tmp1) - Position;
-            if (Titlebar != null)
-                MousePos.Y -= IconSize;
-            if (Content != null && !Hidden && InterceptEvents == null)
-                Content.MouseButtonDownCall(e.Button, MousePos);
-            else if (!Hidden && InterceptEvents != null)
-                InterceptEvents.MouseButtonDownCall(e.Button, MousePos);
         }
         /// <summary>
         /// Returns the bounds of the window.
@@ -517,9 +522,9 @@ namespace WGP.Gui
 
         private void OnMouseScrolled(object sender, SFML.Window.MouseWheelEventArgs e)
         {
-            if (Content != null && !Hidden && InterceptEvents == null)
+            if (Content != null && !Hidden && InterceptEvents == null && triggerEvents == true)
                 Content.MouseScrolledCall(e.Delta);
-            if (!hidden && InterceptEvents != null)
+            if (!hidden && InterceptEvents != null && triggerEvents == true)
                 InterceptEvents.MouseScrolledCall(e.Delta);
         }
 
