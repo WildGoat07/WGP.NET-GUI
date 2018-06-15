@@ -246,7 +246,7 @@ namespace WGP.Gui
 
             if (Content != null)
             {
-                Buffer.Clear(Color.Transparent);
+                Buffer.Clear(new Color(Init.Background) { A = 0 });
                 Vector2f depl = new Vector2f();
                 if ((ScrollingStyle & Mode.ALLOW_VERTICAL_SCROLLING) == Mode.ALLOW_VERTICAL_SCROLLING)
                 {
