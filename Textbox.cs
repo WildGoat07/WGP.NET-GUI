@@ -77,10 +77,11 @@ namespace WGP.Gui
             get => focused;
             set
             {
+                bool oldFocus = focused;
                 focused = value;
-                if (focused && FocusGained != null)
+                if (focused && FocusGained != null && oldFocus != focused)
                     FocusGained(this, new EventArgs());
-                if (!focused && FocusLost != null)
+                if (!focused && FocusLost != null && oldFocus != focused)
                     FocusLost(this, new EventArgs());
             }
         }
@@ -128,6 +129,7 @@ namespace WGP.Gui
             HideString = false;
             Recommendations = null;
             AcceptsRec = false;
+            focused = false;
 
             InternUpdate();
         }
