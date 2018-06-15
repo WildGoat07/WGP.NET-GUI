@@ -72,7 +72,13 @@ namespace WGP.Gui
 
             InternUpdate();
         }
-
+        /// <summary>
+        /// Remove all the widgets in the box.
+        /// </summary>
+        public void Clear()
+        {
+            Widgets.Clear();
+        }
         protected override void InternUpdate()
         {
             Pair[] Tab = Widgets.ToArray();
