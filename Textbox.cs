@@ -151,7 +151,7 @@ namespace WGP.Gui
                 target.Draw(Cursor, PrimitiveType.LinesStrip, new RenderStates(tr.Transform));
             if (CursPos != SecCursPos)
             {
-                RenderStates states = new RenderStates(tr.Transform) { BlendMode = new BlendMode(BlendMode.Factor.OneMinusDstColor, BlendMode.Factor.OneMinusSrcColor) };
+                RenderStates states = new RenderStates(tr.Transform) { BlendMode = new BlendMode(BlendMode.Factor.OneMinusDstColor, BlendMode.Factor.OneMinusSrcColor, BlendMode.Equation.Add, BlendMode.Factor.One, BlendMode.Factor.One, BlendMode.Equation.Add) };
                 target.Draw(Highlight, states);
             }
         }
