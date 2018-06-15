@@ -45,6 +45,7 @@ namespace WGP.Gui
         /// </summary>
         public IEnumerable<string> Recommendations { get; set; }
         private bool AcceptsRec { get; set; }
+        private bool RecPossible { get; set; }
         private bool DrawCursor { get; set; }
         private Clock CursorTimer { get; set; }
         private string str;
@@ -57,11 +58,8 @@ namespace WGP.Gui
             set
             {
                 str = value;
-                if (CursPos > str.Length)
-                {
-                    CursPos = str.Length;
-                    SecCursPos = str.Length;
-                }
+                CursPos = CursPos.Capped(0, str.Length);
+                SecCursPos = CursPos;
                 if (TextChanged != null)
                     TextChanged(this, new EventArgs());
             }
@@ -134,6 +132,7 @@ namespace WGP.Gui
             HideString = false;
             Recommendations = null;
             AcceptsRec = false;
+            RecPossible = false;
             focused = false;
 
             InternUpdate();
@@ -200,12 +199,14 @@ namespace WGP.Gui
                     }
                 }
                 Regex eng = new Regex(regexStr);
+                RecPossible = false;
                 foreach (var item in Recommendations)
                 {
                     if (eng.IsMatch(item))
                     {
                         String = new string(item.ToArray());
                         SecCursPos = String.Length;
+                        RecPossible = true;
                         break;
                     }
                 }
@@ -370,7 +371,7 @@ namespace WGP.Gui
                 else if (args.Code == Keyboard.Key.BackSpace && args.Alt == false && args.Control == true && args.Shift == false && args.System == false && Focused
                     && String.Count() > 0 && CursPos > 0)
                 {
-                    if (AcceptsRec)
+                    if (RecPossible)
                     {
                         String = "";
                         CursPos = 0;
@@ -434,7 +435,6 @@ namespace WGP.Gui
                     else
                     {
                         String = String.Remove(CursPos - 1, 1);
-                        CursPos--;
                     }
                     SecCursPos = CursPos;
                 }
