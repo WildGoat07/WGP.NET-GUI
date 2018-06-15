@@ -22,7 +22,7 @@ namespace WGP.Gui
         /// <summary>
         /// Maximum width of the text.
         /// </summary>
-        public float MaxWidth { get; set; }
+        public float MaxWidth { get => Label.MaxWidth; set => Label.MaxWidth = value; }
 
 
         public event EventHandler ClickedOnText;
