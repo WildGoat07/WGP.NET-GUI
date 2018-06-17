@@ -7,19 +7,29 @@ using SFML.Window;
 
 namespace WGP.Gui
 {
+    /// <summary>
+    /// The window manager handle multiple window related conditional elements (window focus, window events, ...)
+    /// </summary>
     public class WindowManager
     {
         private List<Window> windows;
+        private Window front;
 
         public SFML.Graphics.RenderWindow App { get; private set; }
-
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="app"></param>
         public WindowManager(SFML.Graphics.RenderWindow app)
         {
+            front = null;
             windows = new List<Window>();
             App = app;
             App.MouseButtonPressed += OnMouseDown;
         }
-
+        /// <summary>
+        /// Updates the manager AND the windows
+        /// </summary>
         public void Update()
         {
             bool noTrigger = false;
@@ -38,6 +48,11 @@ namespace WGP.Gui
                 }
                 else
                     window.triggerEvents = true;
+            }
+            if (front != null)
+            {
+                windows.Remove(front);
+                windows.Insert(0, front);
             }
         }
 
@@ -58,13 +73,21 @@ namespace WGP.Gui
                 windows.Insert(0, selectedWindow);
             }
         }
-
-        public void AddWindow(Window window)
+        /// <summary>
+        /// Adds a window to the manager
+        /// </summary>
+        /// <param name="window">Window to add</param>
+        /// <param name="alwaysFront">True if the window is always front (there can be only one)</param>
+        public void AddWindow(Window window, bool alwaysFront = false)
         {
             window.App = App;
             windows.Insert(0, window);
+            if (alwaysFront)
+                front = window;
         }
-
+        /// <summary>
+        /// Draws the windows managed
+        /// </summary>
         public void DrawWindows()
         {
             for(int i = windows.Count - 1;i>=0;i--)
