@@ -56,7 +56,7 @@ namespace WGP.Gui
             MouseMoved += OnMouseMoved;
             MouseClick += OnClick;
 
-            InternUpdate();
+            InternUpdate(new Vector2f());
         }
 
 
@@ -89,7 +89,7 @@ namespace WGP.Gui
             return result;
         }
 
-        protected override void InternUpdate()
+        protected override void InternUpdate(Vector2f msPos)
         {
             pattern = new FloatRect(Pattern.Left, Pattern.Top, 0, 0);
             for (int i = 0;i<Labels.Count;i++)

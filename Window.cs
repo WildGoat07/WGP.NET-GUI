@@ -371,7 +371,12 @@ namespace WGP.Gui
                 availableSpace.Height -= IconSize;
             }
             if (Content != null)
-                Content.Update(availableSpace);
+            {
+                Vector2f offset = Position;
+                if (Titlebar != null)
+                    offset.Y += IconSize;
+                Content.Update(availableSpace, App.MapPixelToCoords(Mouse.GetPosition(App), WindowView ?? App.GetView()) - offset);
+            }
 
             Vector2f minimumSize = new Vector2f();
             float minTitleWidth = 0;

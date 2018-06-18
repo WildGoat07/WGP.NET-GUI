@@ -70,7 +70,7 @@ namespace WGP.Gui
             Orientation = Mode.VERTICAL;
             AutomaticWeightDistribution = false;
 
-            InternUpdate();
+            InternUpdate(new Vector2f());
         }
         /// <summary>
         /// Remove all the widgets in the box.
@@ -79,7 +79,7 @@ namespace WGP.Gui
         {
             Widgets.Clear();
         }
-        protected override void InternUpdate()
+        protected override void InternUpdate(Vector2f msPos)
         {
             Pair[] Tab = Widgets.ToArray();
             if (Orientation == Mode.VERTICAL)
@@ -156,7 +156,7 @@ namespace WGP.Gui
                     it.Value.availableSpace.Left = offset + ReservedSpace.Left + Padding.X;
                     offset += it.Value.availableSpace.Width;
                 }
-                it.Value.Widget.Update(it.Value.availableSpace);
+                it.Value.Widget.Update(it.Value.availableSpace, msPos);
             }
         }
         /// <summary>

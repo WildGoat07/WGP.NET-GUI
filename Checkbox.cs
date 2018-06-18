@@ -95,7 +95,7 @@ namespace WGP.Gui
 
             MouseClick += OnClick;
 
-            InternUpdate();
+            InternUpdate(new Vector2f());
         }
 
 
@@ -123,7 +123,7 @@ namespace WGP.Gui
             return new FloatRect(Padding.X + ReservedSpace.Left, Padding.Y + ReservedSpace.Top, Init.TextSize, Init.TextSize);
         }
 
-        protected override void InternUpdate()
+        protected override void InternUpdate(Vector2f msPos)
         {
             pattern = new FloatRect(Pattern.Left, Pattern.Top, 0, 0);
             Back.Position = new Vector2f((int)ReservedSpace.Left, (int)ReservedSpace.Top) + Padding;

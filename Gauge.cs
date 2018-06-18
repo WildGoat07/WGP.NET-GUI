@@ -63,7 +63,7 @@ namespace WGP.Gui
             Orientation = Mode.HORIZONTAL;
             Percent = 0;
 
-            InternUpdate();
+            InternUpdate(new Vector2f());
         }
 
 
@@ -87,7 +87,7 @@ namespace WGP.Gui
             return result;
         }
 
-        protected override void InternUpdate()
+        protected override void InternUpdate(Vector2f msPos)
         {
             if (Orientation == Mode.HORIZONTAL)
             {

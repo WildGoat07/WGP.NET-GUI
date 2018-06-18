@@ -65,10 +65,10 @@ namespace WGP.Gui
                 TitleBorderBuffer[i].Color = Init.BorderMedium;
             for (int i = 8; i < 16; i++)
                 TitleBorderBuffer[i].Color = Init.BorderDark;
-            InternUpdate();
+            InternUpdate(new Vector2f());
         }
 
-        protected override void InternUpdate()
+        protected override void InternUpdate(Vector2f msPos)
         {
             TitleBorderBuffer[0].Position = new Vector2f((int)ReservedSpace.Left + .5f, ReservedSpace.Top + .5f + Init.TextSize + 6) + Padding;
             TitleBorderBuffer[1].Position = TitleBorderBuffer[0].Position + new Vector2f(0, (int)ReservedSpace.Height - Init.TextSize - 6 - Padding.Y * 2);
@@ -85,7 +85,7 @@ namespace WGP.Gui
             availableSpace.Left += Padding.X;
             availableSpace.Width -= Padding.X * 2;
             if (ActiveWidget != null)
-            ActiveWidget.Update(availableSpace);
+            ActiveWidget.Update(availableSpace, msPos);
         }
 
         internal override void Draw(RenderTarget target, Vector2f decal)

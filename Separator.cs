@@ -38,7 +38,7 @@ namespace WGP.Gui
             for (int i = 0; i < 2; i++)
                 Line[i].Color = Init.BorderMedium;
 
-            InternUpdate();
+            InternUpdate(new Vector2f());
         }
 
 
@@ -57,7 +57,7 @@ namespace WGP.Gui
             return result;
         }
 
-        protected override void InternUpdate()
+        protected override void InternUpdate(Vector2f msPos)
         {
             if (Orientation == Mode.HORIZONTAL)
             {

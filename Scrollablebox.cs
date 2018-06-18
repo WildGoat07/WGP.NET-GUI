@@ -163,10 +163,10 @@ namespace WGP.Gui
             HGrabbed = false;
             Relative = new Vector2f();
 
-            InternUpdate();
+            InternUpdate(new Vector2f());
         }
 
-        protected override void InternUpdate()
+        protected override void InternUpdate(Vector2f msPos)
         {
             if (Offset.X < 0)
                 Offset = new Vector2f(0, Offset.Y);
@@ -198,7 +198,7 @@ namespace WGP.Gui
                 Vector2f minContentSize = Content.GetMinimumSize();
                 availableSpace.Width = Utilities.Max(minContentSize.X, size.Width);
                 availableSpace.Height = Utilities.Max(minContentSize.Y, size.Height);
-                Content.Update(availableSpace);
+                Content.Update(availableSpace, msPos - Displayer.Position + Offset);
                 if (Offset.X > 0 && minContentSize.X - Offset.X < size.Width)
                     Offset = new Vector2f(minContentSize.X - size.Width, Offset.Y);
                 if (Offset.Y > 0 && minContentSize.Y - Offset.Y < size.Height)

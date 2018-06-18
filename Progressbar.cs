@@ -61,7 +61,7 @@ namespace WGP.Gui
             for (int i = 8; i < 10; i++)
                 Border[i].Color = Init.BorderMedium;
 
-            InternUpdate();
+            InternUpdate(new Vector2f());
         }
 
 
@@ -83,7 +83,7 @@ namespace WGP.Gui
             return result;
         }
 
-        protected override void InternUpdate()
+        protected override void InternUpdate(Vector2f msPos)
         {
             Back.Size = new Vector2f(ReservedSpace.Width, ReservedSpace.Height) - Padding * 2;
             Back.Position = new Vector2f(ReservedSpace.Left, ReservedSpace.Top) + Padding;

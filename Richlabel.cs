@@ -44,7 +44,7 @@ namespace WGP.Gui
             Label.Font = Init.Font;
             MouseClick += OnClick;
 
-            InternUpdate();
+            InternUpdate(new Vector2f());
         }
 
         internal override void Draw(RenderTarget target, Vector2f decal)
@@ -65,7 +65,7 @@ namespace WGP.Gui
         /// </summary>
         /// <param name="part">Part to add.</param>
         public void AddPart(RichText.Part part) => Label.AddPart(part);
-        protected override void InternUpdate()
+        protected override void InternUpdate(Vector2f msPos)
         {
             pattern = new FloatRect(Pattern.Left, Pattern.Top, 0, 0);
             Label.Position = new Vector2f((int)(ReservedSpace.Left),

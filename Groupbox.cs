@@ -102,10 +102,10 @@ namespace WGP.Gui
             CanHide = false;
             Hidden = false;
 
-            InternUpdate();
+            InternUpdate(new Vector2f());
         }
 
-        protected override void InternUpdate()
+        protected override void InternUpdate(Vector2f msPos)
         {
             Border[0].Position = new Vector2f((int)ReservedSpace.Left + .5f + 5, (int)ReservedSpace.Top + .5f + Init.TextSize / 2) + Padding;
             Border[1].Position = Border[0].Position + new Vector2f(-5, 0);
@@ -140,7 +140,7 @@ namespace WGP.Gui
                 availableSpace.Top = ReservedSpace.Top + Padding.Y * 2 + Init.TextSize;
                 availableSpace.Width = ReservedSpace.Width - Padding.X * 4;
                 availableSpace.Height = ReservedSpace.Height - Padding.Y * 4 - Init.TextSize;
-                Content.Update(availableSpace);
+                Content.Update(availableSpace, msPos);
             }
         }
 

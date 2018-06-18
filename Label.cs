@@ -39,7 +39,7 @@ namespace WGP.Gui
             label.Font = Init.Font;
             label.Color = Init.TextDark;
 
-            InternUpdate();
+            InternUpdate(new Vector2f());
         }
 
 
@@ -62,7 +62,7 @@ namespace WGP.Gui
             return new FloatRect(Padding.X + ReservedSpace.Left, Padding.Y + ReservedSpace.Top, label.FindCharacterPos((uint)label.String.Count()).X, Init.TextSize);
         }
 
-        protected override void InternUpdate()
+        protected override void InternUpdate(Vector2f msPos)
         {
             pattern = new FloatRect(Pattern.Left, Pattern.Top, 0, 0);
             label.Position = new Vector2f((int)(ReservedSpace.Left),

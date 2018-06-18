@@ -47,7 +47,7 @@ namespace WGP.Gui
             Icon = null;
             iconRect = new RectangleShape();
 
-            InternUpdate();
+            InternUpdate(new Vector2f());
         }
         internal override void Draw(RenderTarget target, Vector2f decal)
         {
@@ -78,7 +78,7 @@ namespace WGP.Gui
             return result;
         }
 
-        protected override void InternUpdate()
+        protected override void InternUpdate(Vector2f msPos)
         {
             Back.Size = new Vector2f(ReservedSpace.Width, ReservedSpace.Height) - Padding * 2;
             Back.Position = new Vector2f(ReservedSpace.Left, ReservedSpace.Top) + Padding;

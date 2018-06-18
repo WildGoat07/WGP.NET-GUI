@@ -135,7 +135,7 @@ namespace WGP.Gui
             RecPossible = false;
             focused = false;
 
-            InternUpdate();
+            InternUpdate(new Vector2f());
         }
         /// <summary>
         /// Highlight the whole text.
@@ -171,7 +171,7 @@ namespace WGP.Gui
             return result;
         }
 
-        protected override void InternUpdate()
+        protected override void InternUpdate(Vector2f msPos)
         {
             if (AcceptsRec && Recommendations != null && String.Length > 0 && !HideString)
             {

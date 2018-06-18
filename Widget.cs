@@ -106,7 +106,7 @@ namespace WGP.Gui
             ShowToolTip = false;
         }
         
-        internal void Update(FloatRect availableSpace)
+        internal void Update(FloatRect availableSpace, Vector2f msPos)
         {
             FloatRect newReserved = new FloatRect();
             Vector2f minimum = GetMinimumSize();
@@ -133,10 +133,25 @@ namespace WGP.Gui
             else
                 ShowToolTip = false;
 
-            InternUpdate();
+            if (MouseOnWidget != GetHitbox().Contains(msPos))
+            {
+                if (MouseOnWidget)
+                {
+                    if (MouseLeaved != null)
+                        MouseLeaved(this, new EventArgs());
+                }
+                else
+                {
+                    if (MouseEntered != null)
+                        MouseEntered(this, new EventArgs());
+                }
+            }
+            MouseOnWidget = GetHitbox().Contains(msPos);
+
+            InternUpdate(msPos);
         }
 
-        protected virtual void InternUpdate()
+        protected virtual void InternUpdate(Vector2f msPos)
         {
 
         }
@@ -187,21 +202,6 @@ namespace WGP.Gui
         internal virtual void MouseMovedCall(Vector2f pos, bool intercept = false)
         {
             bool callMovedEvent = MouseOnWidget || GetHitbox().Contains(pos);
-            if (MouseOnWidget != (GetHitbox().Contains(pos) && !intercept))
-            {
-                if (MouseOnWidget || intercept)
-                {
-                    MouseOnWidget = false;
-                    if (MouseLeaved != null)
-                        MouseLeaved(this, new EventArgs());
-                }
-                else
-                {
-                    MouseOnWidget = true;
-                    if (MouseEntered != null)
-                        MouseEntered(this, new EventArgs());
-                }
-            }
             if (callMovedEvent && MouseMoved != null)
                 MouseMoved(this, new MouseMovedEventArgs(pos));
             if (!MouseOnWidget)

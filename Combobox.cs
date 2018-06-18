@@ -100,7 +100,7 @@ namespace WGP.Gui
 
             UpperDecal = new Vector2f();
 
-            InternUpdate();
+            InternUpdate(new Vector2f());
         }
 
 
@@ -124,7 +124,7 @@ namespace WGP.Gui
             return result;
         }
 
-        protected override void InternUpdate()
+        protected override void InternUpdate(Vector2f msPos)
         {
             pattern = new FloatRect(Pattern.Left, Pattern.Top, Pattern.Width, 0);
             Back.Size = new Vector2f(ReservedSpace.Width - Padding.X * 2, 10 + Init.TextSize);

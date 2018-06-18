@@ -35,7 +35,7 @@ namespace WGP.Gui
                 throw new Init.NotInitializedException();
             Img = new RectangleShape();
 
-            InternUpdate();
+            InternUpdate(new Vector2f());
         }
 
 
@@ -56,7 +56,7 @@ namespace WGP.Gui
             return result;
         }
 
-        protected override void InternUpdate()
+        protected override void InternUpdate(Vector2f msPos)
         {
             if (Img.Texture != null)
             {

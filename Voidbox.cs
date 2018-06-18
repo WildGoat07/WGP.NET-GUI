@@ -53,10 +53,10 @@ namespace WGP.Gui
             Pattern = new FloatRect(0, 0, 1, 1);
             Padding = new Vector2f(0, 0);
 
-            InternUpdate();
+            InternUpdate(new Vector2f());
         }
 
-        protected override void InternUpdate()
+        protected override void InternUpdate(Vector2f msPos)
         {
             if (Content != null)
             {
@@ -65,7 +65,7 @@ namespace WGP.Gui
                 availableSpace.Top = ReservedSpace.Top + Padding.Y;
                 availableSpace.Width = ReservedSpace.Width - Padding.X * 2;
                 availableSpace.Height = ReservedSpace.Height - Padding.Y * 2;
-                Content.Update(availableSpace);
+                Content.Update(availableSpace, msPos);
             }
         }
 
