@@ -401,6 +401,7 @@ namespace WGP.Gui
                 else if (args.Code == Keyboard.Key.Delete && args.Alt == false && args.Control == true && args.Shift == false && args.System == false && Focused
                     && String.Count() > 0 && CursPos < String.Count())
                 {
+                    int tmp = CursPos;
                     SecCursPos = CursPos;
                     bool end = false;
                     bool spaceEncountered = false;
@@ -416,7 +417,8 @@ namespace WGP.Gui
                             end = true;
                     }
                     String = String.Remove(SecCursPos, CursPos - SecCursPos);
-                    CursPos = SecCursPos;
+                    CursPos = tmp;
+                    SecCursPos = CursPos;
                     AcceptsRec = false;
                 }
                 else if (args.Code == Keyboard.Key.BackSpace && args.Alt == false && args.Control == false && args.Shift == false && args.System == false && Focused
@@ -424,17 +426,22 @@ namespace WGP.Gui
                 {
                     if (CursPos != SecCursPos)
                     {
+                        int tmp1 = CursPos, tmp2 = SecCursPos;
                         String = String.Remove(Utilities.Min(CursPos, SecCursPos), Math.Abs(CursPos - SecCursPos));
-                        CursPos = Utilities.Min(CursPos, SecCursPos);
+                        CursPos = Utilities.Min(tmp1, tmp2);
                         if (AcceptsRec)
                         {
                             String = String.Remove(CursPos - 1, 1);
-                            CursPos--;
                         }
                     }
                     else
                     {
+                        bool moveCurs = true;
+                        if (CursPos == String.Length)
+                            moveCurs = false;
                         String = String.Remove(CursPos - 1, 1);
+                        if (moveCurs)
+                            CursPos--;
                     }
                     SecCursPos = CursPos;
                 }
@@ -444,8 +451,9 @@ namespace WGP.Gui
                     if (CursPos != SecCursPos)
                     {
                         AcceptsRec = false;
+                        int tmp1 = CursPos, tmp2 = SecCursPos;
                         String = String.Remove(Utilities.Min(CursPos, SecCursPos), Math.Abs(CursPos - SecCursPos));
-                        CursPos = Utilities.Min(CursPos, SecCursPos);
+                        CursPos = Utilities.Min(tmp1, tmp2);
                     }
                     else
                         String = String.Remove(CursPos, 1);
