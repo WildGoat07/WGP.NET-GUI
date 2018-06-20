@@ -95,5 +95,20 @@ namespace WGP.Gui
                 windows[i].Draw();
             }
         }
+        /// <summary>
+        /// Check if a point is inside a window.
+        /// </summary>
+        /// <param name="point">Point to test.</param>
+        /// <returns>True if the point is in a window.</returns>
+        public bool PointOnWindow(SFML.System.Vector2f point)
+        {
+            bool result = false;
+            foreach (var window in windows)
+            {
+                if (window.GetBounds().Contains(point))
+                    result = true;
+            }
+            return result;
+        }
     }
 }
