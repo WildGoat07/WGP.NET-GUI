@@ -55,7 +55,23 @@ namespace WGP.Gui
                 windows.Insert(0, front);
             }
         }
-
+        /// <summary>
+        /// Give explicitely a window the focus.
+        /// </summary>
+        /// <param name="window">Window to give the focus.</param>
+        public void RequestWindow(Window window)
+        {
+            if (front == null)
+            {
+                windows.Remove(window);
+                windows.Insert(0, window);
+            }
+            else
+            {
+                windows.Remove(window);
+                windows.Insert(1, window);
+            }
+        }
         private void OnMouseDown(object sender, SFML.Window.MouseButtonEventArgs e)
         {
             Window selectedWindow = null;
@@ -105,7 +121,7 @@ namespace WGP.Gui
             bool result = false;
             foreach (var window in windows)
             {
-                if (window.GetBounds().Contains(point))
+                if (window.GetBounds().Contains(point) && window.IsOpen)
                     result = true;
             }
             return result;
