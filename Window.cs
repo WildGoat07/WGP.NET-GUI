@@ -286,116 +286,119 @@ namespace WGP.Gui
         /// </summary>
         public void Update()
         {
-            if (Background != null)
+            if (IsOpen)
             {
-                Background.Size = Size;
-                Vector2f entryPoint = Position;
-                if (Titlebar != null)
-                    entryPoint.Y += IconSize;
-                Background.Position = entryPoint;
-
-                Vector2f globalSize = Size;
-                if (Hidden)
-                    globalSize.Y = 0;
-                if (Titlebar != null)
-                    globalSize.Y += IconSize;
-
-                Border[0].Position =  new Vector2f(.5f + (int)Position.X, .5f + (int)Position.Y);
-                Border[1].Position = Border[0].Position + new Vector2f((int)globalSize.X, 0);
-                Border[2].Position = Border[1].Position;
-                Border[3].Position = Border[2].Position + new Vector2f(0, (int)globalSize.Y);
-                Border[4].Position = Border[3].Position;
-                Border[5].Position = Border[4].Position + new Vector2f(-(int)globalSize.X, 0);
-                Border[6].Position = Border[5].Position;
-                Border[7].Position = Border[6].Position + new Vector2f(0, -(int)globalSize.Y);
-            }
-            if (Titlebar != null)
-            {
-                Titlebar.Size = new Vector2f(Size.X, IconSize);
-                Titlebar.Position = Position;
-                TitleText.Position = Position + new Vector2f(5, (int)((IconSize - Init.TextSize) / 2) + Init.TextSize);
-            }
-            if (TitleBack != null)
-            {
-                if (Title.Count() > 0)
+                if (Background != null)
                 {
-                    TitleBack.Position = new Vector2f(TitleText.Position.X + TitleText.FindCharacterPos((uint)TitleText.String.Count()).X + 5, Position.Y);
-                    float decal = 0;
-                    if (CloseIcon != null)
-                        decal += IconSize;
-                    if (HideContentIcon != null)
-                        decal += IconSize;
-                    TitleBack.Size = new Vector2f((Utilities.Max((int)Size.X - TitleText.FindCharacterPos((uint)TitleText.String.Count()).X - decal - 15, 0)), (int)IconSize);
-                    TitleBack.TextureRect = new IntRect(0, 0, (int)TitleBack.Size.X, (int)IconSize);
+                    Background.Size = Size;
+                    Vector2f entryPoint = Position;
+                    if (Titlebar != null)
+                        entryPoint.Y += IconSize;
+                    Background.Position = entryPoint;
+
+                    Vector2f globalSize = Size;
+                    if (Hidden)
+                        globalSize.Y = 0;
+                    if (Titlebar != null)
+                        globalSize.Y += IconSize;
+
+                    Border[0].Position = new Vector2f(.5f + (int)Position.X, .5f + (int)Position.Y);
+                    Border[1].Position = Border[0].Position + new Vector2f((int)globalSize.X, 0);
+                    Border[2].Position = Border[1].Position;
+                    Border[3].Position = Border[2].Position + new Vector2f(0, (int)globalSize.Y);
+                    Border[4].Position = Border[3].Position;
+                    Border[5].Position = Border[4].Position + new Vector2f(-(int)globalSize.X, 0);
+                    Border[6].Position = Border[5].Position;
+                    Border[7].Position = Border[6].Position + new Vector2f(0, -(int)globalSize.Y);
+                }
+                if (Titlebar != null)
+                {
+                    Titlebar.Size = new Vector2f(Size.X, IconSize);
+                    Titlebar.Position = Position;
+                    TitleText.Position = Position + new Vector2f(5, (int)((IconSize - Init.TextSize) / 2) + Init.TextSize);
+                }
+                if (TitleBack != null)
+                {
+                    if (Title.Count() > 0)
+                    {
+                        TitleBack.Position = new Vector2f(TitleText.Position.X + TitleText.FindCharacterPos((uint)TitleText.String.Count()).X + 5, Position.Y);
+                        float decal = 0;
+                        if (CloseIcon != null)
+                            decal += IconSize;
+                        if (HideContentIcon != null)
+                            decal += IconSize;
+                        TitleBack.Size = new Vector2f((Utilities.Max((int)Size.X - TitleText.FindCharacterPos((uint)TitleText.String.Count()).X - decal - 15, 0)), (int)IconSize);
+                        TitleBack.TextureRect = new IntRect(0, 0, (int)TitleBack.Size.X, (int)IconSize);
+                    }
+                    else
+                    {
+                        TitleBack.Position = new Vector2f(5, 0) + Position;
+                        float decal = 0;
+                        if (CloseIcon != null)
+                            decal += IconSize;
+                        if (HideContentIcon != null)
+                            decal += IconSize;
+                        TitleBack.Size = new Vector2f(Utilities.Max(Size.X - decal - 10, 0), IconSize);
+                        TitleBack.TextureRect = new IntRect(0, 0, (int)TitleBack.Size.X, (int)IconSize);
+                    }
+                }
+
+                if (ResizeIcon != null)
+                {
+                    ResizeIcon.Position = Position + Size - new Vector2f(IconSize, IconSize);
+                    if (Titlebar != null)
+                        ResizeIcon.Position += new Vector2f(0, IconSize);
                 }
                 else
-                {
-                    TitleBack.Position = new Vector2f(5, 0) + Position;
-                    float decal = 0;
-                    if (CloseIcon != null)
-                        decal += IconSize;
-                    if (HideContentIcon != null)
-                        decal += IconSize;
-                    TitleBack.Size = new Vector2f(Utilities.Max(Size.X - decal - 10, 0), IconSize);
-                    TitleBack.TextureRect = new IntRect(0, 0, (int)TitleBack.Size.X, (int)IconSize);
-                }
-            }
+                    Size = minimumDefinedSize;
 
-            if (ResizeIcon != null)
-            {
-                ResizeIcon.Position = Position + Size - new Vector2f(IconSize, IconSize);
-                if (Titlebar != null)
-                    ResizeIcon.Position += new Vector2f(0, IconSize);
-            }
-            else
-                Size = minimumDefinedSize;
-
-            if (CloseIcon != null)
-            {
-                CloseIcon.Position = Position + new Vector2f(Size.X - IconSize, 0);
-            }
-            if (HideContentIcon != null)
-            {
-                HideContentIcon.Position = Position + new Vector2f(Size.X - IconSize, 0);
                 if (CloseIcon != null)
-                    HideContentIcon.Position -= new Vector2f(IconSize, 0);
-                if (Hidden)
-                    HideContentIcon.Texture = Init.ShowTexture;
-                else
-                    HideContentIcon.Texture = Init.HideTexture;
-            }
-            FloatRect availableSpace = new FloatRect(new Vector2f(), Size);
-            if (ResizeIcon != null)
-            {
-                availableSpace.Width -= IconSize;
-                availableSpace.Height -= IconSize;
-            }
-            if (Content != null)
-            {
-                Vector2f offset = Position;
-                if (Titlebar != null)
-                    offset.Y += IconSize;
-                Content.Update(availableSpace, App.MapPixelToCoords(Mouse.GetPosition(App), WindowView ?? App.GetView()) - offset);
-            }
+                {
+                    CloseIcon.Position = Position + new Vector2f(Size.X - IconSize, 0);
+                }
+                if (HideContentIcon != null)
+                {
+                    HideContentIcon.Position = Position + new Vector2f(Size.X - IconSize, 0);
+                    if (CloseIcon != null)
+                        HideContentIcon.Position -= new Vector2f(IconSize, 0);
+                    if (Hidden)
+                        HideContentIcon.Texture = Init.ShowTexture;
+                    else
+                        HideContentIcon.Texture = Init.HideTexture;
+                }
+                FloatRect availableSpace = new FloatRect(new Vector2f(), Size);
+                if (ResizeIcon != null)
+                {
+                    availableSpace.Width -= IconSize;
+                    availableSpace.Height -= IconSize;
+                }
+                if (Content != null)
+                {
+                    Vector2f offset = Position;
+                    if (Titlebar != null)
+                        offset.Y += IconSize;
+                    Content.Update(availableSpace, App.MapPixelToCoords(Mouse.GetPosition(App), WindowView ?? App.GetView()) - offset);
+                }
 
-            Vector2f minimumSize = new Vector2f();
-            float minTitleWidth = 0;
-            if (Content != null)
-                minimumSize = Content.GetMinimumSize();
-            if (ResizeIcon != null)
-                minimumSize += new Vector2f(IconSize, IconSize);
-            if (TitleText != null)
-            {
-                if (TitleText.String != "")
-                    minTitleWidth += 10 + TitleText.FindCharacterPos((uint)TitleText.String.Count()).X;
-            }
-            if (CloseIcon != null)
-                minTitleWidth += IconSize;
-            if (HideContentIcon != null)
-                minTitleWidth += IconSize;
+                Vector2f minimumSize = new Vector2f();
+                float minTitleWidth = 0;
+                if (Content != null)
+                    minimumSize = Content.GetMinimumSize();
+                if (ResizeIcon != null)
+                    minimumSize += new Vector2f(IconSize, IconSize);
+                if (TitleText != null)
+                {
+                    if (TitleText.String != "")
+                        minTitleWidth += 10 + TitleText.FindCharacterPos((uint)TitleText.String.Count()).X;
+                }
+                if (CloseIcon != null)
+                    minTitleWidth += IconSize;
+                if (HideContentIcon != null)
+                    minTitleWidth += IconSize;
 
-            size.Y = Utilities.Max(minimumSize.Y, Size.Y);
-            size.X = Utilities.Max(Utilities.Max(minimumSize.X, minTitleWidth), Size.X);
+                size.Y = Utilities.Max(minimumSize.Y, Size.Y);
+                size.X = Utilities.Max(Utilities.Max(minimumSize.X, minTitleWidth), Size.X);
+            }
         }
         /// <summary>
         /// Closes the window.
@@ -424,7 +427,7 @@ namespace WGP.Gui
 
         private void OnMouseDown(object sender, SFML.Window.MouseButtonEventArgs e)
         {
-            if (triggerEvents)
+            if (triggerEvents && IsOpen)
             {
                 View tmp = null;
                 if (WindowView != null)
@@ -503,113 +506,131 @@ namespace WGP.Gui
 
         private void OnMouseUp(object sender, SFML.Window.MouseButtonEventArgs e)
         {
-            if (IsResized)
+            if (IsOpen)
             {
-                IsResized = false;
-                if (Resized != null)
-                    Resized(this, new EventArgs());
+                if (IsResized)
+                {
+                    IsResized = false;
+                    if (Resized != null)
+                        Resized(this, new EventArgs());
+                }
+                if (IsGrabbed)
+                {
+                    IsGrabbed = false;
+                    if (Released != null)
+                        Released(this, new EventArgs());
+                }
+                View tmp = null;
+                if (WindowView != null)
+                    tmp = WindowView;
+                else
+                    tmp = App.GetView();
+                Vector2f MousePos = App.MapPixelToCoords(new Vector2i(e.X, e.Y), tmp) - Position;
+                if (Titlebar != null)
+                    MousePos.Y -= IconSize;
+                if (Content != null && !Hidden && InterceptEvents == null)
+                    Content.MouseButtonUpCall(e.Button, MousePos);
+                if (!hidden && InterceptEvents != null)
+                    InterceptEvents.MouseButtonUpCall(e.Button, MousePos);
             }
-            if (IsGrabbed)
-            {
-                IsGrabbed = false;
-                if (Released != null)
-                    Released(this, new EventArgs());
-            }
-            View tmp = null;
-            if (WindowView != null)
-                tmp = WindowView;
-            else
-                tmp = App.GetView();
-            Vector2f MousePos = App.MapPixelToCoords(new Vector2i(e.X, e.Y), tmp) - Position;
-            if (Titlebar != null)
-                MousePos.Y -= IconSize;
-            if (Content != null && !Hidden && InterceptEvents == null)
-                Content.MouseButtonUpCall(e.Button, MousePos);
-            if (!hidden && InterceptEvents != null)
-                InterceptEvents.MouseButtonUpCall(e.Button, MousePos);
         }
 
         private void OnMouseScrolled(object sender, SFML.Window.MouseWheelEventArgs e)
         {
-            if (Content != null && !Hidden && InterceptEvents == null && triggerEvents == true)
-                Content.MouseScrolledCall(e.Delta);
-            if (!hidden && InterceptEvents != null && triggerEvents == true)
-                InterceptEvents.MouseScrolledCall(e.Delta);
+            if (IsOpen)
+            {
+                if (Content != null && !Hidden && InterceptEvents == null && triggerEvents == true)
+                    Content.MouseScrolledCall(e.Delta);
+                if (!hidden && InterceptEvents != null && triggerEvents == true)
+                    InterceptEvents.MouseScrolledCall(e.Delta);
+            }
         }
 
         private void OnMouseMoved(object sender, SFML.Window.MouseMoveEventArgs e)
         {
-            View tmp = null;
-            if (WindowView != null)
-                tmp = WindowView;
-            else
-                tmp = App.GetView();
-            Vector2f pos = App.MapPixelToCoords(new Vector2i(e.X, e.Y), tmp);
-            if (IsResized)
+            if (IsOpen)
             {
-                Vector2f newSize = pos - Position + RelativeSizer;
-                if (Titlebar != null)
-                    newSize.Y -= IconSize;
-                Size = newSize;
-            }
-            if (IsGrabbed)
-                Position = pos + RelativeGrab;
-            if (!MouseOnWindow)
-            {
-                if (GetBounds().Contains(pos))
+                View tmp = null;
+                if (WindowView != null)
+                    tmp = WindowView;
+                else
+                    tmp = App.GetView();
+                Vector2f pos = App.MapPixelToCoords(new Vector2i(e.X, e.Y), tmp);
+                if (IsResized)
                 {
-                    MouseOnWindow = true;
-                    if (MouseEntered != null)
-                        MouseEntered(this, new EventArgs());
+                    Vector2f newSize = pos - Position + RelativeSizer;
+                    if (Titlebar != null)
+                        newSize.Y -= IconSize;
+                    Size = newSize;
                 }
-            }
-            else
-            {
-                if (!GetBounds().Contains(pos))
+                if (IsGrabbed)
+                    Position = pos + RelativeGrab;
+                if (!MouseOnWindow)
                 {
-                    MouseOnWindow = false;
-                    if (MouseLeaved != null)
-                        MouseLeaved(this, new EventArgs());
+                    if (GetBounds().Contains(pos))
+                    {
+                        MouseOnWindow = true;
+                        if (MouseEntered != null)
+                            MouseEntered(this, new EventArgs());
+                    }
                 }
-            }
-            if (Content != null && !Hidden && InterceptEvents == null)
-            {
-                pos -= Position;
-                if (Titlebar != null)
-                    pos.Y -= IconSize;
-                Content.MouseMovedCall(pos);
-            }
-            if (!hidden && InterceptEvents != null)
-            {
-                pos -= Position;
-                if (Titlebar != null)
-                    pos.Y -= IconSize;
-                InterceptEvents.MouseMovedCall(pos);
+                else
+                {
+                    if (!GetBounds().Contains(pos))
+                    {
+                        MouseOnWindow = false;
+                        if (MouseLeaved != null)
+                            MouseLeaved(this, new EventArgs());
+                    }
+                }
+                if (Content != null && !Hidden && InterceptEvents == null)
+                {
+                    pos -= Position;
+                    if (Titlebar != null)
+                        pos.Y -= IconSize;
+                    Content.MouseMovedCall(pos);
+                }
+                if (!hidden && InterceptEvents != null)
+                {
+                    pos -= Position;
+                    if (Titlebar != null)
+                        pos.Y -= IconSize;
+                    InterceptEvents.MouseMovedCall(pos);
+                }
             }
         }
 
         private void OnTextEntered(object sender, SFML.Window.TextEventArgs e)
         {
-            if (Content != null && !Hidden && InterceptEvents == null)
-                Content.TextEnteredCall(e.Unicode);
-            if (!hidden && InterceptEvents != null)
-                InterceptEvents.TextEnteredCall(e.Unicode);
+            if (IsOpen)
+            {
+                if (Content != null && !Hidden && InterceptEvents == null)
+                    Content.TextEnteredCall(e.Unicode);
+                if (!hidden && InterceptEvents != null)
+                    InterceptEvents.TextEnteredCall(e.Unicode);
+            }
         }
 
         private void OnKeyPressed(object sender, SFML.Window.KeyEventArgs e)
         {
-            if (Content != null && !Hidden && InterceptEvents == null)
-                Content.KeyPressedCall(e);
-            if (!hidden && InterceptEvents != null)
-                InterceptEvents.KeyPressedCall(e);
+            if (IsOpen)
+            {
+                if (Content != null && !Hidden && InterceptEvents == null)
+                    Content.KeyPressedCall(e);
+                if (!hidden && InterceptEvents != null)
+                    InterceptEvents.KeyPressedCall(e);
+            }
         }
 
         private void OnKeyReleased(object sender, SFML.Window.KeyEventArgs e)
         {
-            if (Content != null && !Hidden && InterceptEvents == null)
-                Content.KeyReleasedCall(e);
-            if (!hidden && InterceptEvents != null)
-                InterceptEvents.KeyReleasedCall(e);
+            if (IsOpen)
+            {
+                if (Content != null && !Hidden && InterceptEvents == null)
+                    Content.KeyReleasedCall(e);
+                if (!hidden && InterceptEvents != null)
+                    InterceptEvents.KeyReleasedCall(e);
+            }
         }
     }
 }
