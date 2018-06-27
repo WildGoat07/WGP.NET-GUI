@@ -318,9 +318,7 @@ namespace WGP.Gui
             base.MouseButtonDownCall(button, pos, intercept);
             if (Content != null && Displayer.GetGlobalBounds().Contains(pos))
                 Content.MouseButtonDownCall(button, pos - Displayer.Position + Offset, intercept);
-            else if (Content != null)
-                Content.MouseButtonDownCall(button, pos - Displayer.Position + Offset, true);
-            if (!intercept)
+            if (!intercept && MouseOnWidget)
             {
                 if (button == Mouse.Button.Left)
                 {
