@@ -151,7 +151,7 @@ namespace WGP.Gui
             target.Draw(Label, new RenderStates(tr.Transform));
             if (!Hidden)
             {
-                target.Draw(Border, PrimitiveType.LinesStrip, new RenderStates(tr.Transform));
+                target.Draw(Border, PrimitiveType.LineStrip, new RenderStates(tr.Transform));
                 if (Content != null)
                     Content.Draw(target, decal);
             }

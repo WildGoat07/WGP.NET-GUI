@@ -280,7 +280,7 @@ namespace WGP.Gui
                 if (Displayer.Size.X < Content.GetMinimumSize().X)
                     target.Draw(HorizontalControl, new RenderStates(tr.Transform));
             }
-            target.Draw(Border, PrimitiveType.LinesStrip, new RenderStates(tr.Transform));
+            target.Draw(Border, PrimitiveType.LineStrip, new RenderStates(tr.Transform));
         }
 
         internal override Vector2f GetMinimumSize()

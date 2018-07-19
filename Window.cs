@@ -184,7 +184,7 @@ namespace WGP.Gui
             App = target;
             App.MouseButtonPressed += OnMouseDown;
             App.MouseButtonReleased += OnMouseUp;
-            App.MouseWheelMoved += OnMouseScrolled;
+            App.MouseWheelScrolled += OnMouseScrolled;
             App.MouseMoved += OnMouseMoved;
             App.TextEntered += OnTextEntered;
             App.KeyPressed += OnKeyPressed;
@@ -535,14 +535,14 @@ namespace WGP.Gui
             }
         }
 
-        private void OnMouseScrolled(object sender, SFML.Window.MouseWheelEventArgs e)
+        private void OnMouseScrolled(object sender, SFML.Window.MouseWheelScrollEventArgs e)
         {
             if (IsOpen)
             {
                 if (Content != null && !Hidden && InterceptEvents == null && triggerEvents == true)
-                    Content.MouseScrolledCall(e.Delta);
+                    Content.MouseScrolledCall((int)e.Delta);
                 if (!hidden && InterceptEvents != null && triggerEvents == true)
-                    InterceptEvents.MouseScrolledCall(e.Delta);
+                    InterceptEvents.MouseScrolledCall((int)e.Delta);
             }
         }
 

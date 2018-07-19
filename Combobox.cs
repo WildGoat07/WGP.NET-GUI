@@ -201,7 +201,7 @@ namespace WGP.Gui
                 target.Draw(BackContext, new RenderStates(tr.Transform));
                 if (PointedAt != -1)
                     target.Draw(SelectedContext, new RenderStates(tr.Transform));
-                target.Draw(BorderContext, PrimitiveType.LinesStrip, new RenderStates(tr.Transform));
+                target.Draw(BorderContext, PrimitiveType.LineStrip, new RenderStates(tr.Transform));
                 foreach (var item in Buffer)
                 {
                     target.Draw(item, new RenderStates(tr.Transform));

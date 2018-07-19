@@ -151,10 +151,10 @@ namespace WGP.Gui
             Transformable tr = new Transformable();
             tr.Position = decal;
             target.Draw(Back, new RenderStates(tr.Transform));
-            target.Draw(Border, PrimitiveType.LinesStrip, new RenderStates(tr.Transform));
+            target.Draw(Border, PrimitiveType.LineStrip, new RenderStates(tr.Transform));
             target.Draw(DisplayText, new RenderStates(tr.Transform));
             if (Focused && DrawCursor)
-                target.Draw(Cursor, PrimitiveType.LinesStrip, new RenderStates(tr.Transform));
+                target.Draw(Cursor, PrimitiveType.LineStrip, new RenderStates(tr.Transform));
             if (CursPos != SecCursPos)
             {
                 RenderStates states = new RenderStates(tr.Transform) { BlendMode = new BlendMode(BlendMode.Factor.OneMinusDstColor, BlendMode.Factor.OneMinusSrcColor, BlendMode.Equation.Add, BlendMode.Factor.One, BlendMode.Factor.One, BlendMode.Equation.Add) };

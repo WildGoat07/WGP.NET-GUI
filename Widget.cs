@@ -243,7 +243,7 @@ namespace WGP.Gui
                 Transformable tr = new Transformable();
                 tr.Position = decal;
                 target.Draw(BackToolTip, new RenderStates(tr.Transform));
-                target.Draw(BorderToolTip, PrimitiveType.LinesStrip, new RenderStates(tr.Transform));
+                target.Draw(BorderToolTip, PrimitiveType.LineStrip, new RenderStates(tr.Transform));
                 target.Draw(TextToolTip, new RenderStates(tr.Transform));
             }
         }

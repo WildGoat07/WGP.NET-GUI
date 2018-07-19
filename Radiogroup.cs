@@ -67,7 +67,7 @@ namespace WGP.Gui
             tr.Position = decal;
             for (int i = 0; i < Labels.Count; i++)
             {
-                target.Draw(BorderBuff, PrimitiveType.LinesStrip, new RenderStates(tr.Transform));
+                target.Draw(BorderBuff, PrimitiveType.LineStrip, new RenderStates(tr.Transform));
                 target.Draw(Labels[i], new RenderStates(tr.Transform));
                 if (i == Checked)
                     target.Draw(FillBuff, new RenderStates(tr.Transform));
