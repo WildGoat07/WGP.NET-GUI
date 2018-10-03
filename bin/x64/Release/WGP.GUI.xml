@@ -1,0 +1,706 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>WGP.GUI</name>
+    </assembly>
+    <members>
+        <member name="T:WGP.Gui.Button">
+            <summary>
+            Basic button widget.
+            </summary>
+        </member>
+        <member name="P:WGP.Gui.Button.Icon">
+            <summary>
+            Icon of the button.
+            </summary>
+        </member>
+        <member name="P:WGP.Gui.Button.Title">
+            <summary>
+            Its title.
+            </summary>
+        </member>
+        <member name="M:WGP.Gui.Button.#ctor">
+            <summary>
+            Constructor.
+            </summary>
+        </member>
+        <member name="T:WGP.Gui.Checkbox">
+            <summary>
+            Basic checkbox.
+            </summary>
+        </member>
+        <member name="P:WGP.Gui.Checkbox.Checked">
+            <summary>
+            Returns true if checked.
+            </summary>
+        </member>
+        <member name="P:WGP.Gui.Checkbox.CheckState">
+            <summary>
+            Returns the current check state.
+            </summary>
+        </member>
+        <member name="P:WGP.Gui.Checkbox.Title">
+            <summary>
+            Its title.
+            </summary>
+        </member>
+        <member name="M:WGP.Gui.Checkbox.#ctor">
+            <summary>
+            Constructor.
+            </summary>
+        </member>
+        <member name="T:WGP.Gui.Combobox">
+            <summary>
+            Basic combo box. An alternative to the radio buttons.
+            </summary>
+        </member>
+        <member name="P:WGP.Gui.Combobox.List">
+            <summary>
+            List of the options.
+            </summary>
+        </member>
+        <member name="P:WGP.Gui.Combobox.Developped">
+            <summary>
+            When developped, the widget will intercept any other widget event until an option is selected or if canceled.
+            </summary>
+        </member>
+        <member name="P:WGP.Gui.Combobox.Selection">
+            <summary>
+            Current selection.
+            </summary>
+        </member>
+        <member name="M:WGP.Gui.Combobox.#ctor">
+            <summary>
+            Constructor.
+            </summary>
+        </member>
+        <member name="T:WGP.Gui.Gauge">
+            <summary>
+            Gauge widget. Used as a percentage input.
+            </summary>
+        </member>
+        <member name="P:WGP.Gui.Gauge.Percent">
+            <summary>
+            Current percentage.
+            </summary>
+        </member>
+        <member name="P:WGP.Gui.Gauge.Orientation">
+            <summary>
+            Orientation of the gauge.
+            </summary>
+        </member>
+        <member name="M:WGP.Gui.Gauge.#ctor">
+            <summary>
+            Constructor.
+            </summary>
+        </member>
+        <member name="T:WGP.Gui.Groupbox">
+            <summary>
+            Group box container.
+            </summary>
+        </member>
+        <member name="P:WGP.Gui.Groupbox.Content">
+            <summary>
+            Its widget.
+            </summary>
+        </member>
+        <member name="P:WGP.Gui.Groupbox.CanHide">
+            <summary>
+            True if the group can be hidden, false if not.
+            </summary>
+        </member>
+        <member name="P:WGP.Gui.Groupbox.Hidden">
+            <summary>
+            True if the group is hidden, false if not. The CanHide property must be set to true.
+            </summary>
+        </member>
+        <member name="P:WGP.Gui.Groupbox.Title">
+            <summary>
+            Its title.
+            </summary>
+        </member>
+        <member name="M:WGP.Gui.Groupbox.#ctor">
+            <summary>
+            Constructor.
+            </summary>
+        </member>
+        <member name="M:WGP.Gui.Init.InitializeResources">
+            <summary>
+            Initializes the requiered resources for the widgets.
+            </summary>
+        </member>
+        <member name="T:WGP.Gui.Label">
+            <summary>
+            Base text widget.
+            </summary>
+        </member>
+        <member name="P:WGP.Gui.Label.Title">
+            <summary>
+            Title of the widget.
+            </summary>
+            <value>String of the title.</value>
+        </member>
+        <member name="M:WGP.Gui.Label.#ctor">
+            <summary>
+            Constructor.
+            </summary>
+        </member>
+        <member name="T:WGP.Gui.Multibox">
+            <summary>
+            The Multibox can handle multiple widget within him.
+            </summary>
+        </member>
+        <member name="P:WGP.Gui.Multibox.Orientation">
+            <summary>
+            Orientation of the list of widgets.
+            </summary>
+            <value>HORIZONTAL or VERTICAL.</value>
+        </member>
+        <member name="P:WGP.Gui.Multibox.AutomaticWeightDistribution">
+            <summary>
+            The Automatic weight distribution set the weight of its widgets based on their minimum size. It will override the given weight using Add().
+            </summary>
+        </member>
+        <member name="M:WGP.Gui.Multibox.#ctor">
+            <summary>
+            Constructor.
+            </summary>
+        </member>
+        <member name="M:WGP.Gui.Multibox.Clear">
+            <summary>
+            Remove all the widgets in the box.
+            </summary>
+        </member>
+        <member name="M:WGP.Gui.Multibox.Add(WGP.Gui.Widget,System.Single)">
+            <summary>
+            Adds a widget to its list.
+            </summary>
+            <param name="widget">Widget to add.</param>
+            <param name="weight">Weight of the widget. Must be superior than 0. The weight is an index to how will be calculated the reserved space of the widget if the size of the box is bigger than the minimum size of its widgets.</param>
+        </member>
+        <member name="M:WGP.Gui.Multibox.Insert(WGP.Gui.Widget,WGP.Gui.Widget,System.Single)">
+            <summary>
+            Adds a widget to its list.
+            </summary>
+            <param name="widget">Widget to add.</param>
+            <param name="At">Where to insert the widget.</param>
+            <param name="weight">Weight of the widget. Must be superior than 0. The weight is an index to how will be calculated the reserved space of the widget if the size of the box is bigger than the minimum size of its widgets.</param>
+        </member>
+        <member name="M:WGP.Gui.Multibox.Remove(WGP.Gui.Widget)">
+            <summary>
+            Removes a widget from its list.
+            </summary>
+            <param name="At">The widget to remove.</param>
+        </member>
+        <member name="T:WGP.Gui.Picture">
+            <summary>
+            Widget that displays an SFML texture.
+            </summary>
+        </member>
+        <member name="P:WGP.Gui.Picture.Source">
+            <summary>
+            Texture of the image.
+            </summary>
+            <value>Texture of the image.</value>
+        </member>
+        <member name="M:WGP.Gui.Picture.#ctor">
+            <summary>
+            Constructor.
+            </summary>
+        </member>
+        <member name="T:WGP.Gui.Progressbar">
+            <summary>
+            Progressbar widget.
+            </summary>
+        </member>
+        <member name="P:WGP.Gui.Progressbar.Percent">
+            <summary>
+            The percentage of filling of the progressbar.
+            </summary>
+        </member>
+        <member name="P:WGP.Gui.Progressbar.MinimumizeSize">
+            <summary>
+            The minimal size of the progressbar.
+            </summary>
+            <remarks>
+            It must be defined because the progressbar has no size reference, like a text.
+            </remarks>
+        </member>
+        <member name="M:WGP.Gui.Progressbar.#ctor">
+            <summary>
+            Constructor.
+            </summary>
+        </member>
+        <member name="T:WGP.Gui.Properties.Resources">
+            <summary>
+              Une classe de ressource fortement typée destinée, entre autres, à la consultation des chaînes localisées.
+            </summary>
+        </member>
+        <member name="P:WGP.Gui.Properties.Resources.ResourceManager">
+            <summary>
+              Retourne l'instance ResourceManager mise en cache utilisée par cette classe.
+            </summary>
+        </member>
+        <member name="P:WGP.Gui.Properties.Resources.Culture">
+            <summary>
+              Remplace la propriété CurrentUICulture du thread actuel pour toutes
+              les recherches de ressources à l'aide de cette classe de ressource fortement typée.
+            </summary>
+        </member>
+        <member name="P:WGP.Gui.Properties.Resources.calibri">
+            <summary>
+              Recherche une ressource localisée de type System.Byte[].
+            </summary>
+        </member>
+        <member name="P:WGP.Gui.Properties.Resources.checkedBox">
+            <summary>
+              Recherche une ressource localisée de type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:WGP.Gui.Properties.Resources.closeIcon">
+            <summary>
+              Recherche une ressource localisée de type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:WGP.Gui.Properties.Resources.downArrow">
+            <summary>
+              Recherche une ressource localisée de type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:WGP.Gui.Properties.Resources.groupboxArrow">
+            <summary>
+              Recherche une ressource localisée de type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:WGP.Gui.Properties.Resources.hideIcon">
+            <summary>
+              Recherche une ressource localisée de type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:WGP.Gui.Properties.Resources.indeterminateBox">
+            <summary>
+              Recherche une ressource localisée de type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:WGP.Gui.Properties.Resources.resizeIcon">
+            <summary>
+              Recherche une ressource localisée de type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:WGP.Gui.Properties.Resources.scrollDown">
+            <summary>
+              Recherche une ressource localisée de type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:WGP.Gui.Properties.Resources.scrollLeft">
+            <summary>
+              Recherche une ressource localisée de type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:WGP.Gui.Properties.Resources.scrollRight">
+            <summary>
+              Recherche une ressource localisée de type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:WGP.Gui.Properties.Resources.scrollUp">
+            <summary>
+              Recherche une ressource localisée de type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:WGP.Gui.Properties.Resources.showIcon">
+            <summary>
+              Recherche une ressource localisée de type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:WGP.Gui.Properties.Resources.TitlebarBack">
+            <summary>
+              Recherche une ressource localisée de type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="T:WGP.Gui.Radiogroup">
+            <summary>
+            Basic radio buttons widget.
+            </summary>
+        </member>
+        <member name="P:WGP.Gui.Radiogroup.Checked">
+            <summary>
+            Checked index.
+            </summary>
+        </member>
+        <member name="M:WGP.Gui.Radiogroup.#ctor">
+            <summary>
+            Constructor.
+            </summary>
+        </member>
+        <member name="M:WGP.Gui.Radiogroup.AddOption(System.String)">
+            <summary>
+            Adds a new options at the end of the group.
+            </summary>
+            <param name="name">Option's name.</param>
+        </member>
+        <member name="T:WGP.Gui.Richlabel">
+            <summary>
+            Advanced text widget.
+            </summary>
+        </member>
+        <member name="P:WGP.Gui.Richlabel.MaxWidth">
+            <summary>
+            Maximum width of the text.
+            </summary>
+        </member>
+        <member name="M:WGP.Gui.Richlabel.#ctor">
+            <summary>
+            Constructor.
+            </summary>
+        </member>
+        <member name="M:WGP.Gui.Richlabel.AddPart(WGP.TEXT.RichText.Part)">
+            <summary>
+            Adds a part to the text.
+            </summary>
+            <param name="part">Part to add.</param>
+        </member>
+        <member name="M:WGP.Gui.Richlabel.Generate">
+            <summary>
+            Generates the text.
+            </summary>
+        </member>
+        <member name="M:WGP.Gui.Richlabel.Clear">
+            <summary>
+            Clears the text.
+            </summary>
+        </member>
+        <member name="T:WGP.Gui.Scrollablebox">
+            <summary>
+            Scrollable box container. The scrollable box allow you to reduce the minimum size of a widget by putting it in a scrollable view.
+            </summary>
+        </member>
+        <member name="P:WGP.Gui.Scrollablebox.Content">
+            <summary>
+            Its content.
+            </summary>
+        </member>
+        <member name="P:WGP.Gui.Scrollablebox.MinimumSize">
+            <summary>
+            Its minimum size.
+            </summary>
+            <remarks>
+            The content's size can be reduced as much as possible, so the minimum size must be defined to put a limit on the minimal view possible.
+            </remarks>
+        </member>
+        <member name="P:WGP.Gui.Scrollablebox.ScrollingStyle">
+            <summary>
+            The scrolling style.
+            </summary>
+            <value>Flags.</value>
+        </member>
+        <member name="P:WGP.Gui.Scrollablebox.NoWheelScrolling">
+            <summary>
+            Set to true if the scrollable view shouldn't react to the mouse wheel events.
+            </summary>
+        </member>
+        <member name="M:WGP.Gui.Scrollablebox.#ctor">
+            <summary>
+            Constructor.
+            </summary>
+        </member>
+        <member name="T:WGP.Gui.Separator">
+            <summary>
+            Basic separator widget. The separator is a straight line to separate widgets.
+            </summary>
+        </member>
+        <member name="P:WGP.Gui.Separator.Orientation">
+            <summary>
+            Its orientation.
+            </summary>
+        </member>
+        <member name="M:WGP.Gui.Separator.#ctor">
+            <summary>
+            Constructor.
+            </summary>
+        </member>
+        <member name="T:WGP.Gui.Tabcontrol">
+            <summary>
+            Tab control container. Allows to use multiple tabs in a GUI.
+            </summary>
+        </member>
+        <member name="P:WGP.Gui.Tabcontrol.ActiveWidget">
+            <summary>
+            The active widget is the one displayed.
+            </summary>
+        </member>
+        <member name="M:WGP.Gui.Tabcontrol.#ctor">
+            <summary>
+            Constructor.
+            </summary>
+        </member>
+        <member name="M:WGP.Gui.Tabcontrol.Add(WGP.Gui.Widget,System.String)">
+            <summary>
+            Adds a new tab.
+            </summary>
+            <param name="widget">Content.</param>
+            <param name="title">Tab's title.</param>
+        </member>
+        <member name="M:WGP.Gui.Tabcontrol.Insert(WGP.Gui.Widget,WGP.Gui.Widget,System.String)">
+            <summary>
+            Adds a new tab.
+            </summary>
+            <param name="widget">Content.</param>
+            <param name="At">Position of the new tab.</param>
+            <param name="title">Tab's title.</param>
+        </member>
+        <member name="M:WGP.Gui.Tabcontrol.SetTitle(WGP.Gui.Widget,System.String)">
+            <summary>
+            Changes the title of a tab.
+            </summary>
+            <param name="At">Tab to rename.</param>
+            <param name="title">New title.</param>
+        </member>
+        <member name="M:WGP.Gui.Tabcontrol.GetTitle(WGP.Gui.Widget)">
+            <summary>
+            Returns the title of a tab.
+            </summary>
+            <param name="At">Tab.</param>
+            <returns>Title.</returns>
+        </member>
+        <member name="M:WGP.Gui.Tabcontrol.Remove(WGP.Gui.Widget)">
+            <summary>
+            Removes a tab.
+            </summary>
+            <param name="At">Tab to remove.</param>
+        </member>
+        <member name="T:WGP.Gui.Textbox">
+            <summary>
+            Basic text input widget.
+            </summary>
+        </member>
+        <member name="P:WGP.Gui.Textbox.DefaultString">
+            <summary>
+            Its default string. The default string will be displayed if no text is entered.
+            </summary>
+        </member>
+        <member name="P:WGP.Gui.Textbox.AvailableChars">
+            <summary>
+            List of the available chars. null for any char available.
+            </summary>
+        </member>
+        <member name="P:WGP.Gui.Textbox.NumericIntChars">
+            <summary>
+            List of int number available chars.
+            </summary>
+        </member>
+        <member name="P:WGP.Gui.Textbox.NumericFloatChars">
+            <summary>
+            List of float number available chars. (same as int number, but with the dot)
+            </summary>
+        </member>
+        <member name="P:WGP.Gui.Textbox.HideString">
+            <summary>
+            Changes the chars of the string to a visual star (*).
+            </summary>
+        </member>
+        <member name="P:WGP.Gui.Textbox.Recommendations">
+            <summary>
+            Sets a list of recommendations used when typing in the textbox.
+            </summary>
+        </member>
+        <member name="P:WGP.Gui.Textbox.String">
+            <summary>
+            Entered text.
+            </summary>
+        </member>
+        <member name="P:WGP.Gui.Textbox.Focused">
+            <summary>
+            The text box is focused if the user can write inside it. Be careful when setting it to true if another text box is focused, both will react to the keyboard.
+            </summary>
+        </member>
+        <member name="M:WGP.Gui.Textbox.#ctor">
+            <summary>
+            Constructor.
+            </summary>
+        </member>
+        <member name="M:WGP.Gui.Textbox.SelectAll">
+            <summary>
+            Highlight the whole text.
+            </summary>
+        </member>
+        <member name="T:WGP.Gui.Voidbox">
+            <summary>
+            Basic container that handle one widget with no graphics.
+            </summary>
+        </member>
+        <member name="P:WGP.Gui.Voidbox.Content">
+            <summary>
+            Its widget.
+            </summary>
+        </member>
+        <member name="M:WGP.Gui.Voidbox.#ctor">
+            <summary>
+            Constructor.
+            </summary>
+        </member>
+        <member name="T:WGP.Gui.Widget">
+            <summary>
+            Base widget class.
+            </summary>
+        </member>
+        <member name="P:WGP.Gui.Widget.ToolTip">
+            <summary>
+            The tooltip is the message that appears when the mouse is on the same widget for a few seconds.
+            </summary>
+            <value>String to display.</value>
+        </member>
+        <member name="P:WGP.Gui.Widget.Pattern">
+            <summary>
+            The pattern is how the widget will be placed and sized within its reserved space. All values must be between [0,1].
+            Left and Top are the position of the widget (0 for left/top, 1 for right/bottom).
+            Width and Height are the size of the widget (0 for smallest, 1 for largest).
+            </summary>
+            <value>Pattern.</value>
+        </member>
+        <member name="P:WGP.Gui.Widget.Padding">
+            <summary>
+            The padding is the blank space around the widget to not be sticked to other widgets.
+            </summary>
+            <value>Padding.</value>
+        </member>
+        <member name="M:WGP.Gui.Widget.#ctor">
+            <summary>
+            Constructor.
+            </summary>
+        </member>
+        <member name="T:WGP.Gui.Window">
+            <summary>
+            The base class to render a widget. The window creates a GUI context to draw a widget.
+            </summary>
+        </member>
+        <member name="P:WGP.Gui.Window.Content">
+            <summary>
+            Its content.
+            </summary>
+        </member>
+        <member name="P:WGP.Gui.Window.WindowView">
+            <summary>
+            The SFML window view used to draw must be specified if another one is used in the event loop and update loop. Most of the time, the default view is the one used to draw the GUI winwow.
+            </summary>
+        </member>
+        <member name="P:WGP.Gui.Window.Moveable">
+            <summary>
+            Returns true if the window is moveable.
+            </summary>
+        </member>
+        <member name="P:WGP.Gui.Window.Hidden">
+            <summary>
+            Hidding the window will hide its widget, but not the titlebar. Require the WGP.Gui.Window.Mode.HIDE_CONTENT flag.
+            </summary>
+        </member>
+        <member name="P:WGP.Gui.Window.IsOpen">
+            <summary>
+            Returns true if the window is open.
+            </summary>
+        </member>
+        <member name="P:WGP.Gui.Window.IsGrabbed">
+            <summary>
+            Returns true if the window is grabbed.
+            </summary>
+        </member>
+        <member name="P:WGP.Gui.Window.IsResized">
+            <summary>
+            Returns true if the window is being resized.
+            </summary>
+        </member>
+        <member name="P:WGP.Gui.Window.MouseOnWindow">
+            <summary>
+            Returns true if the mouse is on the window.
+            </summary>
+        </member>
+        <member name="P:WGP.Gui.Window.Size">
+            <summary>
+            Its size.
+            </summary>
+        </member>
+        <member name="P:WGP.Gui.Window.Position">
+            <summary>
+            Its position.
+            </summary>
+        </member>
+        <member name="P:WGP.Gui.Window.Title">
+            <summary>
+            Its title. Require the WGP.Gui.Window.Mode.TITLEBAR flag.
+            </summary>
+        </member>
+        <member name="M:WGP.Gui.Window.#ctor(SFML.Graphics.RenderWindow,WGP.Gui.Window.Mode)">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="target">The target SFML window.</param>
+            <param name="mode">Options flags. (Optional)</param>
+        </member>
+        <member name="M:WGP.Gui.Window.Draw">
+            <summary>
+            Draws the window and its widget.
+            </summary>
+        </member>
+        <member name="M:WGP.Gui.Window.Update">
+            <summary>
+            Update the window and its widget.
+            </summary>
+        </member>
+        <member name="M:WGP.Gui.Window.Close">
+            <summary>
+            Closes the window.
+            </summary>
+        </member>
+        <member name="M:WGP.Gui.Window.Open">
+            <summary>
+            Open the window.
+            </summary>
+        </member>
+        <member name="M:WGP.Gui.Window.GetBounds">
+            <summary>
+            Returns the bounds of the window.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:WGP.Gui.WindowManager">
+            <summary>
+            The window manager handle multiple window related conditional elements (window focus, window events, ...)
+            </summary>
+        </member>
+        <member name="M:WGP.Gui.WindowManager.#ctor(SFML.Graphics.RenderWindow)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="app"></param>
+        </member>
+        <member name="M:WGP.Gui.WindowManager.Update">
+            <summary>
+            Updates the manager AND the windows
+            </summary>
+        </member>
+        <member name="M:WGP.Gui.WindowManager.RequestWindow(WGP.Gui.Window)">
+            <summary>
+            Give explicitely a window the focus.
+            </summary>
+            <param name="window">Window to give the focus.</param>
+        </member>
+        <member name="M:WGP.Gui.WindowManager.AddWindow(WGP.Gui.Window,System.Boolean)">
+            <summary>
+            Adds a window to the manager
+            </summary>
+            <param name="window">Window to add</param>
+            <param name="alwaysFront">True if the window is always front (there can be only one)</param>
+        </member>
+        <member name="M:WGP.Gui.WindowManager.DrawWindows">
+            <summary>
+            Draws the windows managed
+            </summary>
+        </member>
+        <member name="M:WGP.Gui.WindowManager.PointOnWindow(SFML.System.Vector2f)">
+            <summary>
+            Check if a point is inside a window.
+            </summary>
+            <param name="point">Point to test.</param>
+            <returns>True if the point is in a window.</returns>
+        </member>
+    </members>
+</doc>
